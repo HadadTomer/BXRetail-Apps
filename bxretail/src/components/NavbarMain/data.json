@@ -1,0 +1,36 @@
+{
+	"brand": "BXRetail",
+	"menus": {
+		"primary": [
+			{
+				"title": "Departments",
+				"url": "/dashboard/settings"
+			},
+			{
+				"title": "Weekly Deals",
+				"url": "/deals"
+			},
+			{
+				"title": "Extraordinary Club",
+				"url": "/club"
+			},
+			{
+				"title": "My Favorites",
+				"url": "/favorites"
+			},
+			{
+				"title": "The BXCard",
+				"url": "/bxcard"
+			}
+		],
+		"utility": {
+			"search": "Search BXRetail",
+			"locations": "Find a Location",
+			"cart": "Cart",
+			"register_intro": "Sign up today: ",
+			"register": "Create an Account",
+			"login": "Sign In to My Account",
+			"logout": "Sign Out"
+		}
+	}
+}

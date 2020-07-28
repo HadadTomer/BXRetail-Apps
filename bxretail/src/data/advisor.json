@@ -1,0 +1,125 @@
+{
+	"brand": "Advisor",
+	"menus": {
+		"primary": [
+			{
+				"title": "My Dashboard",
+				"url": "/advisor"
+			},
+			{
+				"title": "Messages",
+				"url": "/advisor/client"
+			},
+			{
+				"title": "Protocols Updates",
+				"url": "/advisor/updates"
+			},
+			{
+				"title": "Reporting",
+				"url": "/advisor/reporting"
+			},
+			{
+				"title": "Other Services",
+				"url": "/advisor/other-services"
+			}
+		]
+	},
+	"welcome_bar": "Welcome, Gail",
+	"subnav": [
+		{
+			"title": "Active Campaigns",
+			"href": "#",
+			"open": false
+		},
+		{
+			"title": "Past Campaigns",
+			"href": "#",
+			"open": false
+		},
+		{
+			"title": "Analysis & Insights",
+			"href": "#",
+			"open": false
+		},
+		{
+			"title": "Budgeting",
+			"href": "#",
+			"open": false
+		},
+		{
+			"title": "Forecasting/Benchmarking",
+			"href": "#",
+			"open": false
+		},
+		{
+			"title": "Import/Export",
+			"href": "#",
+			"open": false
+		}
+	],
+	"profile": {
+		"advisor": {
+			"title": "Your Profile",
+			"content": "<strong>Gail Tyson</strong> <br> AnyTVPartner Advisor <br> Roebuck, IL  60610 <br> Phone: 847.489.2213 <br> <br> gail.tyson@ATVP.com <br> atvp.com/gail.tyson",
+			"button": "Make Changes"
+		}
+	},
+	"alerts": {
+		"title": "Alerts",
+		"messages": [
+			"You have <a href=\"#\">5 new messages</a> <br> from AnyTVPartner Operations.",
+			"You have <a href=\"#\">2 new messages</a> <br> from BXRetail sales."
+		],
+		"button": "View Message Center"
+	},
+	"clients": {
+		"title": "My Dashboard",
+		"search_placeholder": "Enter Keywords...",
+		"suggestions": [
+			"janesmith@gmail.com"
+		]
+	},
+	"news": {
+		"title": "BXRetail News/Events",
+		"webinar": {
+			"title": "Webinar: New Products",
+			"content": "CMO Leif Garickson leads a webinar introducing partners to BXRetail products. ",
+			"button": "Learn More"
+		},
+		"schedules": {
+			"title": "New Commission Schedules",
+			"content": "Review current commission schedules for BXRetail partners.  ",
+			"button": "Learn More"
+		}
+	},
+	"clients_recent": {
+		"title": "Recent Clients",
+		"content": "04/24/2020 | Initial Contact | <a href=\"#\">Notes</a> <br> 05/23/2020 | Linked Accounts | <a href=\"#\">Notes</a> <br> 06/03/2020 | Consult Call | <a href=\"#\">Notes</a>",
+		"button": "See All"
+	},
+	"record": {
+		"fields": [
+			{
+				"label": "Name",
+				"value": "Smith, Jane"
+			},
+			{
+				"label": "Mail Address",
+				"value": false
+			},
+			{
+				"label": "Email Address",
+				"value": "janesmith@gmail.com"
+			},
+			{
+				"label": "SMS/TXT Phone",
+				"value": "(210) 555-5555"
+			}
+		],
+		"buttons": {
+			"inspect": "Inspect Record",
+			"modify": "Modify Record"
+		}
+	},
+	"copyright": "© AnyMarketing, 2020 <br /> Member FDIC, Member SIPC <br /> Equal Housing Lender"
+}

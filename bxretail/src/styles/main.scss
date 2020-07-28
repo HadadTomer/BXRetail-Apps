@@ -1,0 +1,96 @@
+@import './variables.scss';
+@import '~bootstrap/scss/bootstrap.scss';
+
+@import './forms.scss';
+@import './modals.scss';
+
+/* Global */
+body {
+  margin: 0;
+  font-family: "Muli";
+  color: #211012;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h1 {
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 60px;
+}
+
+h2 {
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 50px;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 48px;
+}
+
+h4 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+}
+
+p {
+  color: rgb(29, 29, 29);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+a {
+  font-weight: 500;
+
+  &:hover,
+  &:focus {
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  &.cancel {
+    margin: 0 20px 0 0;
+  }
+}
+
+.btn-primary,
+.btn-secondary {
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 12px 30px;
+  border-radius: 13px;
+  border: 0;
+}
+
+.btn-primary {
+  &:hover,
+  &:focus {
+    box-shadow: 1px 2px 11px rgba(23, 125, 231, 0.4);
+  }
+}
+
+.btn-link {
+  font-weight: 600;
+
+  &:hover,
+  &:focus {
+    font-weight: bold;
+    text-decoration: none;
+  }
+}
+
+.module {
+  background: rgb(255, 255, 255);
+  border-radius: 11px;
+  padding: 35px;
+  margin-bottom: 20px;
+}

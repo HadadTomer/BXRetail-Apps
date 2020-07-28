@@ -1,0 +1,84 @@
+{
+	"title": "Privacy & Security Settings",
+	"subnav": [
+    {
+      "title": "Payment Methods",
+      "href": "#",
+      "open": false
+    },
+    {
+      "title": "BXClub Visa Card",
+      "open": false,
+      "href": "#"
+    },
+    {
+      "title": "Orders, Deliveries, Installations",
+      "open": false,
+      "href": "#"
+    },
+    {
+      "title": "Extraordinary Club Membership",
+      "open": false,
+      "href": "#"
+    },
+    {
+      "title": "My Settings",
+      "open": true,
+      "href": "/dashboard/settings",
+      "links": [
+        {
+          "title": "Manage Your Profile",
+          "active": false,
+          "href": "/dashboard/settings/profile"
+        },
+        {
+          "title": "Communications Preferences",
+          "active": false,
+          "href": "/dashboard/settings/communication-preferences"
+        },
+        {
+          "title": "Privacy & Security",
+          "active": true,
+          "href": "/dashboard/settings/privacy-security"
+        },
+        {
+          "title": "Sign In & Password",
+          "active": false,
+          "href": "#"
+        },
+        {
+          "title": "Alerts",
+          "active": false,
+          "href": "#"
+        }
+      ]
+    },
+    {
+      "title": "Special Offers",
+      "open": false,
+      "href": "#"
+    }
+  ],
+  "dropdown": "Things I Can Do",
+  "form": {
+    "title": "Partner Data Sharing",
+    "description": "Here are your settings for how BXRetail partner AnyTVPartner can access information about you for your Professional Services installation:",
+    "table_title": "Which partners should be able to view your accounts?",
+    "communication_types": [
+      {
+        "name": "address",
+        "label": "My Ship To/Installation Address"
+      },
+      {
+        "name": "phone",
+        "label": "My Phone Number"
+      },
+      {
+        "name": "email",
+        "label": "My Email Address"
+      }
+    ],
+    "button_edit": "Modify These Settings",
+    "button_partners": "Review Other Partner Settings"
+  }
+}
