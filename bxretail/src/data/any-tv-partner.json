@@ -1,0 +1,127 @@
+{
+	"brand": "AnyTVPartner",
+	"menus": {
+		"primary": [
+			{
+				"title": "Installation Services",
+				"url": "/any-tv-partner"
+			},
+			{
+				"title": "Repair Services",
+				"url": "/any-tv-partner/repair"
+			},
+			{
+				"title": "Tech Consultations",
+				"url": "/any-tv-partner/consultations"
+			},
+			{
+				"title": "Upgrades",
+				"url": "/any-tv-partner/upgrades"
+			},
+			{
+				"title": "Other Services",
+				"url": "/any-tv-partner/other-services"
+			}
+		],
+		"utility": {
+			"search": "Search",
+			"locations": "Find a Location",
+			"support": "Get Support",
+			"logout": "Sign Out"
+		},
+		"footer": [
+			{
+				"title": "About Us",
+				"url": "/",
+				"children": [
+					{
+						"title": "Services",
+						"url": "/"
+					},
+					{
+						"title": "Our Partners",
+						"url": "/"
+					},
+					{
+						"title": "Careers",
+						"url": "/"
+					}
+				]
+			},
+			{
+				"title": "800.543.2276",
+				"url": "/",
+				"children": [
+					{
+						"title": "help@anytvpartner.com",
+						"url": "/"
+					},
+					{
+						"title": "Chat with Us",
+						"url": "/"
+					}
+				]
+			},
+			{
+				"title": "Privacy & Security",
+				"url": "/",
+				"children": [
+					{
+						"title": "Terms of Use",
+						"url": "/"
+					},
+					{
+						"title": "Disclosures",
+						"url": "/"
+					},
+					{
+						"title": "Accessibility",
+						"url": "/"
+					}
+				]
+			}
+		]
+	},
+	"welcome": "Welcome, Jane",
+	"installation": {
+		"summary": {
+			"description": "Here’s the information we have for your installation:",
+			"shipping": {
+				"title": "Ship To/Installation Address",
+				"content": "4700 Red River St. <br /> Roebuck, IL 604344",
+				"button": "Edit Info"
+			},
+			"contact": {
+				"title": "Phone Number",
+				"content": "Home: 617.525.4431 <br /> Mobile: 617.787.2278",
+				"button": "Edit Info"
+			}
+		},
+		"step_1": {
+			"title": "Let’s Get Started",
+			"services": "<h4>Your Services:</h4> <ul><li>Delivery, mounting, and setup, PremiumTV 56\" and larger</li><li>Mounting hardware and installation included</li></ul>",
+			"products": "<h4>Your Products::</h4> <p>BXManufacturing Clera 65” 4K UHD LED TV</p><p><a href=\"#\">See Product Details</a></p>",
+			"form": {
+				"title": "Select your Installation Date",
+				"content": "Appointment times can vary and will be scheduled at a later date. Appointment windows are from <strong>8am - 1pm</strong> or <strong>1pm - 5pm</strong>",
+				"date_label": "Choose Your Date",
+				"date_value": "MM/DD/YYYY",
+				"button": "Schedule"
+			}
+		},
+		"step_2": {
+			"title": "Your Appointment is Confirmed",
+			"services": "<h4>Your Services:</h4> <ul><li>Delivery, mounting, and setup, PremiumTV 56\" and larger</li><li>Mounting hardware and installation included</li></ul>",
+			"products": "<h4>Your Products::</h4> <p>BXManufacturing Clera 65” 4K UHD LED TV</p><p><a href=\"#\">See Product Details</a></p>",
+			"form": {
+				"title": "Your Appointment",
+				"content": "<ul><li>July 21st between <strong>8am - 1pm</strong> or <strong>1pm - 5pm</strong>.</li><li>An AnyTVPartner representative will be in touch with  you to confirm your availability as we get closer to the date. Contact us at 800.543.2276 to speak with a representative or with any questions.</li></ul>",
+				"date_label": "Choose Your Date",
+				"date_value": "07/21/2020",
+				"date_link": "Learn More about Installation",
+				"button": "Change Appointment"
+			}
+		}
+	},
+	"copyright": "© AnyTVPartner, 2020 <br /> A licensed installer of electronics <br /> and partner of BXRetail, Inc."
+}

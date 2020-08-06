@@ -1,0 +1,36 @@
+{
+	"hero": {
+		"electronics": {
+			"title": "Electronics Sale",
+			"content": "Major savings on favorite brands",
+			"button": "Browse Deals"
+		},
+		"office": {
+			"title": "Home Office Upgrades",
+			"subtitle": "Furniture, decor, electronics, and more",
+			"content": "Major savings on major brands",
+			"button": "Shop Home Office"
+		}
+	},
+	"cta_bar": "Shop at our Extraordinary Club Partners",
+	"features": [
+		{
+			"title": "Try the BXRetail App",
+			"content": "Shop, browse and manage your account.",
+			"image": "home-features-app.png",
+			"button": "Get the App"
+		},
+		{
+			"title": "Join the Extraordinary Club",
+			"content": "Exclusive savings and services across all our BXRetail partners.",
+			"image": "home-features-club.png",
+			"button": "Meet Our People"
+		},
+		{
+			"title": "We Install Anything",
+			"content": "Choose professional partner services for any product we sell.",
+			"image": "home-features-service.png",
+			"button": "Learn More"
+		}
+	]
+}

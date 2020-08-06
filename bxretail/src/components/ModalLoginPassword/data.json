@@ -1,0 +1,45 @@
+{
+	"titles": {
+		"welcome": "Welcome back",
+		"login_method": "How would you like to sign in?",
+		"recover_username_success": "Email sent!"
+	},
+	"form": {
+		"fields": {
+			"email": {
+				"label": "Email",
+				"placeholder": ""
+			},
+			"username": {
+				"label": "Username",
+				"placeholder": ""
+			},
+			"password": {
+				"label": "Password",
+				"placeholder": ""
+			},
+			"remember": {
+				"label": "Remember Me"
+			},
+			"login_method": {
+				"options": {
+					"email": "Email me a one-time passcode",
+					"text": "Text me a one-time passcode",
+					"faceid": "With FaceID (Mobile App Required)"
+				}
+			}
+		},
+		"buttons": {
+			"next": "Next",
+			"reset": "Forgot your username?",
+			"reset_password": "Forgot your password?",
+			"login": "Sign In",
+			"help": "Need help signing in?",
+			"recover_username": "Recover Username",
+			"recover_password": "Recover Password"
+		}
+	},
+	"mobile": {
+		"loading": "Please check your smartphone to sign in..."
+	}
+}
