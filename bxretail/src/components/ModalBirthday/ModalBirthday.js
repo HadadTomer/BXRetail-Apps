@@ -44,7 +44,7 @@ class ModalBirthday extends React.Component {
             <h4>{data.title}</h4>
             <div dangerouslySetInnerHTML={{__html: data.content}}></div>
             <FormGroup>
-              <Input type="date" name="birthdate" id="birthdate" placeholder="MM/DD/YYYY" />
+              <Input type="text" name="birthdate" id="birthdate" value="02/25/1987" />
             </FormGroup>
             <Button color="primary" onClick={this.toggle.bind(this)}>{data.button}</Button>
           </ModalBody>

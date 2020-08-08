@@ -92,7 +92,7 @@
       "birthdate": {
         "label": "Birth Date",
         "placeholder": "MM/DD/YYYY",
-        "value": "MM/DD/YYYY"
+        "value": "02/25/1987"
       },
       "email": {
         "label": "Email Address",
