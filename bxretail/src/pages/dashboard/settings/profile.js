@@ -103,7 +103,7 @@ class CommunicationPreferences extends React.Component {
                   <Col md={4}>
                     <FormGroup>
                       <Label for="birthdate">{data.form.fields.birthdate.label}</Label>
-                      <Input type="date" name="birthdate" id="birthdate" placeholder={data.form.fields.birthdate.placeholder} value={data.form.fields.birthdate.value} />
+                      <Input type="text" name="birthdate" id="birthdate" placeholder={data.form.fields.birthdate.placeholder} value={data.form.fields.birthdate.value} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>

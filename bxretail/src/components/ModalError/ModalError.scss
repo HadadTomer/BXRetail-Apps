@@ -1,7 +1,6 @@
 /* ModalError */
 
 @import '../../styles/variables.scss';
-@import '../../styles/typography.scss';
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/bootstrap-grid';
 
@@ -27,6 +26,7 @@
       margin-right: auto;
       margin-bottom: 2rem;
       padding-top: 0;
+      text-align: center;
 
       h4 {
         text-align: center;

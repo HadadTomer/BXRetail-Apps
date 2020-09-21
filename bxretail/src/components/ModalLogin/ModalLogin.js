@@ -79,7 +79,7 @@ class ModalLogin extends React.Component {
                     <CustomInput type="checkbox" id="remember" label={data.form.fields.remember.label} />
                   </FormGroup>
                   <div className="mb-3">
-                    <Button type="button" color="primary" onClick={() => { this.toggleTab('2'); }}>{data.form.buttons.next}</Button>
+                    <Button type="button" color="primary" onClick={() => { this.toggleTab('2'); }}>{data.form.buttons.login}</Button>
                   </div>
                   <div className="text-center">
                     <p>Five sites, one sign in</p>
