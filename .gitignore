@@ -1,0 +1,13 @@
+*/.vscode/
+*/.DS_Store
+msanchez.json
+bxretail/node_modules
+bxretail/.dockerignore
+bxretail/.env
+bxretail/.npmignore
+bxretail/Dockerfile
+bxretail/Dockerfile.dev
+bxretail/Dockerfile.poc
+bxretail/docker-compose-dev.yaml
+bxretail/docker-compose.yaml
+bxretail/public/env-config.js

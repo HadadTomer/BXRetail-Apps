@@ -1,3 +1,3 @@
-import ModalRegisterConfirm from "./ModalRegisterConfirm";
+import ModalEmailVerification from "./ModalEmailVerification";
 
-export default ModalRegisterConfirm;
+export default ModalEmailVerification;

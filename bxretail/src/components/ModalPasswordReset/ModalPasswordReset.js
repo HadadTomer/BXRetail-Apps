@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 // Components
-import FormPassword from '../../components/FormPassword';
+// import FormPassword from '../../components/FormPassword';
 
 // Styles
 import "./ModalPasswordReset.scss";
