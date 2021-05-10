@@ -14,7 +14,7 @@ import WelcomeBar from '../../components/WelcomeBar';
 import FooterMain from '../../components/FooterMain';
 import AccountsSubnav from '../../components/AccountsSubnav';
 import AccountsDropdown from '../../components/AccountsDropdown';
-import AccountsSectionNav from '../../components/AccountsSectionNav';
+// import AccountsSectionNav from '../../components/AccountsSectionNav';
 
 // Data
 import data from '../../data/shop/index.json';
@@ -229,7 +229,7 @@ class Shop extends React.Component {
                   </Col>
                   <Col md={5}>
                     <div className="product">
-                      <h5>Delivery + Premium TV Mounting 56" and  larger</h5>
+                      <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
                       <img src={process.env.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
                       <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.mounting.included}</Button></div>
@@ -287,7 +287,7 @@ class Shop extends React.Component {
               <div className="spinner">
                 <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
               </div>
-              <p>Please check your  trusted mobile  device to approve  this transaction.</p>
+              <p>Please check your trusted mobile device to approve this transaction.</p>
             </div>
             <div className="mt-4 text-center">
               <Button type="button" color="link" size="sm" onClick={this.toggle.bind(this)}>What is this?</Button>
@@ -332,7 +332,7 @@ class Shop extends React.Component {
                   </Col>
                   <Col md={5}>
                     <div className="product">
-                      <h5>Delivery + Premium TV Mounting 56" and  larger</h5>
+                      <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
                       <img src={process.env.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
                       <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.mounting.included}</Button></div>

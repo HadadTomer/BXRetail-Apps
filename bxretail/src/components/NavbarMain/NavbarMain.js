@@ -15,6 +15,7 @@ import { Link, NavLink as RRNavLink } from 'react-router-dom';
 import ModalRegister from '../ModalRegister';
 import ModalRegisterConfirm from '../ModalRegisterConfirm';
 import ModalLogin from '../ModalLogin';
+import Session from '../Utils/Session'; /* PING INTEGRATION: */
 
 // Styles
 import './NavbarMain.scss';
@@ -28,7 +29,11 @@ class NavbarMain extends React.Component {
     this.state = {
       isOpen: false
     };
+    /* BEGIN PING INTEGRATION: */
+    this.Session = new Session();
+    /* END PING INTEGRATION */
   }
+
   triggerModalRegister() {
     this.refs.modalRegister.toggle();
   }
@@ -48,6 +53,11 @@ class NavbarMain extends React.Component {
     });
   }
   componentDidMount () {
+    // BEGIN PING INTEGRATION
+    const isLoggedOut = (this.Session.getAuthenticatedUserItem("subject") === null || this.Session.getAuthenticatedUserItem("subject") === 'undefined') ? true : false;
+    //TODO this is commented out until we have login working.
+    // this.Session.protectPage(isLoggedOut, window.location.pathname, this.Session.getAuthenticatedUserItem("bxFinanceUserType"));
+
     if ( window.location.search ) {
       this.refs.modalRegisterConfirm.toggle();
     }

@@ -15,7 +15,7 @@ import WelcomeBar from '../../../components/WelcomeBar';
 import FooterMain from '../../../components/FooterMain';
 import AccountsSubnav from '../../../components/AccountsSubnav';
 import AccountsDropdown from '../../../components/AccountsDropdown';
-import AccountsSectionNav from '../../../components/AccountsSectionNav';
+// import AccountsSectionNav from '../../../components/AccountsSectionNav';
 
 // Data
 import data from '../../../data/dashboard/settings/communication-preferences.json';

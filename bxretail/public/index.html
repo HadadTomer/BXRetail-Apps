@@ -6,20 +6,29 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <!-- BEGIN PING INTEGRATIONS: optional meta tags and recommended content security policies. -->
     <meta
       name="description"
-      content="A live demo of retail industry customer applications secured and protected by Ping Identity solutions." />
-    <meta 
-      name="application-name" 
-      content="BXRetail by Ping Identity" />
-    <meta 
-      name="keywords" 
+      content="A live demo of retail industry customer applications secured and protected by Ping Identity solutions."
+    />
+    <meta name="application-name" content="BXRetail by Ping Identity" />
+    <meta
+      name="keywords"
       content="IAM, SSO, single sign-on, access security, identity and access management, finance, 
         banking, identity-defined seurity, Ping Identity, oauth, OIDC, SAML, WS-Fed, WS-Trust, 
-        X.509, Kerberos, RADIUS, authentication, authorization" />
-    <meta 
-      name="author"
-      content="Technical Enablement - Ping Identity" />
+        X.509, Kerberos, RADIUS, authentication, authorization"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline' fonts.googleapis.com use.typekit.net p.typekit.net; font-src 'self' use.typekit.net fonts.gstatic.com data:; 
+      script-src 'self' 'unsafe-inline'; img-src 'self' data:; frame-src 'self'; form-action 'self'; connect-src 'self';"
+    />
+    <meta name="author" content="Technical Enablement - Ping Identity" />
+    <!-- Script for runtime environment variables injected by Docker builds -->
+    <script src="%PUBLIC_URL%/env-config.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300&display=swap" rel="stylesheet">
+    <!-- END PING INTEGRATIONS -->
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -37,7 +46,7 @@
     -->
     <title>BXRetail [%NODE_ENV%] by Ping Identity</title>
     <!-- Adobe -->
-    <link rel="stylesheet" href="https://use.typekit.net/ytr0vgi.css">
+    <link rel="stylesheet" href="https://use.typekit.net/ytr0vgi.css" />
     <style>
       @import url("https://use.typekit.net/ytr0vgi.css");
     </style>
