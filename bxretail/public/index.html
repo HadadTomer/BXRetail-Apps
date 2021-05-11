@@ -44,7 +44,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>BXRetail [%NODE_ENV%] by Ping Identity</title>
+    <title>Title</title>
     <!-- Adobe -->
     <link rel="stylesheet" href="https://use.typekit.net/ytr0vgi.css" />
     <style>
@@ -66,4 +66,7 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <script>
+    document.title = "BXRetail [" + window._env_.REACT_APP_ENV + "] by Ping Identity";
+  </script>
 </html>

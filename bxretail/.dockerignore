@@ -1,0 +1,17 @@
+*/.vscode/
+*/.DS_Store
+msanchez.json
+.gitignore
+*/node_modules
+*/.npmignore
+*/Dockerfile
+*/Dockerfile.dev
+*/Dockerfile.poc
+*/README.md
+*/docker-compose-dev.yaml
+*/docker-compose.yaml
+*/public/env-config.js
+*/build-app.sh
+*/entrypoint.sh
+*/_tests_
+babel.config.js
