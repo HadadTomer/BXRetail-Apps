@@ -142,7 +142,7 @@ class Shop extends React.Component {
                     </h4>
                   </Col>
                   <Col className="text-right">
-                    <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.buttons.cart}</Button></div>
+                    <div><Button type="button" color="link">{data.modal.product.buttons.cart}</Button></div>
                     <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.buttons.continue}</Button></div>
                   </Col>
                 </Row>
