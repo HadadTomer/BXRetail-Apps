@@ -185,7 +185,7 @@ class Shop extends React.Component {
                       <a href="#" className="ml-4"><small>{data.modal.product.mounting.included}</small></a>
                     </FormGroup>
                     <div className="text-right mt-4">
-                      <Button type="button" color="link" onClick={() => { this.toggleTab('2'); }}>{data.modal.product.buttons.skip}</Button>
+                      <Button type="button" color="link">{data.modal.product.buttons.skip}</Button>
                       <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTab('2'); }}>{data.modal.product.buttons.add}</Button>
                     </div>
                   </Col>
