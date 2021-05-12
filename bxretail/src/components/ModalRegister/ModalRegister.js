@@ -49,7 +49,7 @@ class ModalRegister extends React.Component {
     return (
       <div>
         <Modal isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} className="modal-xl modal-register">
-          <ModalHeader toggle={this.toggle.bind(this)}><img src="/images/logo.svg" alt="logo" /></ModalHeader>
+          <ModalHeader toggle={this.toggle.bind(this)}><img src={process.env.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
             <h2>{data.title}</h2>
             <Form>
