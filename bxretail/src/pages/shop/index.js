@@ -272,7 +272,7 @@ class Shop extends React.Component {
                   </Col>
                 </Row>
                 <div className="text-right mt-2 mr-4 mb-4">
-                  <Button type="button" color="link" onClick={() => { this.toggleTab('1'); }}>{data.modal.cart.buttons.update}</Button>
+                  <Button type="button" color="link">{data.modal.cart.buttons.update}</Button>
                   <Button type="button" color="primary" className="ml-3" onClick={() => { this.onCheckout(); }}>{data.modal.cart.buttons.checkout}</Button>
                 </div>
               </TabPane>
