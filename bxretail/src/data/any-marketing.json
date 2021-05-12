@@ -32,55 +32,55 @@
 		"footer": [
 			{
 				"title": "Our Company",
-				"url": "/",
+				"url": "#",
 				"children": [
 					{
 						"title": "Investor Relations",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Corporate Citizenship",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "News",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Locations",
-						"url": "/"
+						"url": "#"
 					}
 				]
 			},
 			{
 				"title": "800.543.2276",
-				"url": "/",
+				"url": "#",
 				"children": [
 					{
 						"title": "help@awadvisor.com",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Chat with Us",
-						"url": "/"
+						"url": "https://docs.google.com/forms/d/e/1FAIpQLSdw2-rdvc3bFV2wkLbI5_pjD2l1_n6inWZxDfwL2z2bkHBhvg/viewform"
 					}
 				]
 			},
 			{
 				"title": "Privacy & Security",
-				"url": "/",
+				"url": "#",
 				"children": [
 					{
 						"title": "Terms of Use",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Disclosures",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Accessibility",
-						"url": "/"
+						"url": "#"
 					}
 				]
 			}
