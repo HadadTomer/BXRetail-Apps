@@ -2,7 +2,6 @@
 */.DS_Store
 msanchez.json
 bxretail/node_modules
-bxretail/.dockerignore
 bxretail/.env
 bxretail/.npmignore
 bxretail/Dockerfile.poc
