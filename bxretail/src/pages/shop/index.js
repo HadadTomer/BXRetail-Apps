@@ -232,7 +232,7 @@ class Shop extends React.Component {
                       <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
                       <img src={process.env.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
-                      <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.mounting.included}</Button></div>
+                      <div><Button type="button" color="link">{data.modal.product.mounting.included}</Button></div>
                     </div>
                   </Col>
                   <Col md={1}>
