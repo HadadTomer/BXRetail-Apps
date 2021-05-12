@@ -211,7 +211,7 @@ class Shop extends React.Component {
                       <h5>{data.products[1].title}</h5>
                       <p>{data.products[1].model}</p>
                       <img src={process.env.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
-                      <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.buttons.details}</Button></div>
+                      <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                     </div>
                   </Col>
                   <Col md={1}>
