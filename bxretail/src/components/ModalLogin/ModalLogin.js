@@ -86,9 +86,9 @@ class ModalLogin extends React.Component {
                   </div>
                   <Row className="sites align-items-center">
                     <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
+                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXHome" /></Col>
+                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXOffice" /></Col>
+                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXTech" /></Col>
                   </Row>
                   <div className="text-center">
                     <img src={process.env.PUBLIC_URL + "/images/home-login-or.png"} alt="or" className="or" />
