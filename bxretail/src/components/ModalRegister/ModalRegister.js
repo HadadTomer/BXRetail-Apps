@@ -96,7 +96,10 @@ class ModalRegister extends React.Component {
                       <option value="password">{data.form.fields.login.options.password}</option>
                     </Input>
                   </FormGroup>
-                  <img src={process.env.PUBLIC_URL + "/images/google-recaptcha.png"} alt="Google reCAPTCHA" className="google-recaptcha" />
+                  {/* 
+                  <img src={process.env.PUBLIC_URL + "/images/google-recaptcha.png"} alt="Google reCAPTCHA" className="google-recaptcha" /> 
+                  Removed since we don't offer reCAPTCHA - didn't want to mislead in the demo.
+                  */} 
                   <FormGroup className="form-group-light ml-3 mb-4">
                     <CustomInput type="checkbox" id="rewards" label={data.form.fields.rewards.label} />
                   </FormGroup>
