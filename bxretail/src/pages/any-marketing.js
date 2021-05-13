@@ -1,7 +1,7 @@
 // Packages
 import React from 'react';
 import {
-  Button, Jumbotron, Row, Col,
+  Button, Row, Col,
   Collapse,
   Container,
   Navbar,
@@ -9,7 +9,6 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Media,
   Modal,
   ModalHeader,
   ModalBody
@@ -101,7 +100,7 @@ const SearchAutocomplete = () => {
           displaySuggestions={displaySuggestions}
           suggestions={filteredSuggestions}
         />
-        <img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" />
+        <img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" alt="Search for a Client"/>
       </form>
       <Modal isOpen={isModalOpen} toggle={triggerModal} className="modal-lg any-marketing modal-record" centered="true" backdropClassName="modal-backdrop-record">
         <ModalHeader toggle={triggerModal}>Record Overview</ModalHeader>
@@ -259,7 +258,7 @@ class AnyMarketing extends React.Component {
                   </Row>
                   <Row>
                     <Col>
-                      <img src={process.env.PUBLIC_URL + "/images/any-marketing-table.png"} className="img-fluid mb-5" />
+                      <img src={process.env.PUBLIC_URL + "/images/any-marketing-table.png"} className="img-fluid mb-5" alt="Table of AnyMarketing Clients"/>
                     </Col>
                   </Row>
                 </div>
@@ -271,10 +270,10 @@ class AnyMarketing extends React.Component {
                   <h4 className="mb-4">{data.metrics.title}</h4>
                   <Row>
                     <Col md="4">
-                      <img src={process.env.PUBLIC_URL + "/images/any-marketing-pie-chart.png"} className="img-fluid" />
+                      <img src={process.env.PUBLIC_URL + "/images/any-marketing-pie-chart.png"} className="img-fluid" alt="AnyMarketing Pie Chart"/>
                     </Col>
                     <Col md="8">
-                      <img src={process.env.PUBLIC_URL + "/images/any-marketing-graph-chart.png"} className="img-fluid" />
+                      <img src={process.env.PUBLIC_URL + "/images/any-marketing-graph-chart.png"} className="img-fluid" alt="AnyMarketing Graph Chart"/>
                     </Col>
                   </Row>
                 </div>

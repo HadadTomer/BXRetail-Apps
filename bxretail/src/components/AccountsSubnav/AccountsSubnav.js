@@ -1,6 +1,6 @@
 // Packages
 import React, { useState } from 'react';
-import { Collapse, Button  } from 'reactstrap';
+import { Collapse } from 'reactstrap';
 import { Link } from 'react-router-dom'
 
 // Styles

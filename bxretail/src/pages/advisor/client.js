@@ -1,19 +1,10 @@
 // Packages
 import React from 'react';
 import {
-  Button, Jumbotron, Row, Col, Card, CardBody,
-  Collapse,
+  Button, Row, Col, Card, CardBody,
   Container,
-  Navbar,
-  NavbarToggler,
-  Nav,
-  NavItem,
-  NavLink,
   Media
 } from 'reactstrap';
-import { Link, NavLink as RRNavLink } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLinkedinIn, faFacebookF, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 // Components
 import NavbarMain from '../../components/NavbarMain';
@@ -94,7 +85,7 @@ const SearchAutocomplete = () => {
           displaySuggestions={displaySuggestions}
           suggestions={filteredSuggestions}
         />
-        <img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" />
+        <img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" alt="Search for a Client"/>
       </form>
     </div>
   );

@@ -64,7 +64,7 @@ class CommunicationPreferences extends React.Component {
                 <h1>{data.title}</h1>
                 <AccountsDropdown text={data.dropdown} />
               </div>
-              { this.state.step == 1 &&
+              { this.state.step === 1 &&
                 <div className="module module-step1">
                   <h2>{data.steps[0].title}</h2>
                   <p>{data.steps[0].description}</p>
@@ -90,7 +90,7 @@ class CommunicationPreferences extends React.Component {
                   </Form>
                 </div>
               }
-              { this.state.step == 2 &&                  
+              { this.state.step === 2 &&                  
                 <div className="module module-step2">
                   <h2 className="confirmation">{data.steps[1].title}</h2>
                   <p>{data.steps[1].description}</p>  

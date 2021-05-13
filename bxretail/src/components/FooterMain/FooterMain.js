@@ -77,11 +77,11 @@ class FooterMain extends React.Component {
         </Container>
         <div className="chatbot">
           { this.state.chatOpen && 
-            <img src={process.env.PUBLIC_URL + "/images/chatbot-window.png"} className="chatbot-window" onClick={this.triggerChat.bind(this)}  />
+            <img alt="Open Chat" src={process.env.PUBLIC_URL + "/images/chatbot-window.png"} className="chatbot-window" onClick={this.triggerChat.bind(this)}  />
           }
           { !this.state.chatOpen && 
             <Button color="primary" onClick={this.triggerChat.bind(this)}>
-              <img src={process.env.PUBLIC_URL + "/images/icons/chatbot.svg"} />
+              <img alt="Chat Window" src={process.env.PUBLIC_URL + "/images/icons/chatbot.svg"} />
               Chat with us
             </Button>
           }

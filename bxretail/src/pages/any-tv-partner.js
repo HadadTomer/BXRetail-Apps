@@ -1,7 +1,7 @@
 // Packages
 import React from 'react';
 import {
-  Button, Jumbotron, Row, Col,
+  Button, Row, Col,
   Collapse,
   Container,
   Navbar,
@@ -9,9 +9,7 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Media,
   FormGroup,
-  Form,
   Label,
   Input
 } from 'reactstrap';
@@ -140,7 +138,7 @@ class AnyTVPartner extends React.Component {
                 <a href="/dashboard/settings/privacy-security" className="btn btn-link">{data.installation.summary.contact.button}</a>
               </Col>
               <Col lg="9">
-                { this.state.step == 1 &&
+                { this.state.step === 1 &&
                   <div>
                     <h4>{data.installation.step_1.title}</h4>
                     <Row className="row-services">
@@ -176,7 +174,7 @@ class AnyTVPartner extends React.Component {
                     </Row>
                   </div>
                 }
-                { this.state.step == 2 &&
+                { this.state.step === 2 &&
                   <div>
                     <h4>{data.installation.step_2.title}</h4>
                     <Row className="row-services">

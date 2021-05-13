@@ -2,11 +2,9 @@ import React from 'react';
 import {
   Container,
   Button,
-  Form,
   FormGroup,
   Label,
   Input,
-  CustomInput,
   Row,
   Col
 } from 'reactstrap';
