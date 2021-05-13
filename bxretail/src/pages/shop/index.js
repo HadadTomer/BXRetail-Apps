@@ -260,7 +260,7 @@ class Shop extends React.Component {
                       </Col>
                       <Col md={3} className="text-right">
                         <p>Subtotal</p>
-                        <p className="mt-2">Sales Tax (IL)</p>
+                        <p className="mt-2">Sales Tax (MO)</p>
                         <p className="mt-2"><strong>Final Total</strong></p>
                       </Col>
                       <Col md={2}>
@@ -350,7 +350,7 @@ class Shop extends React.Component {
                     <Row>
                       <Col md={9} className="text-right">
                         <p>Subtotal</p>
-                        <p className="mt-2">Sales Tax (IL)</p>
+                        <p className="mt-2">Sales Tax (MO)</p>
                         <p className="mt-2"><strong>Final Total</strong> (Charged to BXRetail Visa ...4884)</p>
                       </Col>
                       <Col md={2}>

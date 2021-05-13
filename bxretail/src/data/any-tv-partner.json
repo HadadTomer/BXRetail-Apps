@@ -88,12 +88,12 @@
 			"description": "Here’s the information we have for your installation:",
 			"shipping": {
 				"title": "Ship To/Installation Address",
-				"content": "4700 Red River St. <br /> Roebuck, IL 604344",
+				"content": "4700 Red River St. <br /> Monroe City, MO 63456",
 				"button": "Edit Info"
 			},
 			"contact": {
 				"title": "Phone Number",
-				"content": "Home: 617.525.4431 <br /> Mobile: 617.787.2278",
+				"content": "Home: 314.525.4431 <br /> Mobile: 314.787.2278",
 				"button": "Edit Info"
 			}
 		},
