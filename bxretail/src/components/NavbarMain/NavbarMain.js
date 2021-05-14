@@ -10,6 +10,7 @@ import {
   NavLink
 } from 'reactstrap';
 import { Link, NavLink as RRNavLink } from 'react-router-dom';
+import ReactGA from 'react-ga'; /* PING INTEGRATION: integrating Google Analytics. */
 
 // Components
 import ModalRegister from '../ModalRegister';
@@ -52,13 +53,20 @@ class NavbarMain extends React.Component {
       isOpen: !this.state.isOpen
     });
   }
-  componentDidMount () {
+  componentDidMount() {
     // BEGIN PING INTEGRATION
     const isLoggedOut = (this.Session.getAuthenticatedUserItem("subject") === null || this.Session.getAuthenticatedUserItem("subject") === 'undefined') ? true : false;
     //TODO this is commented out until we have login working.
     // this.Session.protectPage(isLoggedOut, window.location.pathname, this.Session.getAuthenticatedUserItem("bxFinanceUserType"));
 
-    if ( window.location.search ) {
+    //Google Analytics
+    ReactGA.set({
+      userId: "POC-test"
+      // any data that is relevant to the user session
+      // that you would like to track with google analytics
+    })
+
+    if (window.location.search) {
       this.refs.modalRegisterConfirm.toggle();
     }
   }
@@ -97,7 +105,7 @@ class NavbarMain extends React.Component {
         <Navbar color="dark" dark expand="md" className="navbar-desktop">
           <Container>
             <Nav className="mr-auto navbar-nav-main" navbar>
-              { this.props && this.props.data && this.props.data.menus && this.props.data.menus.primary ? (
+              {this.props && this.props.data && this.props.data.menus && this.props.data.menus.primary ? (
                 this.props.data.menus.primary.map((item, i) => {
                   return (
                     <NavItem key={i}>
@@ -131,7 +139,7 @@ class NavbarMain extends React.Component {
           </div>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="navbar-nav-main navbar-light bg-light" navbar>
-              { this.props && this.props.data && this.props.data.menus && this.props.data.menus.primary ? (
+              {this.props && this.props.data && this.props.data.menus && this.props.data.menus.primary ? (
                 this.props.data.menus.primary.map((item, i) => {
                   return (
                     <NavItem key={i}>

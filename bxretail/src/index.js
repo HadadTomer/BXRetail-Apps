@@ -2,20 +2,31 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/main.scss';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
-import Home from './pages/home'; //
-import Shop from './pages/shop/index'; //
-import DashboardSettings from './pages/dashboard/settings/index'; //
-import DashboardSettingsProfile from './pages/dashboard/settings/profile'; //
-import DashboardSettingsCommunicationPrefernces from './pages/dashboard/settings/communications-preferences'; //
-import DashboardSettingsPrivacySecurity from './pages/dashboard/settings/privacy-security'; //
-import Advisor from './pages/advisor/index'; //
-import AdvisorClient from './pages/advisor/client'; //
-import AnyTVPartner from './pages/any-tv-partner'; //
-import AnyMarketing from './pages/any-marketing'; //
+import Home from './pages/home'; 
+import Shop from './pages/shop/index'; 
+import DashboardSettings from './pages/dashboard/settings/index'; 
+import DashboardSettingsProfile from './pages/dashboard/settings/profile'; 
+import DashboardSettingsCommunicationPrefernces from './pages/dashboard/settings/communications-preferences'; 
+import DashboardSettingsPrivacySecurity from './pages/dashboard/settings/privacy-security'; 
+import Advisor from './pages/advisor/index'; 
+import AdvisorClient from './pages/advisor/client'; 
+import AnyTVPartner from './pages/any-tv-partner'; 
+import AnyMarketing from './pages/any-marketing'; 
 import * as serviceWorker from './serviceWorker';
+import ReactGA from 'react-ga'; /* PING INTEGRATION: */
+import { createBrowserHistory } from 'history'; /* PING INTEGRATION: */
+
+// const trackingId = "UA-196676451-1";
+ReactGA.initialize(window._env_.trackingId, { debug: true, testMode: true });
+
+const history = createBrowserHistory(); /* PING INTEGRATION: */
+history.listen(location => {
+  ReactGA.set({ page: location.pathname }); // Update the user's current page
+  ReactGA.pageview(location.pathname); // Record a pageview for the given page
+});
 
 const routing = (
-  <Router basename={`${process.env.PUBLIC_URL}`}>
+  <Router basename={`${window._env_.PUBLIC_URL}`} history={history}>
     <Switch>
       <Route path="/shop">
         <Shop />
