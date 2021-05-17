@@ -15,7 +15,7 @@ import AnyMarketing from './pages/any-marketing'; //
 import * as serviceWorker from './serviceWorker';
 
 const routing = (
-  <Router basename={`${process.env.PUBLIC_URL}`}>
+  <Router basename={`${window._env_.PUBLIC_URL}`}>
     <Switch>
       <Route path="/shop">
         <Shop />

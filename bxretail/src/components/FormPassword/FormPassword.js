@@ -23,7 +23,7 @@ class FormPassword extends React.Component {
     return (
       <FormGroup className="form-group-light form-password">
         <Label for="password">{this.props.label}</Label>
-        <img src={process.env.PUBLIC_URL + "/images/icons/password-hide.svg"} alt="password" className="icon-eye" />
+        <img src={window._env_.PUBLIC_URL + "/images/icons/password-hide.svg"} alt="password" className="icon-eye" />
         <Input type="password" name={this.props.name} id={this.props.name} placeholder={this.props.placeholder} />
       </FormGroup>
     );

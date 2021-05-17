@@ -63,7 +63,7 @@ class FooterMain extends React.Component {
                         {item.children.map((item, i) => {
                           return (
                             <NavItem key={i}>
-                              <NavLink href={item.url}>{item.title}</NavLink>
+                              <NavLink target="_blank" href={item.url}>{item.title}</NavLink>
                             </NavItem>
                           );
                         })}
@@ -77,11 +77,11 @@ class FooterMain extends React.Component {
         </Container>
         <div className="chatbot">
           { this.state.chatOpen && 
-            <img src={process.env.PUBLIC_URL + "/images/chatbot-window.png"} className="chatbot-window" onClick={this.triggerChat.bind(this)}  />
+            <img alt="Open Chat" src={window._env_.PUBLIC_URL + "/images/chatbot-window.png"} className="chatbot-window" onClick={this.triggerChat.bind(this)}  />
           }
           { !this.state.chatOpen && 
             <Button color="primary" onClick={this.triggerChat.bind(this)}>
-              <img src={process.env.PUBLIC_URL + "/images/icons/chatbot.svg"} />
+              <img alt="Chat Window" src={window._env_.PUBLIC_URL + "/images/icons/chatbot.svg"} />
               Chat with us
             </Button>
           }

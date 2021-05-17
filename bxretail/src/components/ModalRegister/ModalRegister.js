@@ -49,7 +49,7 @@ class ModalRegister extends React.Component {
     return (
       <div>
         <Modal isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} className="modal-xl modal-register">
-          <ModalHeader toggle={this.toggle.bind(this)}><img src="/images/logo.svg" alt="logo" /></ModalHeader>
+          <ModalHeader toggle={this.toggle.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
             <h2>{data.title}</h2>
             <Form>
@@ -96,7 +96,10 @@ class ModalRegister extends React.Component {
                       <option value="password">{data.form.fields.login.options.password}</option>
                     </Input>
                   </FormGroup>
-                  <img src={process.env.PUBLIC_URL + "/images/google-recaptcha.png"} alt="Google reCAPTCHA" className="google-recaptcha" />
+                  {/* 
+                  <img src={window._env_.PUBLIC_URL + "/images/google-recaptcha.png"} alt="Google reCAPTCHA" className="google-recaptcha" /> 
+                  Removed since we don't offer reCAPTCHA - didn't want to mislead in the demo.
+                  */} 
                   <FormGroup className="form-group-light ml-3 mb-4">
                     <CustomInput type="checkbox" id="rewards" label={data.form.fields.rewards.label} />
                   </FormGroup>
@@ -108,15 +111,15 @@ class ModalRegister extends React.Component {
               </Row>
               <Row>
                 <Col className="text-center">
-                  <img src={process.env.PUBLIC_URL + "/images/home-login-or.png"} alt="or" className="or" />
+                  <img src={window._env_.PUBLIC_URL + "/images/home-login-or.png"} alt="or" className="or" />
                 </Col>
               </Row>
               <Row form className="form-row-light">
                 <Col className="text-right">
-                  <img src={process.env.PUBLIC_URL + "/images/social-signup-facebook.png"} alt="Facebook" className="social-signup mr-1" />
+                  <img src={window._env_.PUBLIC_URL + "/images/social-signup-facebook.png"} alt="Facebook" className="social-signup mr-1" />
                 </Col>
                 <Col>
-                  <img src={process.env.PUBLIC_URL + "/images/social-signup-google.png"} alt="Google" className="social-signup ml-1" />
+                  <img src={window._env_.PUBLIC_URL + "/images/social-signup-google.png"} alt="Google" className="social-signup ml-1" />
                 </Col>
               </Row>
             </Form>

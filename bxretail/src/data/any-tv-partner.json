@@ -32,51 +32,51 @@
 		"footer": [
 			{
 				"title": "About Us",
-				"url": "/",
+				"url": "#",
 				"children": [
 					{
 						"title": "Services",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Our Partners",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Careers",
-						"url": "/"
+						"url": "#"
 					}
 				]
 			},
 			{
 				"title": "800.543.2276",
-				"url": "/",
+				"url": "#",
 				"children": [
 					{
 						"title": "help@anytvpartner.com",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Chat with Us",
-						"url": "/"
+						"url": "https://docs.google.com/forms/d/e/1FAIpQLSdw2-rdvc3bFV2wkLbI5_pjD2l1_n6inWZxDfwL2z2bkHBhvg/viewform"
 					}
 				]
 			},
 			{
 				"title": "Privacy & Security",
-				"url": "/",
+				"url": "#",
 				"children": [
 					{
 						"title": "Terms of Use",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Disclosures",
-						"url": "/"
+						"url": "#"
 					},
 					{
 						"title": "Accessibility",
-						"url": "/"
+						"url": "#"
 					}
 				]
 			}
@@ -88,12 +88,12 @@
 			"description": "Here’s the information we have for your installation:",
 			"shipping": {
 				"title": "Ship To/Installation Address",
-				"content": "4700 Red River St. <br /> Roebuck, IL 604344",
+				"content": "4700 Red River St. <br /> Monroe City, MO 63456",
 				"button": "Edit Info"
 			},
 			"contact": {
 				"title": "Phone Number",
-				"content": "Home: 617.525.4431 <br /> Mobile: 617.787.2278",
+				"content": "Home: 314.525.4431 <br /> Mobile: 314.787.2278",
 				"button": "Edit Info"
 			}
 		},

@@ -1,7 +1,7 @@
 // Packages
 import React from 'react';
 import {
-  Button, Jumbotron, Row, Col,
+  Button, Row, Col,
   Collapse,
   Container,
   Navbar,
@@ -9,9 +9,7 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Media,
   FormGroup,
-  Form,
   Label,
   Input
 } from 'reactstrap';
@@ -55,21 +53,21 @@ class AnyTVPartner extends React.Component {
           {/* DESKTOP NAV */}
           <Navbar color="light" light expand="md" className="navbar-desktop">
             <Container>
-              <Link to="/" className="navbar-brand"><img src={process.env.PUBLIC_URL + "/images/any-tv-partner-logo.svg"} alt={data.brand} /></Link>
+              <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/any-tv-partner-logo.svg"} alt={data.brand} /></Link>
               <NavbarToggler onClick={this.toggle.bind(this)} />
               <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="justify-content-end ml-auto navbar-nav-utility" navbar>
                   <NavItem>
-                    <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} /></NavLink>
+                    <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} /></NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} /></NavLink>
+                    <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} /></NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/support.svg"} alt={data.menus.utility.support} /></NavLink>
+                    <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/support.svg"} alt={data.menus.utility.support} /></NavLink>
                   </NavItem>
                   <NavItem className="logout">
-                    <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
+                    <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
                   </NavItem>
                 </Nav>
               </Collapse>
@@ -94,7 +92,7 @@ class AnyTVPartner extends React.Component {
               <NavbarToggler onClick={this.toggle.bind(this)} />
             </div>
             <div className="mobilenav-brand">
-              <Link to="/" className="navbar-brand"><img src={process.env.PUBLIC_URL + "/images/any-tv-partner-logo.svg"} alt={data.brand} /></Link>
+              <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/any-tv-partner-logo.svg"} alt={data.brand} /></Link>
             </div>
             <div className="mobilenav-login">
               <Link to="/" className="nav-link logout">Sign Out</Link>
@@ -111,16 +109,16 @@ class AnyTVPartner extends React.Component {
               </Nav>
               <Nav className="navbar-nav-utility" navbar>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} className="mr-1" /> {data.menus.utility.search}</NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} className="mr-1" /> {data.menus.utility.search}</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} className="mr-1" /> {data.menus.utility.locations}</NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} className="mr-1" /> {data.menus.utility.locations}</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/support.svg"} alt={data.menus.utility.support} className="mr-1" /> {data.menus.utility.support}</NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/support.svg"} alt={data.menus.utility.support} className="mr-1" /> {data.menus.utility.support}</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
                 </NavItem>
               </Nav>
             </Collapse>
@@ -140,12 +138,12 @@ class AnyTVPartner extends React.Component {
                 <a href="/dashboard/settings/privacy-security" className="btn btn-link">{data.installation.summary.contact.button}</a>
               </Col>
               <Col lg="9">
-                { this.state.step == 1 &&
+                { this.state.step === 1 &&
                   <div>
                     <h4>{data.installation.step_1.title}</h4>
                     <Row className="row-services">
                       <Col lg="3">
-                        <img src={process.env.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} alt="Services" className="img-fluid" />
+                        <img src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} alt="Services" className="img-fluid" />
                       </Col>
                       <Col lg="9">
                         <div dangerouslySetInnerHTML={{__html: data.installation.step_1.services}}></div>
@@ -153,7 +151,7 @@ class AnyTVPartner extends React.Component {
                     </Row>
                     <Row className="row-services">
                       <Col lg="3">
-                        <img src={process.env.PUBLIC_URL + "/images/any-tv-partner-photo-products.jpg"} alt="Products" className="img-fluid" />
+                        <img src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-products.jpg"} alt="Products" className="img-fluid" />
                       </Col>
                       <Col lg="9">
                         <div dangerouslySetInnerHTML={{__html: data.installation.step_1.products}}></div>
@@ -176,12 +174,12 @@ class AnyTVPartner extends React.Component {
                     </Row>
                   </div>
                 }
-                { this.state.step == 2 &&
+                { this.state.step === 2 &&
                   <div>
                     <h4>{data.installation.step_2.title}</h4>
                     <Row className="row-services">
                       <Col lg="3">
-                        <img src={process.env.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} alt="Services" className="img-fluid" />
+                        <img src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} alt="Services" className="img-fluid" />
                       </Col>
                       <Col lg="9">
                         <div dangerouslySetInnerHTML={{__html: data.installation.step_2.services}}></div>
@@ -189,7 +187,7 @@ class AnyTVPartner extends React.Component {
                     </Row>
                     <Row className="row-services">
                       <Col lg="3">
-                        <img src={process.env.PUBLIC_URL + "/images/any-tv-partner-photo-products.jpg"} alt="Products" className="img-fluid" />
+                        <img src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-products.jpg"} alt="Products" className="img-fluid" />
                       </Col>
                       <Col lg="9">
                         <div dangerouslySetInnerHTML={{__html: data.installation.step_2.products}}></div>
@@ -247,7 +245,7 @@ class AnyTVPartner extends React.Component {
                           {item.children.map((item, i) => {
                             return (
                               <NavItem key={i}>
-                                <NavLink href={item.url}>{item.title}</NavLink>
+                                <NavLink target="_blank" href={item.url}>{item.title}</NavLink>
                               </NavItem>
                             );
                           })}
