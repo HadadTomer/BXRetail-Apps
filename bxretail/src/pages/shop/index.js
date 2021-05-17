@@ -290,7 +290,7 @@ class Shop extends React.Component {
               <p>Please check your trusted mobile device to approve this transaction.</p>
             </div>
             <div className="mt-4 text-center">
-              <Button type="button" color="link" size="sm" onClick={this.toggle.bind(this)}>What is this?</Button>
+              <Button type="button" color="link" size="sm">What is this?</Button>
             </div>
           </ModalBody>
         </Modal>
