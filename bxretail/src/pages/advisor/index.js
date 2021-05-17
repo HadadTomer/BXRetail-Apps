@@ -88,7 +88,7 @@ const SearchAutocomplete = () => {
           displaySuggestions={displaySuggestions}
           suggestions={filteredSuggestions}
         />
-        <img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" alt="Search for Clients"/>
+        <img src={window._env_.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" alt="Search for Clients"/>
       </form>
     </div>
   );
@@ -118,7 +118,7 @@ class Advisor extends React.Component {
                   <CardBody>
                     <Media>
                       <Media left href="#">
-                        <Media object src={process.env.PUBLIC_URL + "/images/anywealthadvisor-photo.png"} alt="Generic placeholder image" />
+                        <Media object src={window._env_.PUBLIC_URL + "/images/anywealthadvisor-photo.png"} alt="Generic placeholder image" />
                       </Media>
                       <Media body>
                         <p dangerouslySetInnerHTML={{__html: data.profile.advisor.content}}></p>
@@ -155,7 +155,7 @@ class Advisor extends React.Component {
                   </Row>
                   <Row>
                     <Col>
-                      <img src={process.env.PUBLIC_URL + "/images/advisor-table.png"} className="img-fluid mt-3 mb-5" alt="Table of Clients"/>
+                      <img src={window._env_.PUBLIC_URL + "/images/advisor-table.png"} className="img-fluid mt-3 mb-5" alt="Table of Clients"/>
                     </Col>
                   </Row>
                 </div>

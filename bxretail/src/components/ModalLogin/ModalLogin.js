@@ -62,7 +62,7 @@ class ModalLogin extends React.Component {
     return (
       <div>
         <Modal isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} onClosed={this.onClosed.bind(this)} className="modal-login">
-          <ModalHeader toggle={this.toggle.bind(this)} close={closeBtn}><img src={process.env.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
+          <ModalHeader toggle={this.toggle.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
             <form>
               <TabContent activeTab={this.state.activeTab}>
@@ -85,19 +85,19 @@ class ModalLogin extends React.Component {
                     <p>Five sites, one sign in</p>
                   </div>
                   <Row className="sites align-items-center">
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXHome" /></Col>
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXOffice" /></Col>
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXTech" /></Col>
+                    <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
+                    <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXHome" /></Col>
+                    <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXOffice" /></Col>
+                    <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXTech" /></Col>
                   </Row>
                   <div className="text-center">
-                    <img src={process.env.PUBLIC_URL + "/images/home-login-or.png"} alt="or" className="or" />
+                    <img src={window._env_.PUBLIC_URL + "/images/home-login-or.png"} alt="or" className="or" />
                   </div>
                   <div className="text-center">
-                    <img src={process.env.PUBLIC_URL + "/images/social-signup-facebook.png"} alt="Facebook" className="social-signup" />
+                    <img src={window._env_.PUBLIC_URL + "/images/social-signup-facebook.png"} alt="Facebook" className="social-signup" />
                   </div>
                   <div className="text-center">
-                    <img src={process.env.PUBLIC_URL + "/images/social-signup-google.png"} alt="Google" className="social-signup" />
+                    <img src={window._env_.PUBLIC_URL + "/images/social-signup-google.png"} alt="Google" className="social-signup" />
                   </div>
                 </TabPane>
                 <TabPane tabId="2">
@@ -113,10 +113,10 @@ class ModalLogin extends React.Component {
                     <p>Five sites, one sign in</p>
                   </div>
                   <Row className="sites align-items-center mb-4">
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
-                    <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
+                    <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
+                    <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
+                    <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
+                    <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
                   </Row>
                   <div className="mb-4 text-center">
                     <Button type="button" color="primary" disabled={this.state.loginMethodUnset} onClick={() => { this.toggleTab('3'); }}>{data.form.buttons.login}</Button>
@@ -126,7 +126,7 @@ class ModalLogin extends React.Component {
                   </div>
                 </TabPane>
                 <TabPane tabId="3">
-                  <div className="mobile-loading" style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/login-device-outline.jpg)`}}>
+                  <div className="mobile-loading" style={{backgroundImage: `url(${window._env_.PUBLIC_URL}/images/login-device-outline.jpg)`}}>
                     <div className="spinner">
                       <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
                     </div>

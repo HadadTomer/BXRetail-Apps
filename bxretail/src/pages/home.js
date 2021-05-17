@@ -24,12 +24,12 @@ class Home extends React.Component {
         <Jumbotron fluid className="jumbotron-hero-home">
           <Container>
             <Row>
-              <Col md="5" className="electronics" style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/home-hero-electronics-bg.jpg)`}}>
+              <Col md="5" className="electronics" style={{backgroundImage: `url(${window._env_.PUBLIC_URL}/images/home-hero-electronics-bg.jpg)`}}>
                 <h2>{data.hero.electronics.title}</h2>
                 <p>{data.hero.electronics.content}</p>
                 <a href="/shop" className="btn btn-primary">{data.hero.electronics.button}</a>
               </Col>
-              <Col md="7" className="office" style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/home-hero-office-bg.png)`}}>
+              <Col md="7" className="office" style={{backgroundImage: `url(${window._env_.PUBLIC_URL}/images/home-hero-office-bg.png)`}}>
                 <div className="office-content">
                   <h2>{data.hero.office.title}</h2>
                   <p className="lead">{data.hero.office.subtitle}</p>
@@ -48,10 +48,10 @@ class Home extends React.Component {
               </Col>
               <Col lg="5">
                 <Row className="align-items-center">
-                  <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
-                  <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
-                  <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
-                  <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
+                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
+                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
+                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
+                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
                 </Row>
               </Col>
             </Row>
@@ -63,7 +63,7 @@ class Home extends React.Component {
               {data.features.map((item, i) => {
                 return (
                   <Col md="4" key={i}>
-                    <img src={process.env.PUBLIC_URL + "/images/" + item.image} alt={item.title} className="img-fluid" />
+                    <img src={window._env_.PUBLIC_URL + "/images/" + item.image} alt={item.title} className="img-fluid" />
                     <h4>{item.title}</h4>
                     <p>{item.content}</p>
                     <Button color="link" onClick={this.triggerModalBirthday.bind(this)}>{item.button}</Button>

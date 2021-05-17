@@ -100,7 +100,7 @@ const SearchAutocomplete = () => {
           displaySuggestions={displaySuggestions}
           suggestions={filteredSuggestions}
         />
-        <img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" alt="Search for a Client"/>
+        <img src={window._env_.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" alt="Search for a Client"/>
       </form>
       <Modal isOpen={isModalOpen} toggle={triggerModal} className="modal-lg any-marketing modal-record" centered="true" backdropClassName="modal-backdrop-record">
         <ModalHeader toggle={triggerModal}>Record Overview</ModalHeader>
@@ -145,21 +145,21 @@ class AnyMarketing extends React.Component {
           {/* DESKTOP NAV */}
           <Navbar color="light" light expand="md" className="navbar-desktop">
             <Container>
-              <Link to="/" className="navbar-brand"><img src={process.env.PUBLIC_URL + "/images/any-marketing-logo.svg"} alt={data.brand} /></Link>
+              <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/any-marketing-logo.svg"} alt={data.brand} /></Link>
               <NavbarToggler onClick={this.toggle.bind(this)} />
               <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="justify-content-end ml-auto navbar-nav-utility" navbar>
                   <NavItem>
-                    <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} /></NavLink>
+                    <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} /></NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} /></NavLink>
+                    <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} /></NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/support.svg"} alt={data.menus.utility.support} /></NavLink>
+                    <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/support.svg"} alt={data.menus.utility.support} /></NavLink>
                   </NavItem>
                   <NavItem className="logout">
-                    <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
+                    <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
                   </NavItem>
                 </Nav>
               </Collapse>
@@ -184,7 +184,7 @@ class AnyMarketing extends React.Component {
               <NavbarToggler onClick={this.toggle.bind(this)} />
             </div>
             <div className="mobilenav-brand">
-              <Link to="/" className="navbar-brand"><img src={process.env.PUBLIC_URL + "/images/any-marketing-logo.svg"} alt={data.brand} /></Link>
+              <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/any-marketing-logo.svg"} alt={data.brand} /></Link>
             </div>
             <div className="mobilenav-login">
               <Link to="/" className="nav-link logout">Sign Out</Link>
@@ -201,16 +201,16 @@ class AnyMarketing extends React.Component {
               </Nav>
               <Nav className="navbar-nav-utility" navbar>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} className="mr-1" /> {data.menus.utility.search}</NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} className="mr-1" /> {data.menus.utility.search}</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} className="mr-1" /> {data.menus.utility.locations}</NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} className="mr-1" /> {data.menus.utility.locations}</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/support.svg"} alt={data.menus.utility.support} className="mr-1" /> {data.menus.utility.support}</NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/support.svg"} alt={data.menus.utility.support} className="mr-1" /> {data.menus.utility.support}</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
                 </NavItem>
               </Nav>
             </Collapse>
@@ -258,7 +258,7 @@ class AnyMarketing extends React.Component {
                   </Row>
                   <Row>
                     <Col>
-                      <img src={process.env.PUBLIC_URL + "/images/any-marketing-table.png"} className="img-fluid mb-5" alt="Table of AnyMarketing Clients"/>
+                      <img src={window._env_.PUBLIC_URL + "/images/any-marketing-table.png"} className="img-fluid mb-5" alt="Table of AnyMarketing Clients"/>
                     </Col>
                   </Row>
                 </div>
@@ -270,10 +270,10 @@ class AnyMarketing extends React.Component {
                   <h4 className="mb-4">{data.metrics.title}</h4>
                   <Row>
                     <Col md="4">
-                      <img src={process.env.PUBLIC_URL + "/images/any-marketing-pie-chart.png"} className="img-fluid" alt="AnyMarketing Pie Chart"/>
+                      <img src={window._env_.PUBLIC_URL + "/images/any-marketing-pie-chart.png"} className="img-fluid" alt="AnyMarketing Pie Chart"/>
                     </Col>
                     <Col md="8">
-                      <img src={process.env.PUBLIC_URL + "/images/any-marketing-graph-chart.png"} className="img-fluid" alt="AnyMarketing Graph Chart"/>
+                      <img src={window._env_.PUBLIC_URL + "/images/any-marketing-graph-chart.png"} className="img-fluid" alt="AnyMarketing Graph Chart"/>
                     </Col>
                   </Row>
                 </div>

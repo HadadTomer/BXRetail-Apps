@@ -92,10 +92,10 @@ class Shop extends React.Component {
                 <p><strong>Shop at our Extraordinary Club Partners</strong></p>
               </div>
               <Row className="sites align-items-center">
-                <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
-                <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
-                <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
-                <Col><img src={process.env.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
               </Row>
             </div>
             <div className="content">
@@ -112,19 +112,19 @@ class Shop extends React.Component {
                           {item.featured &&
                             <Badge color="primary">Best Value</Badge>
                           }
-                          <img alt='' src={process.env.PUBLIC_URL + "/images/products/" + item.img } className="img-fluid" />
+                          <img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + item.img } className="img-fluid" />
                           <h5>{item.title}</h5>
-                          <img alt='' src={process.env.PUBLIC_URL + "/images/icons/stars-" + item.stars + ".svg"} />
+                          <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + item.stars + ".svg"} />
                           <p className="price">{item.price} <small>{item.tax}</small></p>
                           <p dangerouslySetInnerHTML={{__html: item.content}}></p>
-                          <Button color="primary" onClick={this.toggle.bind(this)}><img alt='' src={process.env.PUBLIC_URL + "/images/icons/cart.svg"} /> {item.button}</Button>
+                          <Button color="primary" onClick={this.toggle.bind(this)}><img alt='' src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} /> {item.button}</Button>
                         </div>
                       </Col>
                     );
                   })}
                 </Row>
               </div>
-              <img alt='' src={process.env.PUBLIC_URL + "/images/products/pagination.png" } className="img-fluid mb-3" />
+              <img alt='' src={window._env_.PUBLIC_URL + "/images/products/pagination.png" } className="img-fluid mb-3" />
             </div>
           </div>
         </Container>
@@ -137,7 +137,7 @@ class Shop extends React.Component {
                 <Row>
                   <Col>
                     <h4>
-                      <img alt='' src={process.env.PUBLIC_URL + "/images/icons/check-blue-circle.svg" } className="mx-3" />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/check-blue-circle.svg" } className="mx-3" />
                       {data.modal.product.title}
                     </h4>
                   </Col>
@@ -147,12 +147,12 @@ class Shop extends React.Component {
                   </Col>
                 </Row>
                 <Row className="p-4 pt-md-0">
-                  <Col md={5} className="text-center"><img alt='' src={process.env.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg" } className="img-fluid img-product" /></Col>
+                  <Col md={5} className="text-center"><img alt='' src={window._env_.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg" } className="img-fluid img-product" /></Col>
                   <Col md={7} className="my-auto">
                     <div className="product">
                       <h5>{data.products[1].title}</h5>
                       <p>{data.products[1].model}</p>
-                      <img alt='' src={process.env.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
                       <p className="price">{data.products[1].price} <small>{data.products[1].tax}</small></p>
                       <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                       <div><Button type="button" color="link">{data.modal.product.buttons.calculate}</Button></div>
@@ -175,7 +175,7 @@ class Shop extends React.Component {
                   <Col md={7}>
                     <h5>{data.modal.product.mounting.title}</h5>
                     <p dangerouslySetInnerHTML={{__html: data.modal.product.mounting.content}}></p>
-                    <img alt='' src={process.env.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
+                    <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
                   </Col>
                   <Col md={5} className="my-auto">
                     <FormGroup className="mt-3">
@@ -204,13 +204,13 @@ class Shop extends React.Component {
                 </Row>
                 <Row className="p-3">
                   <Col md={4} className="text-center">
-                    <img alt='' src={process.env.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg"} className="img-services" />
+                    <img alt='' src={window._env_.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg"} className="img-services" />
                   </Col>
                   <Col md={5}>
                     <div className="product">
                       <h5>{data.products[1].title}</h5>
                       <p>{data.products[1].model}</p>
-                      <img alt='' src={process.env.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                     </div>
                   </Col>
@@ -225,13 +225,13 @@ class Shop extends React.Component {
                 </Row>
                 <Row className="p-3">
                   <Col md={4} className="text-center">
-                    <img alt='' src={process.env.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
+                    <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
                   </Col>
                   <Col md={5}>
                     <div className="product">
                       <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
-                      <img alt='' src={process.env.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.mounting.included}</Button></div>
                     </div>
                   </Col>
@@ -281,9 +281,9 @@ class Shop extends React.Component {
         </Modal>
         {/* Loading */}
         <Modal isOpen={this.state.isOpenLoading} toggle={this.toggleLoading.bind(this)} className="modal-login">
-          <ModalHeader toggle={this.toggleLoading.bind(this)} close={closeBtn}><img src={process.env.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
+          <ModalHeader toggle={this.toggleLoading.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
-            <div className="mobile-loading" style={{backgroundImage: `url(${process.env.PUBLIC_URL}/images/login-device-outline.jpg)`}}>
+            <div className="mobile-loading" style={{backgroundImage: `url(${window._env_.PUBLIC_URL}/images/login-device-outline.jpg)`}}>
               <div className="spinner">
                 <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
               </div>
@@ -312,13 +312,13 @@ class Shop extends React.Component {
                 </Row>
                 <Row className="p-3">
                   <Col md={4} className="text-center">
-                    <img alt='' src={process.env.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg"} className="img-services" />
+                    <img alt='' src={window._env_.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg"} className="img-services" />
                   </Col>
                   <Col md={5}>
                     <div className="product">
                       <h5>{data.products[1].title}</h5>
                       <p>{data.products[1].model}</p>
-                      <img alt='' src={process.env.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
                       <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.buttons.details}</Button></div>
                     </div>
                   </Col>
@@ -328,13 +328,13 @@ class Shop extends React.Component {
                 </Row>
                 <Row className="p-3">
                   <Col md={4} className="text-center">
-                    <img alt='' src={process.env.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
+                    <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
                   </Col>
                   <Col md={5}>
                     <div className="product">
                       <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
-                      <img alt='' src={process.env.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
                       <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.mounting.included}</Button></div>
                     </div>
                   </Col>
@@ -361,15 +361,15 @@ class Shop extends React.Component {
                     </Row>
                   </Col>
                 </Row>
-                <img alt='' src={process.env.PUBLIC_URL + "/images/shop-confirmation-footer.png"} className="confirmation-footer" onClick={() => { this.toggleTabConfirmation('2'); }} />
+                <img alt='' src={window._env_.PUBLIC_URL + "/images/shop-confirmation-footer.png"} className="confirmation-footer" onClick={() => { this.toggleTabConfirmation('2'); }} />
               </TabPane>
               <TabPane tabId="2">
                 <p className="text-center mt-4">
-                  <img src={process.env.PUBLIC_URL + "/images/logo.svg"} alt="logo" />
+                  <img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" />
                 </p>
                 <Row className="p-3">
                   <Col md={4} className="text-center">
-                    <img alt='' src={process.env.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services mb-4" />
+                    <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services mb-4" />
                   </Col>
                   <Col md={8} className="radio-form">
                     <div className="product mb-4">
@@ -402,7 +402,7 @@ class Shop extends React.Component {
               </TabPane>
               <TabPane tabId="3">
                 <p className="text-center mt-4">
-                  <img src={process.env.PUBLIC_URL + "/images/logo.svg"} alt="logo" />
+                  <img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" />
                 </p>
                 <div className="radio-form p-5">
                   <div className="product mb-4">
@@ -427,7 +427,7 @@ class Shop extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTabConfirmation('2'); }}>Change Settings</Button>
                   </div>
                 </div>
-                <a alt='Confirmation Footer' href="/any-tv-partner"><img src={process.env.PUBLIC_URL + "/images/shop-confirmation-footer-2.png"} className="confirmation-footer" /></a>
+                <a alt='Confirmation Footer' href="/any-tv-partner"><img src={window._env_.PUBLIC_URL + "/images/shop-confirmation-footer-2.png"} className="confirmation-footer" /></a>
               </TabPane>
             </TabContent>
           </ModalBody>

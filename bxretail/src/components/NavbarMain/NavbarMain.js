@@ -68,24 +68,24 @@ class NavbarMain extends React.Component {
         {/* DESKTOP NAV */}
         <Navbar color="dark" dark expand="md" className="navbar-desktop">
           <Container>
-            <Link to="/" className="navbar-brand"><img src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt={data.brand} /></Link>
+            <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/logo-white.svg"} alt={data.brand} /></Link>
             <NavbarToggler onClick={this.toggle.bind(this)} />
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="justify-content-end ml-auto navbar-nav-utility" navbar>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/navbar-search.png"} alt={data.menus.utility.search} className="searchbar" /></NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/navbar-search.png"} alt={data.menus.utility.search} className="searchbar" /></NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} /></NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} /></NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} /></NavLink>
+                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} /></NavLink>
                 </NavItem>
                 <NavItem className="login">
-                  <NavLink href="#" onClick={this.triggerModalLogin.bind(this)}><img src={process.env.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
+                  <NavLink href="#" onClick={this.triggerModalLogin.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
                 </NavItem>
                 <NavItem className="logout d-none">
-                  <Link to="/" className="nav-link"><img src={process.env.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</Link>
+                  <Link to="/" className="nav-link"><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</Link>
                 </NavItem>
                 <NavItem className="register">
                   <NavLink href="#" onClick={this.triggerModalRegister.bind(this)}>{data.menus.utility.register_intro} <strong>{data.menus.utility.register}</strong></NavLink>
@@ -123,7 +123,7 @@ class NavbarMain extends React.Component {
             <NavbarToggler onClick={this.toggle.bind(this)} />
           </div>
           <div className="mobilenav-brand">
-            <Link to="/" className="navbar-brand"><img src={process.env.PUBLIC_URL + "/images/logo-white.svg"} alt={data.brand} /></Link>
+            <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/logo-white.svg"} alt={data.brand} /></Link>
           </div>
           <div className="mobilenav-login">
             <NavLink href="#" className="login" onClick={this.triggerModalLogin.bind(this)}>Sign In</NavLink>
@@ -151,22 +151,22 @@ class NavbarMain extends React.Component {
             </Nav>
             <Nav className="navbar-nav-utility" navbar>
               <NavItem>
-                <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} className="mr-1" /> {data.menus.utility.search}</NavLink>
+                <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/search.svg"} alt={data.menus.utility.search} className="mr-1" /> {data.menus.utility.search}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} className="mr-1" /> {data.menus.utility.locations}</NavLink>
+                <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} className="mr-1" /> {data.menus.utility.locations}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink><img src={process.env.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} className="mr-1" /> {data.menus.utility.support}</NavLink>
+                <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} className="mr-1" /> {data.menus.utility.support}</NavLink>
               </NavItem>
               <NavItem className="login">
-                <NavLink href="#" onClick={this.triggerModalLogin.bind(this)}><img src={process.env.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
+                <NavLink href="#" onClick={this.triggerModalLogin.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
               </NavItem>
               <NavItem className="logout d-none">
-                <Link to="/" className="nav-link"><img src={process.env.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</Link>
+                <Link to="/" className="nav-link"><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</Link>
               </NavItem>
               <NavItem className="register">
-                <NavLink href={process.env.PUBLIC_URL + "/velocity/register.html"}><img src={process.env.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.register}</NavLink>
+                <NavLink href={window._env_.PUBLIC_URL + "/velocity/register.html"}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.register}</NavLink>
               </NavItem>
             </Nav>
           </Collapse>
