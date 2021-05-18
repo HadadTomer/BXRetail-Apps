@@ -153,27 +153,3 @@ class PingOneAuthN {
         return fetch(url, requestOptions);
     }
 } export default PingOneAuthN;
-
-
-
-var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-var urlencoded = new URLSearchParams();
-urlencoded.append("response_type", "token");
-urlencoded.append("client_id", "{{appID}}");
-urlencoded.append("redirect_uri", "https://example.com");
-urlencoded.append("scope", "openid profile p1:read:user");
-urlencoded.append("nonce", "123");
-
-var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: urlencoded,
-    redirect: 'follow'
-};
-
-fetch("https://auth.pingone.com/{{envID}}/as/authorize", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
