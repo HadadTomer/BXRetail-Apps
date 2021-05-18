@@ -241,7 +241,7 @@ class Shop extends React.Component {
                     </FormGroup>
                   </Col>
                   <Col md={1}>
-                    <h5>$199</h5>
+                    <h5>$199.00</h5>
                   </Col>
                 </Row>
                 <Row className="p-3">
