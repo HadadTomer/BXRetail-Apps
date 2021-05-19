@@ -73,7 +73,7 @@ class Shop extends React.Component {
       activeTabConfirmation: tab
     });
   }
-  onCheckout() {
+  onApproval() {
     let self = this;
     this.toggle();
     this.toggleLoading();
@@ -186,6 +186,7 @@ class Shop extends React.Component {
                     </div>
                   </Col>
                 </Row>
+                {/* Cart: Protection Section Settings */}
                 <Row className="bg-light p-4">
                   <Col md={7}>
                     <h4>{this.state.selectedItem.protection.title}</h4>
@@ -204,6 +205,7 @@ class Shop extends React.Component {
                     )}
                   </Col>
                 </Row>
+                {/* Cart: Mounting Section Settings */}
                 {this.state.selectedItem.mounting != null && (
                   <Row className="p-4">
                   <Col md={7}>
@@ -226,6 +228,7 @@ class Shop extends React.Component {
                 </Row>
                 )}
               </TabPane>
+              {/* Order Summary */}
               <TabPane tabId="2">
                 <Row>
                   <Col>
@@ -259,24 +262,39 @@ class Shop extends React.Component {
                   </Col>
                 </Row>
                 <Row className="p-3">
-                  <Col md={4} className="text-center">
-                    <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
-                  </Col>
-                  <Col md={5}>
-                    <div className="product">
-                      <h5>Delivery + Premium TV Mounting 56" and larger</h5>
-                      <p>(Mount, Connect, and Setup included)</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + this.state.selectedItem.stars + ".svg"} />
-                      <div><Button type="button" color="link">What's Included?</Button></div>
-                    </div>
-                  </Col>
+                  {/* Order Summary: Services Section Settings */}
+                  {this.state.selectedItem.mounting != null ? (
+                    <Col md={4} className="text-center">
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
+                    </Col>
+                  ) : (
+                    <Col md={4} className="text-center">
+                    </Col>
+                  )}
+                  {this.state.selectedItem.mounting == null ? (
+                    <Col md={5}>
+                      <div className="product">
+                        <h5>BXRetail Protection Plan</h5>
+                        <p>(2 Year)</p>
+                        <div><Button type="button" color="link">What's Included?</Button></div>
+                      </div>
+                    </Col>
+                    ) : (
+                    <Col md={5}>
+                      <div className="product">
+                        <h5>Delivery + Premium TV Mounting 56" and larger</h5>
+                        <p>(Mount, Connect, and Setup included)</p>
+                        <div><Button type="button" color="link">What's Included?</Button></div>
+                      </div>
+                    </Col>
+                  )}
                   <Col md={1}>
                     <FormGroup>
                       <Input type="number" value="1" />
                     </FormGroup>
                   </Col>
                   <Col md={1}>
-                    <h5>$199.00</h5>
+                    <h5>{this.state.selectedItem.servicesPrice}</h5>
                   </Col>
                 </Row>
                 <Row className="p-3">
@@ -299,17 +317,24 @@ class Shop extends React.Component {
                         <p className="mt-2"><strong>Final Total</strong></p>
                       </Col>
                       <Col md={2}>
-                        <p>$1,469.00</p>
-                        <p className="mt-2">$88.14</p>
-                        <p className="mt-2"><strong>$1,557.14</strong></p>
+                        <p>{this.state.selectedItem.subtotal}</p>
+                        <p className="mt-2">{this.state.selectedItem.salesTax}</p>
+                        <p className="mt-2"><strong>{this.state.selectedItem.finalTotal}</strong></p>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
-                <div className="text-right mt-2 mr-4 mb-4">
+                {this.state.selectedItem.mounting != null ? (
+                  <div className="text-right mt-2 mr-4 mb-4">
+                    <Button type="button" color="link">{data.modal.cart.buttons.update}</Button>
+                    <Button type="button" color="primary" className="ml-3" onClick={() => { this.onApproval(); }}>{data.modal.cart.buttons.checkout}</Button>
+                  </div>
+                ): (
+                  <div className="text-right mt-2 mr-4 mb-4">
                   <Button type="button" color="link">{data.modal.cart.buttons.update}</Button>
-                  <Button type="button" color="primary" className="ml-3" onClick={() => { this.onCheckout(); }}>{data.modal.cart.buttons.checkout}</Button>
+                  <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleConfirmation(); }}>{data.modal.cart.buttons.checkout}</Button>
                 </div>
+                )}
               </TabPane>
             </TabContent>
           </ModalBody>
@@ -339,7 +364,7 @@ class Shop extends React.Component {
                     <h4 className="pl-4">
                       {data.modal.confirmation.title}
                     </h4>
-                    <p className="pl-4">{data.modal.confirmation.subtitle}</p>
+                    <p className="pl-4">{this.state.selectedItem.confirmationSubtitle}</p>
                   </Col>
                   <Col md={2} className="text-right">
                     <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.buttons.continue}</Button></div>
@@ -357,24 +382,47 @@ class Shop extends React.Component {
                       <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                     </div>
                   </Col>
+                  <Col md={1}>
+                    <FormGroup>
+                    </FormGroup>
+                  </Col>
                   <Col md={2}>
                     <h5>{this.state.selectedItem.price}</h5>
                   </Col>
                 </Row>
                 <Row className="p-3">
-                  <Col md={4} className="text-center">
-                    <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
+                  {/* Order Summary: Services Section Settings */}
+                  {this.state.selectedItem.mounting != null ? (
+                    <Col md={4} className="text-center">
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
+                    </Col>
+                  ) : (
+                    <Col md={4} className="text-center">
+                    </Col>
+                  )}
+                  {this.state.selectedItem.mounting == null ? (
+                    <Col md={5}>
+                      <div className="product">
+                        <h5>BXRetail Protection Plan</h5>
+                        <p>(2 Year)</p>
+                        <div><Button type="button" color="link">What's Included?</Button></div>
+                      </div>
+                    </Col>
+                    ) : (
+                    <Col md={5}>
+                      <div className="product">
+                        <h5>Delivery + Premium TV Mounting 56" and larger</h5>
+                        <p>(Mount, Connect, and Setup included)</p>
+                        <div><Button type="button" color="link">What's Included?</Button></div>
+                      </div>
+                    </Col>
+                  )}
+                  <Col md={1}>
+                    <FormGroup>
+                    </FormGroup>
                   </Col>
-                  <Col md={5}>
-                    <div className="product">
-                      <h5>Delivery + Premium TV Mounting 56" and larger</h5>
-                      <p>(Mount, Connect, and Setup included)</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + this.state.selectedItem.stars + ".svg"} />
-                      <div><Button type="button" color="link">What's Included?</Button></div>
-                    </div>
-                  </Col>
-                  <Col md={2}>
-                    <h5>$199.00</h5>
+                  <Col md={1}>
+                    <h5>{this.state.selectedItem.servicesPrice}</h5>
                   </Col>
                 </Row>
                 <Row className="p-3">
@@ -389,9 +437,9 @@ class Shop extends React.Component {
                         <p className="mt-2"><strong>Final Total</strong> (Charged to BXRetail Visa ...4884)</p>
                       </Col>
                       <Col md={2}>
-                        <p>$1,469.00</p>
-                        <p className="mt-2">$88.14</p>
-                        <p className="mt-2"><strong>$1,557.14</strong></p>
+                        <p>{this.state.selectedItem.subtotal}</p>
+                        <p className="mt-2">{this.state.selectedItem.salesTax}</p>
+                        <p className="mt-2"><strong>{this.state.selectedItem.finalTotal}</strong></p>
                       </Col>
                     </Row>
                   </Col>

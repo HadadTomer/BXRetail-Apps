@@ -65,6 +65,7 @@
       "content": "2-day Delivery <br /> Free pickup",
       "price": "$1,270.00",
       "tax": "(excl. tax)",
+      "servicesPrice": "$199.00",
       "subtotal": "$1,469.00",
       "salesTax": "$88.14",
       "finalTotal": "$1,557.14",
@@ -82,7 +83,8 @@
         "option1": "Delivery + Premium TV Mounting 56\" and  larger (Mount, Connect, and Setup included), $199.00",
         "option2": "Delivery + TV Connect and Setup 56\" and  larger (Connect and Setup only), $129.00",
         "included": "What’s Included?"
-      }
+      },
+      "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation. See the options below to schedule your delivery and  Professional Services appointment."
     },
     {
       "featured": false,
@@ -92,9 +94,10 @@
       "content": "2-day Delivery <br /> Free pickup",
       "price": "$99.99",
       "tax": "(excl. tax)",
-      "subtotal": "106.98",
-      "salesTax": "6.42",
-      "finalTotal": "113.40",
+      "servicesPrice": "$6.99",
+      "subtotal": "$106.98",
+      "salesTax": "$6.42",
+      "finalTotal": "$113.40",
       "button": "Add",
       "servicesButton": "Add Protection Plan",
       "protection": {
@@ -103,7 +106,8 @@
         "option2": "Three Years, $9.99",
         "content": "Enhance your manufacturer warranty and get extended coverage  when the warranty ends, including: <ul><li>If your video accessory won’t turn on because of a power surge, we'll fix it.</li><li>If the remote that came with your video accessory stops working, we'll replace it.</li><li>If there's a failure from normal wear and tear, we'll repair it.</li><li>You'll never pay for parts and labor on covered repairs. No hidden fees.</li></ul>"
       },
-      "mounting": null
+      "mounting": null,
+      "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation including the details of your protection plan."
     }
   ],
   "products": [
@@ -169,7 +173,6 @@
     },
     "confirmation": {
       "title": "Purchase Confirmed",
-      "subtitle": "Thanks for your purchase. You'll receive an email confirmation. See the options below to schedule your delivery and  Professional Services appointment.",
       "buttons": {
         "cancel": "Cancel",
         "save": "Save"
