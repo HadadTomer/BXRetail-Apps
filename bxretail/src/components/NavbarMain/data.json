@@ -3,20 +3,20 @@
 	"menus": {
 		"primary": [
 			{
-				"title": "Departments",
+				"title": "My Account",
 				"url": "/dashboard/settings"
 			},
 			{
 				"title": "Weekly Deals",
-				"url": "/deals"
+				"url": "/shop"
 			},
 			{
 				"title": "Extraordinary Club",
 				"url": "/club"
 			},
 			{
-				"title": "My Favorites",
-				"url": "/favorites"
+				"title": "Departments",
+				"url": "/departments"
 			},
 			{
 				"title": "The BXCard",
