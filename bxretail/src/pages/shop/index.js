@@ -32,7 +32,8 @@ class Shop extends React.Component {
       isOpenConfirmation: false,
       activeTabConfirmation: '1',
       selectedItem: {
-
+        protection: {},
+        mounting: {}
       }
     };
   }
@@ -187,35 +188,43 @@ class Shop extends React.Component {
                 </Row>
                 <Row className="bg-light p-4">
                   <Col md={7}>
-                    <h5>{data.modal.product.protection.title}</h5>
-                    <p dangerouslySetInnerHTML={{__html: data.modal.product.protection.content}}></p>
+                    <h4>{this.state.selectedItem.protection.title}</h4>
+                    <p dangerouslySetInnerHTML={{__html: this.state.selectedItem.protection.content}}></p>
                   </Col>
                   <Col md={5} className="my-auto">
-                    <FormGroup>
-                      <CustomInput type="radio" name="protection_options" label={data.modal.product.protection.option_1} />
-                      <CustomInput type="radio" name="protection_options" className="mt-2" label={data.modal.product.protection.option_2} />
+                    <FormGroup className="mt-3">
+                      <CustomInput type="radio" name="protection_options" checked={this.state.selectedItem.mounting == null} className= "mt-2" label={this.state.selectedItem.protection.option1} />
+                      <CustomInput type="radio" name="protection_options" className="mt-2" label={this.state.selectedItem.protection.option2} />
                     </FormGroup>
+                    {this.state.selectedItem.mounting == null && (
+                      <div className="text-right mt-4">
+                        <Button type="button" color="link">{data.modal.product.buttons.skip}</Button>
+                        <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTab('2'); }}>{this.state.selectedItem.servicesButton}</Button>
+                      </div>
+                    )}
                   </Col>
                 </Row>
-                <Row className="p-4">
+                {this.state.selectedItem.mounting != null && (
+                  <Row className="p-4">
                   <Col md={7}>
-                    <h5>{data.modal.product.mounting.title}</h5>
-                    <p dangerouslySetInnerHTML={{__html: data.modal.product.mounting.content}}></p>
+                    <h4>{this.state.selectedItem.mounting.title}</h4>
+                    <p dangerouslySetInnerHTML={{__html: this.state.selectedItem.mounting.content}}></p>
                     <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
                   </Col>
                   <Col md={5} className="my-auto">
                     <FormGroup className="mt-3">
-                      <CustomInput type="radio" name="mounting_options" checked label={data.modal.product.mounting.option_1} />
-                      <a href="#" className="ml-4"><small>{data.modal.product.mounting.included}</small></a>
-                      <CustomInput type="radio" name="mounting_options" className="mt-2" label={data.modal.product.mounting.option_2} />
-                      <a href="#" className="ml-4"><small>{data.modal.product.mounting.included}</small></a>
+                      <CustomInput type="radio" name="mounting_options" checked label={this.state.selectedItem.mounting.option1} />
+                      <a href="#" className="ml-4"><small>{this.state.selectedItem.mounting.included}</small></a>
+                      <CustomInput type="radio" name="mounting_options" className="mt-2" label={this.state.selectedItem.mounting.option2} />
+                      <a href="#" className="ml-4"><small>{this.state.selectedItem.mounting.included}</small></a>
                     </FormGroup>
                     <div className="text-right mt-4">
                       <Button type="button" color="link">{data.modal.product.buttons.skip}</Button>
-                      <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTab('2'); }}>{data.modal.product.buttons.services}</Button>
+                      <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTab('2'); }}>{this.state.selectedItem.servicesButton}</Button>
                     </div>
                   </Col>
                 </Row>
+                )}
               </TabPane>
               <TabPane tabId="2">
                 <Row>
@@ -258,7 +267,7 @@ class Shop extends React.Component {
                       <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
                       <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + this.state.selectedItem.stars + ".svg"} />
-                      <div><Button type="button" color="link">{data.modal.product.mounting.included}</Button></div>
+                      <div><Button type="button" color="link">What's Included?</Button></div>
                     </div>
                   </Col>
                   <Col md={1}>
@@ -361,7 +370,7 @@ class Shop extends React.Component {
                       <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
                       <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + this.state.selectedItem.stars + ".svg"} />
-                      <div><Button type="button" color="link">{data.modal.product.mounting.included}</Button></div>
+                      <div><Button type="button" color="link">What's Included?</Button></div>
                     </div>
                   </Col>
                   <Col md={2}>
