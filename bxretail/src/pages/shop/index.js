@@ -105,7 +105,7 @@ class Shop extends React.Component {
               </div>
               <div className="module">
                 <Row>
-                  {data.products.map((item, i) => {
+                {data.productsClickable.map((item, i) => {
                     return (
                       <Col md={4} key={i}>
                         <div className="product">
@@ -118,6 +118,23 @@ class Shop extends React.Component {
                           <p className="price">{item.price} <small>{item.tax}</small></p>
                           <p dangerouslySetInnerHTML={{__html: item.content}}></p>
                           <Button color="primary" onClick={this.toggle.bind(this)}><img alt='' src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} /> {item.button}</Button>
+                        </div>
+                      </Col>
+                    );
+                  })}
+                  {data.products.map((item, i) => {
+                    return (
+                      <Col md={4} key={i}>
+                        <div className="product">
+                          {item.featured &&
+                            <Badge color="primary">Best Value</Badge>
+                          }
+                          <img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + item.img } className="img-fluid" />
+                          <h5>{item.title}</h5>
+                          <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + item.stars + ".svg"} />
+                          <p className="price">{item.price} <small>{item.tax}</small></p>
+                          <p dangerouslySetInnerHTML={{__html: item.content}}></p>
+                          <Button color="primary"><img alt='' src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} /> {item.button}</Button>
                         </div>
                       </Col>
                     );

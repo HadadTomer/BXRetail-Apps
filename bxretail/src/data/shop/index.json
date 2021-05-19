@@ -55,17 +55,7 @@
     }
   ],
   "dropdown": "See Other Electronics",
-  "products": [
-    {
-      "featured": false,
-      "img": "adventex.jpg",
-      "title": "Adventex 27\" LED PC Monitor with HDMI",
-      "stars": "5",
-      "price": "$253.00",
-      "tax": "(excl. tax)",
-      "content": "2-day Delivery <br /> Free pickup",
-      "button": "Add"
-    },
+  "productsClickable": [
     {
       "featured": true,
       "img": "bxmanufacturing-clera.jpg",
@@ -78,21 +68,33 @@
       "button": "Add"
     },
     {
-      "featured": false,
-      "img": "touchpad.jpg",
-      "title": "TouchPad 16-inch tablet with cellular, WiFi, 64GB storage",
+      "featured": true,
+      "img": "streamstick.jpg",
+      "title": "Streamstick Video Streaming Player with 4K, Full HD",
       "stars": "5",
-      "price": "$256.99",
+      "price": "$99.99",
+      "tax": "(excl. tax)",
+      "content": "2-day Delivery <br /> Free pickup",
+      "button": "Add"
+    }
+  ],
+  "products": [
+    {
+      "featured": false,
+      "img": "adventex.jpg",
+      "title": "Adventex 27\" LED PC Monitor with HDMI",
+      "stars": "5",
+      "price": "$253.00",
       "tax": "(excl. tax)",
       "content": "2-day Delivery <br /> Free pickup",
       "button": "Add"
     },
     {
       "featured": false,
-      "img": "streamstick.jpg",
-      "title": "Streamstick Video Streaming Player with 4K, Full HD",
+      "img": "touchpad.jpg",
+      "title": "TouchPad 16-inch tablet with cellular, WiFi, 64GB storage",
       "stars": "5",
-      "price": "$99.99",
+      "price": "$256.99",
       "tax": "(excl. tax)",
       "content": "2-day Delivery <br /> Free pickup",
       "button": "Add"
