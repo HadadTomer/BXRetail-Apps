@@ -19,22 +19,22 @@
     {
       "title": "Electronics",
       "open": true,
-      "href": "/dashboard/settings",
+      "href": "#",
       "links": [
         {
           "title": "Audio",
           "active": false,
-          "href": "/dashboard/settings/profile"
+          "href": "#"
         },
         {
           "title": "Video",
           "active": false,
-          "href": "/dashboard/settings/communication-preferences"
+          "href": "#"
         },
         {
           "title": "Computers",
           "active": false,
-          "href": "/dashboard/settings/privacy-security"
+          "href": "#"
         },
         {
           "title": "Home",
