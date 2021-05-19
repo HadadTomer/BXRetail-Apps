@@ -34,7 +34,7 @@ class Home extends React.Component {
                   <h2>{data.hero.office.title}</h2>
                   <p className="lead">{data.hero.office.subtitle}</p>
                   <p>{data.hero.office.content}</p>
-                  <a href="/shop" className="btn btn-primary">{data.hero.office.button}</a>
+                  <a className="btn btn-primary">{data.hero.office.button}</a>
                 </div>
               </Col>
             </Row>
