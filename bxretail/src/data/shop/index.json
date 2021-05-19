@@ -68,7 +68,7 @@
       "button": "Add"
     },
     {
-      "featured": true,
+      "featured": false,
       "img": "streamstick.jpg",
       "title": "Streamstick Video Streaming Player with 4K, Full HD",
       "stars": "5",

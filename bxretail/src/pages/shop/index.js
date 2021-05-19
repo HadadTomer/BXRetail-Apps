@@ -31,6 +31,9 @@ class Shop extends React.Component {
       isOpenLoading: false,
       isOpenConfirmation: false,
       activeTabConfirmation: '1',
+      selectedItem: {
+
+      }
     };
   }
   onClosed() {
@@ -41,6 +44,12 @@ class Shop extends React.Component {
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
+    });
+  }
+  addToCart(item) {
+    this.setState({
+      isOpen: !this.state.isOpen,
+      selectedItem: item
     });
   }
   toggleLoading() {
@@ -117,7 +126,7 @@ class Shop extends React.Component {
                           <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + item.stars + ".svg"} />
                           <p className="price">{item.price} <small>{item.tax}</small></p>
                           <p dangerouslySetInnerHTML={{__html: item.content}}></p>
-                          <Button color="primary" onClick={this.toggle.bind(this)}><img alt='' src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} /> {item.button}</Button>
+                          <Button color="primary" onClick={() => this.addToCart(item)}><img alt='' src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} /> {item.button}</Button>
                         </div>
                       </Col>
                     );
@@ -164,13 +173,13 @@ class Shop extends React.Component {
                   </Col>
                 </Row>
                 <Row className="p-4 pt-md-0">
-                  <Col md={5} className="text-center"><img alt='' src={window._env_.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg" } className="img-fluid img-product" /></Col>
+                  <Col md={5} className="text-center"><img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + this.state.selectedItem.img } className="img-fluid img-product" /></Col>
                   <Col md={7} className="my-auto">
                     <div className="product">
-                      <h5>{data.productsClickable[0].title}</h5>
-                      <p>{data.productsClickable[0].model}</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
-                      <p className="price">{data.productsClickable[0].price} <small>{data.productsClickable[0].tax}</small></p>
+                      <h5>{this.state.selectedItem.title}</h5>
+                      <p>{this.state.selectedItem.model}</p>
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + this.state.selectedItem.stars + ".svg"} />
+                      <p className="price">{this.state.selectedItem.price} <small>{this.state.selectedItem.tax}</small></p>
                       <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                       <div><Button type="button" color="link">{data.modal.product.buttons.calculate}</Button></div>
                     </div>
@@ -221,13 +230,13 @@ class Shop extends React.Component {
                 </Row>
                 <Row className="p-3">
                   <Col md={4} className="text-center">
-                    <img alt='' src={window._env_.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg"} className="img-services" />
+                    <img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + this.state.selectedItem.img} className="img-services" />
                   </Col>
                   <Col md={5}>
                     <div className="product">
-                      <h5>{data.productsClickable[0].title}</h5>
-                      <p>{data.productsClickable[0].model}</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
+                      <h5>{this.state.selectedItem.title}</h5>
+                      <p>{this.state.selectedItem.model}</p>
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + this.state.selectedItem.stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                     </div>
                   </Col>
@@ -237,7 +246,7 @@ class Shop extends React.Component {
                     </FormGroup>
                   </Col>
                   <Col md={1}>
-                    <h5>{data.productsClickable[0].price}</h5>
+                    <h5>{this.state.selectedItem.price}</h5>
                   </Col>
                 </Row>
                 <Row className="p-3">
@@ -248,7 +257,7 @@ class Shop extends React.Component {
                     <div className="product">
                       <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + this.state.selectedItem.stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.mounting.included}</Button></div>
                     </div>
                   </Col>
@@ -329,18 +338,18 @@ class Shop extends React.Component {
                 </Row>
                 <Row className="p-3">
                   <Col md={4} className="text-center">
-                    <img alt='' src={window._env_.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg"} className="img-services" />
+                    <img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + this.state.selectedItem.img} className="img-services" />
                   </Col>
                   <Col md={5}>
                     <div className="product">
-                      <h5>{data.productsClickable[0].title}</h5>
-                      <p>{data.productsClickable[0].model}</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
+                      <h5>{this.state.selectedItem.title}</h5>
+                      <p>{this.state.selectedItem.model}</p>
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + this.state.selectedItem.stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                     </div>
                   </Col>
                   <Col md={2}>
-                    <h5>{data.productsClickable[0].price}</h5>
+                    <h5>{this.state.selectedItem.price}</h5>
                   </Col>
                 </Row>
                 <Row className="p-3">
@@ -351,7 +360,7 @@ class Shop extends React.Component {
                     <div className="product">
                       <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + this.state.selectedItem.stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.mounting.included}</Button></div>
                     </div>
                   </Col>
