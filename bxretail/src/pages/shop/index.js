@@ -167,10 +167,10 @@ class Shop extends React.Component {
                   <Col md={5} className="text-center"><img alt='' src={window._env_.PUBLIC_URL + "/images/products/bxmanufacturing-clera.jpg" } className="img-fluid img-product" /></Col>
                   <Col md={7} className="my-auto">
                     <div className="product">
-                      <h5>{data.products[1].title}</h5>
-                      <p>{data.products[1].model}</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
-                      <p className="price">{data.products[1].price} <small>{data.products[1].tax}</small></p>
+                      <h5>{data.productsClickable[0].title}</h5>
+                      <p>{data.productsClickable[0].model}</p>
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
+                      <p className="price">{data.productsClickable[0].price} <small>{data.productsClickable[0].tax}</small></p>
                       <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                       <div><Button type="button" color="link">{data.modal.product.buttons.calculate}</Button></div>
                     </div>
@@ -225,9 +225,9 @@ class Shop extends React.Component {
                   </Col>
                   <Col md={5}>
                     <div className="product">
-                      <h5>{data.products[1].title}</h5>
-                      <p>{data.products[1].model}</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
+                      <h5>{data.productsClickable[0].title}</h5>
+                      <p>{data.productsClickable[0].model}</p>
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                     </div>
                   </Col>
@@ -237,7 +237,7 @@ class Shop extends React.Component {
                     </FormGroup>
                   </Col>
                   <Col md={1}>
-                    <h5>{data.products[1].price}</h5>
+                    <h5>{data.productsClickable[0].price}</h5>
                   </Col>
                 </Row>
                 <Row className="p-3">
@@ -248,7 +248,7 @@ class Shop extends React.Component {
                     <div className="product">
                       <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.mounting.included}</Button></div>
                     </div>
                   </Col>
@@ -333,14 +333,14 @@ class Shop extends React.Component {
                   </Col>
                   <Col md={5}>
                     <div className="product">
-                      <h5>{data.products[1].title}</h5>
-                      <p>{data.products[1].model}</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
+                      <h5>{data.productsClickable[0].title}</h5>
+                      <p>{data.productsClickable[0].model}</p>
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.buttons.details}</Button></div>
                     </div>
                   </Col>
                   <Col md={2}>
-                    <h5>{data.products[1].price}</h5>
+                    <h5>{data.productsClickable[0].price}</h5>
                   </Col>
                 </Row>
                 <Row className="p-3">
@@ -351,12 +351,12 @@ class Shop extends React.Component {
                     <div className="product">
                       <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                       <p>(Mount, Connect, and Setup included)</p>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.products[1].stars + ".svg"} />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + data.productsClickable[0].stars + ".svg"} />
                       <div><Button type="button" color="link">{data.modal.product.mounting.included}</Button></div>
                     </div>
                   </Col>
                   <Col md={2}>
-                    <h5>$199</h5>
+                    <h5>$199.00</h5>
                   </Col>
                 </Row>
                 <Row className="p-3">
