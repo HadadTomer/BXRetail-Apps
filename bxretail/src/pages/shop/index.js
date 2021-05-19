@@ -378,11 +378,13 @@ class Shop extends React.Component {
                       <p>Please review these settings below.</p>
                     </div>
                     <h5 className="mb-4">I consent to BXRetail sharing with AnyTVPartner:</h5>
+                    {/* If you're getting delivery/installation, not sharing address doesn't make sense.
                     <FormGroup>
                       <Label>My Ship To/Installation Address</Label>
                       <CustomInput type="radio" name="address" label="Yes" />
                       <CustomInput type="radio" name="address" checked label="No" />
                     </FormGroup>
+                    */}
                     <FormGroup>
                       <Label>My Phone Number</Label>
                       <CustomInput type="radio" name="phone" label="Yes" />
@@ -408,11 +410,13 @@ class Shop extends React.Component {
                   <div className="product mb-4">
                     <p>BXRetail is now approved to share the following with our Professional Services partner AnyTVPartner:</p>
                   </div>
+                  {/*
                   <FormGroup>
                     <Label>My Ship To/Installation Address</Label>
                     <CustomInput type="radio" name="address2" label="Yes" />
                     <CustomInput type="radio" name="address2" checked label="No" />
                   </FormGroup>
+                  */}
                   <FormGroup>
                     <Label>My Phone Number</Label>
                     <CustomInput type="radio" name="phone2" label="Yes" />
