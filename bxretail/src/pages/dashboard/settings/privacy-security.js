@@ -49,7 +49,7 @@ class PrivacySecurity extends React.Component {
     return(
       <div className="accounts privacy-security">
         <NavbarMain />
-        <WelcomeBar />
+        <WelcomeBar title="My Account" />
         <Container>
         <div className="inner">
             <div className="sidebar">

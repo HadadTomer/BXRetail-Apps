@@ -48,7 +48,7 @@ class CommunicationPreferences extends React.Component {
     return(
       <div className="accounts profile">
         <NavbarMain />
-        <WelcomeBar />
+        <WelcomeBar title="My Account" />
         <Container>
         <div className="inner">
             <div className="sidebar">
