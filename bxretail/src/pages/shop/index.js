@@ -198,7 +198,7 @@ class Shop extends React.Component {
                       <CustomInput type="radio" name="protection_options" className="mt-2" label={this.state.selectedItem.protection.option2} />
                     </FormGroup>
                     {this.state.selectedItem.mounting == null && (
-                      <div className="text-right mt-4">
+                      <div className="text-right mt-4" style={{ paddingTop:"70px" }}>
                         <Button type="button" color="link">{data.modal.product.buttons.skip}</Button>
                         <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTab('2'); }}>{this.state.selectedItem.servicesButton}</Button>
                       </div>
