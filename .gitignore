@@ -6,3 +6,4 @@ bxretail/.env
 bxretail/.npmignore
 bxretail/Dockerfile.poc
 bxretail/public/env-config.js
+bxretail/public/images/.DS_Store

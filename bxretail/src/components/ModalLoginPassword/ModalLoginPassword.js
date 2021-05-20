@@ -80,11 +80,17 @@ class ModalLoginPassword extends React.Component {
                   <div className="mb-3">
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('2'); }}>{data.form.buttons.next}</Button>
                   </div>
-                  <div>
+                  {/* <div>
                     <Button type="button" color="link" size="sm" className="text-info pl-0" onClick={() => { this.toggleTab('4'); }}>{data.form.buttons.reset}</Button>
-                  </div>
+                  </div> */}
                   <div>
                     <Button type="button" color="link" size="sm" className="text-info pl-0" onClick={() => { this.toggleTab('5'); }}>{data.form.buttons.reset_password}</Button>
+                  </div>
+                  <div className="text-center">
+                    <img src={window._env_.PUBLIC_URL + "/images/social-signin-facebook.png"} alt="Facebook" className="social-signup" />
+                  </div>
+                  <div className="text-center">
+                    <img src={window._env_.PUBLIC_URL + "/images/social-signin-google.png"} alt="Google" className="social-signup" />
                   </div>
                 </TabPane>
                 <TabPane tabId="2">
@@ -93,7 +99,7 @@ class ModalLoginPassword extends React.Component {
                     <div>
                       <CustomInput type="radio" id="login_method_email" name="login_method" label={data.form.fields.login_method.options.email} className="form-check-inline" onClick={this.setLoginMethod.bind(this)} />
                       <CustomInput type="radio" id="login_method_text" name="login_method" label={data.form.fields.login_method.options.text} className="form-check-inline" onClick={this.setLoginMethod.bind(this)} />
-                      <CustomInput type="radio" id="login_method_faceid" name="login_method" label={data.form.fields.login_method.options.faceid} className="form-check-inline" onClick={this.setLoginMethod.bind(this)} />
+                      {/* <CustomInput type="radio" id="login_method_faceid" name="login_method" label={data.form.fields.login_method.options.faceid} className="form-check-inline" onClick={this.setLoginMethod.bind(this)} /> */}
                     </div>
                   </FormGroup>
                   <div className="mb-4 text-center">
@@ -114,7 +120,7 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="link" size="sm" className="text-info" onClick={this.toggle.bind(this)}>{data.form.buttons.help}</Button>
                   </div>
                 </TabPane>
-                <TabPane tabId="4">
+                {/* <TabPane tabId="4">
                   <h4>{data.form.buttons.recover_username}</h4>
                   <FormGroup className="form-group-light">
                     <Label for="email">{data.form.fields.email.label}</Label>
@@ -123,7 +129,7 @@ class ModalLoginPassword extends React.Component {
                   <div className="mb-3">
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('6'); }}>{data.form.buttons.recover_username}</Button>
                   </div>
-                </TabPane>
+                </TabPane> */}
                 <TabPane tabId="5">
                   <h4>{data.form.buttons.recover_password}</h4>
                   <FormGroup className="form-group-light">
@@ -134,12 +140,12 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('6'); }}>{data.form.buttons.recover_password}</Button>
                   </div>
                 </TabPane>
-                <TabPane tabId="6">
+                {/* <TabPane tabId="6">
                   <h4>{data.titles.recover_username_success}</h4>
                   <div className="mb-3 text-center">
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('1'); }}>{data.form.buttons.login}</Button>
                   </div>
-                </TabPane>
+                </TabPane> */}
               </TabContent>
             </form>
           </ModalBody>

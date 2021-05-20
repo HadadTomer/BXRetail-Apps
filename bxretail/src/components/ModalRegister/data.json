@@ -31,8 +31,9 @@
 				"placeholder": "Email"
 			},
 			"phone": {
-				"label": "Phone Number",
-				"placeholder": "(555) 555-5555"
+				"label": "Mobile Number",
+				"placeholder": "(555) 555-5555",
+				"requirements": "Please enter a country code if outside the USA."
 			},
 			"password": {
 				"label": "Password",
@@ -41,6 +42,9 @@
 			"password_confirm": {
 				"label": "Confirm Password",
 				"placeholder": "Confirm Password"
+			},
+			"password_requirements": {
+				"text": "Must include a number, lowercase, uppercase, and special character. e.g. 2FederateM0re!"
 			},
 			"login": {
 				"label": "How would you like to sign in?",

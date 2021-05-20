@@ -14,7 +14,8 @@ import { Link, NavLink as RRNavLink } from 'react-router-dom';
 // Components
 import ModalRegister from '../ModalRegister';
 import ModalRegisterConfirm from '../ModalRegisterConfirm';
-import ModalLogin from '../ModalLogin';
+// import ModalLogin from '../ModalLogin';
+import ModalLoginPassword from '../ModalLoginPassword';
 import Session from '../Utils/Session'; /* PING INTEGRATION: */
 
 // Styles
@@ -29,23 +30,32 @@ class NavbarMain extends React.Component {
     this.state = {
       isOpen: false
     };
-    /* BEGIN PING INTEGRATION: */
-    this.Session = new Session();
-    /* END PING INTEGRATION */
+    
+    this.Session = new Session(); /* PING INTEGRATION: */
+    this.modalRegister = React.createRef();
+    this.modalRegisterConfirm = React.createRef();
+    this.modalLoginPassword = React.createRef();
   }
 
   triggerModalRegister() {
-    this.refs.modalRegister.toggle();
+    // this.modalRegister.current.toggle();
+    this.modalRegister.current.toggle();
   }
+  // Sent as callback to ModalRegister.js
   onModalRegisterSubmit() {
-    this.refs.modalRegister.toggle();
-    this.refs.modalRegisterConfirm.toggle();
+    // console.log("REG STATE:", JSON.stringify(passedState));
+    this.modalRegister.current.toggle();
+    this.modalRegister.current.Confirm.toggle();
   }
   triggerModalRegisterConfirm() {
-    this.refs.modalRegisterConfirm.toggle();
+    this.modalRegister.current.Confirm.toggle();
   }
-  triggerModalLogin() {
+  // Not doing identifier first in BXR
+  /* triggerModalLogin() {
     this.refs.modalLogin.toggle();
+  } */
+  triggerModalLoginPassword() {
+    this.modalLoginPassword.current.toggle();
   }
   toggle() {
     this.setState({
@@ -82,7 +92,7 @@ class NavbarMain extends React.Component {
                   <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} /></NavLink>
                 </NavItem>
                 <NavItem className="login">
-                  <NavLink href="#" onClick={this.triggerModalLogin.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
+                  <NavLink href="#" onClick={this.triggerModalLoginPassword.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
                 </NavItem>
                 <NavItem className="logout d-none">
                   <Link to="/" className="nav-link"><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</Link>
@@ -126,7 +136,7 @@ class NavbarMain extends React.Component {
             <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/logo-white.svg"} alt={data.brand} /></Link>
           </div>
           <div className="mobilenav-login">
-            <NavLink href="#" className="login" onClick={this.triggerModalLogin.bind(this)}>Sign In</NavLink>
+            <NavLink href="#" className="login" onClick={this.triggerModalLoginPassword.bind(this)}>Sign In</NavLink>
             <Link to="/" className="nav-link logout d-none">Sign Out</Link>
           </div>
           <Collapse isOpen={this.state.isOpen} navbar>
@@ -160,7 +170,7 @@ class NavbarMain extends React.Component {
                 <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} className="mr-1" /> {data.menus.utility.support}</NavLink>
               </NavItem>
               <NavItem className="login">
-                <NavLink href="#" onClick={this.triggerModalLogin.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
+                <NavLink href="#" onClick={this.triggerModalLoginPassword.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
               </NavItem>
               <NavItem className="logout d-none">
                 <Link to="/" className="nav-link"><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</Link>
@@ -171,9 +181,10 @@ class NavbarMain extends React.Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <ModalRegister ref="modalRegister" onSubmit={this.onModalRegisterSubmit.bind(this)} />
-        <ModalRegisterConfirm ref="modalRegisterConfirm" />
-        <ModalLogin ref="modalLogin" />
+        <ModalRegister ref={this.modalRegister} onSubmit={this.onModalRegisterSubmit.bind(this)} />
+        <ModalRegisterConfirm ref={this.modalRegisterConfirm} />
+        {/* <ModalLogin ref="modalLogin" /> */}
+        <ModalLoginPassword ref={this.modalLoginPassword} />
       </section>
     );
   }
