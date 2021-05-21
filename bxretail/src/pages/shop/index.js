@@ -332,7 +332,7 @@ class Shop extends React.Component {
                 ): (
                   <div className="text-right mt-2 mr-4 mb-4">
                   <Button type="button" color="link">{data.modal.cart.buttons.update}</Button>
-                  <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleConfirmation(); }}>{data.modal.cart.buttons.checkout}</Button>
+                  <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggle(); this.toggleConfirmation(); }}>{data.modal.cart.buttons.checkout}</Button>
                 </div>
                 )}
               </TabPane>
@@ -367,7 +367,7 @@ class Shop extends React.Component {
                     <p className="pl-4">{this.state.selectedItem.confirmationSubtitle}</p>
                   </Col>
                   <Col md={2} className="text-right">
-                    <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.buttons.continue}</Button></div>
+                    <div><Button type="button" color="link" onClick={this.toggleConfirmation.bind(this)}>{data.modal.product.buttons.continue}</Button></div>
                   </Col>
                 </Row>
                 <Row className="p-3">
