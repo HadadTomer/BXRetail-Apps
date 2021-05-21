@@ -49,9 +49,9 @@ class Home extends React.Component {
               <Col lg="5">
                 <Row className="align-items-center">
                   <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
-                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
-                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
-                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
+                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXHome" /></Col>
+                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXOffice" /></Col>
+                  <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXTech" /></Col>
                 </Row>
               </Col>
             </Row>
@@ -66,7 +66,7 @@ class Home extends React.Component {
                     <img src={window._env_.PUBLIC_URL + "/images/" + item.image} alt={item.title} className="img-fluid" />
                     <h4>{item.title}</h4>
                     <p>{item.content}</p>
-                    <Button color="link" onClick={this.triggerModalBirthday.bind(this)}>{item.button}</Button>
+                    <Button color="link">{item.button}</Button>
                   </Col>
                 );
               })}
