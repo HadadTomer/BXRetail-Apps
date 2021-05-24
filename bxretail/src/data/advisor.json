@@ -60,7 +60,7 @@
 	"profile": {
 		"advisor": {
 			"title": "Your Profile",
-			"content": "<strong>Gail Tyson</strong> <br> AnyTVPartner Advisor <br> Roebuck, IL  60610 <br> Phone: 847.489.2213 <br> <br> gail.tyson@ATVP.com <br> atvp.com/gail.tyson",
+			"content": "<strong>Gail Tyson</strong> <br> AnyTVPartner Advisor <br> St. Louis, MO  63101 <br> Phone: 314.489.2213 <br> <br> gail.tyson@ATVP.com <br> atvp.com/gail.tyson",
 			"button": "Make Changes"
 		}
 	},
@@ -113,7 +113,7 @@
 			},
 			{
 				"label": "SMS/TXT Phone",
-				"value": "(210) 555-5555"
+				"value": "(314) 787-2278"
 			}
 		],
 		"buttons": {

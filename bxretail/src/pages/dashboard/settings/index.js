@@ -20,7 +20,7 @@ class DashboardSettings extends React.Component {
     return(
       <div className="dashboard accounts accounts-overview">
         <NavbarMain />
-        <WelcomeBar />
+        <WelcomeBar title="My Account" />
         <Container>
           <div className="inner">
             <div className="sidebar">

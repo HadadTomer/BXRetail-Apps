@@ -48,7 +48,7 @@ class CommunicationPreferences extends React.Component {
     return(
       <div className="accounts profile">
         <NavbarMain />
-        <WelcomeBar />
+        <WelcomeBar title="My Account" />
         <Container>
         <div className="inner">
             <div className="sidebar">
@@ -132,6 +132,7 @@ class CommunicationPreferences extends React.Component {
                     </FormGroup>
                   </Col>
                 </Row>
+                {/* Removed as Retailers typically aren't setting approval limits, banks are. Also didn't want to add logic around this being editable.
                 <h3>Transaction Approvals</h3>
                 <Row form>
                   <Col md={5}>
@@ -145,6 +146,7 @@ class CommunicationPreferences extends React.Component {
                     </FormGroup>
                   </Col>
                 </Row>
+                */}
                 <Row form>
                   <Col>
                     <div className="text-right">

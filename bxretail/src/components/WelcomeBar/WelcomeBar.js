@@ -11,7 +11,7 @@ const WelcomeBar = (props) => {
       <Container>
         <Row>
           <Col lg="12">
-            <h3>{props.title ? props.title : "My Account"}</h3>
+            <h3>{props.title || "Welcome, Guest"}{props.firstName && ", "+props.firstName}</h3>
           </Col>
         </Row>
       </Container>

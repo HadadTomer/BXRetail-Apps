@@ -8,17 +8,17 @@
 		"office": {
 			"title": "Home Office Upgrades",
 			"subtitle": "Furniture, decor, electronics, and more",
-			"content": "Major savings on major brands",
-			"button": "Shop Home Office"
+			"content": "Swap in something new for the season",
+			"button": "What's New"
 		}
 	},
 	"cta_bar": "Shop at our Extraordinary Club Partners",
 	"features": [
 		{
-			"title": "Try the BXRetail App",
+			"title": "The BXRetail App",
 			"content": "Shop, browse and manage your account.",
 			"image": "home-features-app.png",
-			"button": "Get the App"
+			"button": "Coming Soon"
 		},
 		{
 			"title": "Join the Extraordinary Club",

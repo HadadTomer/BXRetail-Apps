@@ -62,13 +62,6 @@
   "dropdown": "Things I Can Do",
   "sections": [
     {
-      "title": "Welcome back, Jane",
-      "description": "Your BXRetail Visa Card Balance is: $1,367  |  <a href=\"#\">See Transactions</a> |  <a href=\"#\">Make a Payment</a>",
-      "white": true,
-      "curved": true,
-      "welcome": true
-    },
-    {
       "title": "Personal Details",
       "description": "Make changes to your name, address, phone number and other details of your account.",
       "white": true,

@@ -53,7 +53,7 @@ class AnyTVPartner extends React.Component {
           {/* DESKTOP NAV */}
           <Navbar color="light" light expand="md" className="navbar-desktop">
             <Container>
-              <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/any-tv-partner-logo.svg"} alt={data.brand} /></Link>
+              <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/atv-white-134x40.png"} alt={data.brand} /></Link>
               <NavbarToggler onClick={this.toggle.bind(this)} />
               <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="justify-content-end ml-auto navbar-nav-utility" navbar>
@@ -92,7 +92,7 @@ class AnyTVPartner extends React.Component {
               <NavbarToggler onClick={this.toggle.bind(this)} />
             </div>
             <div className="mobilenav-brand">
-              <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/any-tv-partner-logo.svg"} alt={data.brand} /></Link>
+              <Link to="/" className="navbar-brand"><img src={window._env_.PUBLIC_URL + "/images/atv-white-134x40.png"} alt={data.brand} /></Link>
             </div>
             <div className="mobilenav-login">
               <Link to="/" className="nav-link logout">Sign Out</Link>

@@ -63,12 +63,8 @@
   "form": {
     "title": "Partner Data Sharing",
     "description": "Here are your settings for how BXRetail partner AnyTVPartner can access information about you for your Professional Services installation:",
-    "table_title": "Which partners should be able to view your accounts?",
+    "table_title": "Which partners should be able to view your information?",
     "communication_types": [
-      {
-        "name": "address",
-        "label": "My Ship To/Installation Address"
-      },
       {
         "name": "phone",
         "label": "My Phone Number"
