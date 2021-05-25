@@ -28,7 +28,13 @@ class NavbarMain extends React.Component {
   constructor() {
     super();
     this.state = {
-      isOpen: false
+      isOpen: false,
+      email: "",            /* PING INTEGRATION: */
+      firstname: "",        /* PING INTEGRATION: */
+      phone: "",            /* PING INTEGRATION: */
+      password: "",         /* PING INTEGRATION: */
+      password_confirm: "", /* PING INTEGRATION: */
+      login: "",            /* PING INTEGRATION: */
     };
     
     this.Session = new Session(); /* PING INTEGRATION: */
@@ -38,17 +44,16 @@ class NavbarMain extends React.Component {
   }
 
   triggerModalRegister() {
-    // this.modalRegister.current.toggle();
     this.modalRegister.current.toggle();
   }
   // Sent as callback to ModalRegister.js
   onModalRegisterSubmit() {
-    // console.log("REG STATE:", JSON.stringify(passedState));
+    console.log("REG DATA:", this.state);
     this.modalRegister.current.toggle();
-    this.modalRegister.current.Confirm.toggle();
+    this.modalRegisterConfirm.current.toggle();
   }
   triggerModalRegisterConfirm() {
-    this.modalRegister.current.Confirm.toggle();
+    this.modalRegisterConfirm.current.toggle();
   }
   // Not doing identifier first in BXR
   /* triggerModalLogin() {
@@ -62,16 +67,26 @@ class NavbarMain extends React.Component {
       isOpen: !this.state.isOpen
     });
   }
+  /* BEGIN PING INTEGRATION: */
+  handleFormInput(e) {
+    //Update state based on the input's Id and value.
+    let formData = {};
+    formData[e.target.id] = e.target.value;
+    this.setState(formData, () => {
+      console.log("STATE:", this.state);
+    });
+  }
   componentDidMount () {
-    // BEGIN PING INTEGRATION
     const isLoggedOut = (this.Session.getAuthenticatedUserItem("subject") === null || this.Session.getAuthenticatedUserItem("subject") === 'undefined') ? true : false;
     //TODO this is commented out until we have login working.
     // this.Session.protectPage(isLoggedOut, window.location.pathname, this.Session.getAuthenticatedUserItem("bxFinanceUserType"));
 
     if ( window.location.search ) {
-      this.refs.modalRegisterConfirm.toggle();
+      this.modalRegisterConfirm.current.toggle();
     }
   }
+
+  /* END PING INTEGRATION: */
   render() {
     return (
       <section className="navbar-main">
@@ -181,7 +196,7 @@ class NavbarMain extends React.Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <ModalRegister ref={this.modalRegister} onSubmit={this.onModalRegisterSubmit.bind(this)} />
+        <ModalRegister ref={this.modalRegister} onSubmit={this.onModalRegisterSubmit.bind(this)} handleFormInput={this.handleFormInput.bind(this)} />
         <ModalRegisterConfirm ref={this.modalRegisterConfirm} />
         {/* <ModalLogin ref="modalLogin" /> */}
         <ModalLoginPassword ref={this.modalLoginPassword} />
