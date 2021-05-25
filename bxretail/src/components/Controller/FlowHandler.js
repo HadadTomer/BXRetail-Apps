@@ -11,14 +11,14 @@ Implements methods to integrate with PingOne authentication-related API endpoint
 
 // Components
 import React from 'react';
-import PingOneAuthN from '../Integration/PingOneAuthN';
+import PingOneAuthZ from '../Integration/PingOneAuthZ';
 
 class FlowHandler extends React.Component {
 
     constructor(props) {
         super(props);
         this.envVars = window._env_;
-        this.Ping1AuthN = new PingOneAuthN(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
+        this.Ping1AuthZ = new PingOneAuthZ(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
     }
 
     /**
@@ -34,7 +34,7 @@ class FlowHandler extends React.Component {
 
         const responseType = (grantType === "implicit" ? "token" : "code");
 
-        return this.Ping1AuthN.authorize({responseType:responseType, clientId:clientId, redirectURI:redirectURI, scopes:scopes});
+        return this.Ping1AuthZ.authorize({responseType:responseType, clientId:clientId, redirectURI:redirectURI, scopes:scopes});
    }
 
     /** 
@@ -46,35 +46,35 @@ class FlowHandler extends React.Component {
     * @param {boolean} rememberMe - Whether the user wants their userName remembered at future visits.
     */
     handleAuthNflow({ flowResponse, identifier, swaprods, rememberMe }) {
-        console.info("PingOneAuthN.js", "Handling flow response from authN API.");
+        console.info("PingOneAuthZ.js", "Handling flow response from authN API.");
 
         let payload = '{}';
         if (!flowResponse) { flowResponse = {}; } //This won't exist if we only get a flowId. So create it to let switch/case default kick in.
         console.info("flowResponse.status", flowResponse.status);
         switch (flowResponse.status) {
             case "REGISTRATION_REQUIRED":
-                console.info("PingOneAuthN.js", "REGISTRATION_REQUIRED");
+                console.info("PingOneAuthZ.js", "REGISTRATION_REQUIRED");
                 //TODO can probably remove this case. nothing to do here. app needs to trigger modalRegister.
                 break;
             case "IDENTIFIER_REQUIRED":
-                console.info("PingOneAuthN.js", "IDENTIFIER_REQUIRED");
+                console.info("PingOneAuthZ.js", "IDENTIFIER_REQUIRED");
                 payload = '{\n  \"identifier\": \"' + identifier + '\"\n}';
                 return this.authnAPI({ method: "POST", flowId: flowResponse.id, contentType: "application/vnd.pingidentity.submitIdentifier+json", body: payload });
                 break;
             case "USERNAME_PASSWORD_REQUIRED":
-                console.info("PingOneAuthN.js", "USERNAME_PASSWORD_REQUIRED");
+                console.info("PingOneAuthZ.js", "USERNAME_PASSWORD_REQUIRED");
                 payload = '{\n \"username\": \"' + flowResponse.username + '\", \"password\": \"' + swaprods + '\", \"rememberMyUsername\": \"' + rememberMe + '\", \"captchaResponse\": \"\" \n}';
                 return this.authnAPI({ method: "POST", flowId: flowResponse.id, contentType: "application/vnd.pingidentity.checkUsernamePassword+json", body: payload });
                 break;
             case "RESUME":
-                console.info("PingOneAuthN.js", "RESUME");
+                console.info("PingOneAuthZ.js", "RESUME");
                 window.location.assign(flowResponse.resumeUrl);
                 break;
             case "FAILED":
-                console.info("PingOneAuthN.js", flowResponse.message);
+                console.info("PingOneAuthZ.js", flowResponse.message);
                 return flowResponse;
             default: // Why are we here???
-                console.error("PingOneAuthN.js", "In default case. We shouldn't be here. Whisky tango foxtrot?");
+                console.error("PingOneAuthZ.js", "In default case. We shouldn't be here. Whisky tango foxtrot?");
                 console.error("Arguments received:", arguments);
         }
     }

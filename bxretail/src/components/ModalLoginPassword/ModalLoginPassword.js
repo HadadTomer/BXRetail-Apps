@@ -87,7 +87,7 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="link" size="sm" className="text-info pl-0" onClick={() => { this.toggleTab('5'); }}>{data.form.buttons.reset_password}</Button>
                   </div>
                   <div className="text-center">
-                    <img src={window._env_.PUBLIC_URL + "/images/social-signin-facebook.png"} alt="Facebook" className="social-signup" />
+                    <img src={window._env_.PUBLIC_URL + "/images/SignInEOC-500x109.png"} alt="Facebook" className="social-signup" />
                   </div>
                   <div className="text-center">
                     <img src={window._env_.PUBLIC_URL + "/images/social-signin-google.png"} alt="Google" className="social-signup" />

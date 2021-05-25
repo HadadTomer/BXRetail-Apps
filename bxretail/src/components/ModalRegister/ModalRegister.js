@@ -135,7 +135,7 @@ class ModalRegister extends React.Component {
               </Row>
               <Row form className="form-row-light">
                 <Col className="text-right">
-                  <img src={window._env_.PUBLIC_URL + "/images/social-signup-facebook.png"} alt="Facebook" className="social-signup mr-1" />
+                  <img src={window._env_.PUBLIC_URL + "/images/SignUpEOC-500x109.png"} alt="Facebook" className="social-signup mr-1" />
                 </Col>
                 <Col>
                   <img src={window._env_.PUBLIC_URL + "/images/social-signup-google.png"} alt="Google" className="social-signup ml-1" />

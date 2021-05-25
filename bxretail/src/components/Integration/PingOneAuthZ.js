@@ -1,5 +1,5 @@
 /**
-Class representing PingOne authentication API's integration.
+Class representing PingOne authorization API's integration.
 This demo-specifc class is developed and maintained by PingIdentity Technical Enablement.
 Implements methods to integrate with PingOne authentication-related API endpoints.
 
@@ -13,7 +13,7 @@ import React from 'react';
 // Components
 import { uuidv4 } from '../Utils/Utils';
 
-class PingOneAuthN extends React.Component {
+class PingOneAuthZ extends React.Component {
     authzEndpoint = "/as/authorize";
 
     constructor(authPath, envId) {
@@ -32,7 +32,7 @@ class PingOneAuthN extends React.Component {
      * @return {String} The flowId extracted from the 302 redirect URL.
     */
     async authorize({responseType, clientId, redirectURI, scopes }) {
-        console.info("PingOneAuthN.js", "Calling authorize endpoint to start an authN flow and get a flowId.");
+        console.info("PingOneAuthZ.js", "Calling authorize endpoint to start an authN flow and get a flowId.");
 
         const url = this.authPath + "/" + this.envId + "/as/authorize";
 
@@ -81,4 +81,4 @@ class PingOneAuthN extends React.Component {
         /* cors mode = cors, redirect manual    =  jsondata empty, flowid authorize url, location header null */
         /* cors mode = cors, redirect follow    =  cors error No 'Access-Control-Allow-Origin' header is present */
     }
-} export default PingOneAuthN;
+} export default PingOneAuthZ;
