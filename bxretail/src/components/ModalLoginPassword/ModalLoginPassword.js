@@ -32,7 +32,8 @@ class ModalLoginPassword extends React.Component {
       isOpen: false,
       activeTab: '1',
       loginMethodUnset: true,
-      loginMethodFormGroupClass: ''
+      loginMethodFormGroupClass: '',
+      regCode: 0
     };
   }
   onClosed() {
@@ -42,9 +43,10 @@ class ModalLoginPassword extends React.Component {
       loginMethodFormGroupClass: ''
     });
   }
-  toggle() {
+  toggle(tab) {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
+      activeTab: "7"
     });
   }
   toggleTab(tab) {
@@ -58,6 +60,16 @@ class ModalLoginPassword extends React.Component {
       loginMethodFormGroupClass: 'form-group-light'
     });
   }
+  /* BEGIN PING INTEGRATION: */
+  handleFormInput(e) {
+    //Update state based on the input's Id and value.
+    let formData = {};
+    formData[e.target.id] = e.target.value;
+    this.setState(formData, () => {
+      console.log("STATE:", this.state);
+    });
+  }
+  /* END PING INTEGRATION: */
   render() {
     const closeBtn = <div />;
     return (
@@ -146,6 +158,16 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('1'); }}>{data.form.buttons.login}</Button>
                   </div>
                 </TabPane> */}
+                <TabPane tabId="7">
+                  <h4>{data.form.buttons.reg_verification}</h4>
+                  <FormGroup className="form-group-light">
+                    <Label for="regCode">{data.form.fields.regVerification.label}</Label>
+                    <Input onChange={this.handleFormInput.bind(this)} type="text" name="regCode" id="regCode" placeholder={data.form.fields.regVerification.placeholder} />
+                  </FormGroup>
+                  <div className="mb-3">
+                    <Button type="button" color="primary" onClick={() => { this.toggleTab('3'); }}>{data.form.buttons.reg_verification}</Button>
+                  </div>
+                </TabPane>
               </TabContent>
             </form>
           </ModalBody>

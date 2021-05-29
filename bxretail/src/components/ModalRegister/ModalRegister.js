@@ -53,14 +53,6 @@ class ModalRegister extends React.Component {
     });
   }
 
-  /* BEGIN PING INTEGRATION: */
-  componentDidMount() {
-    console.clear();
-    const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
-    const flowId = this.FlowHandler.initAuthNFlow({grantType:"implicit", clientId:this.envVars.REACT_APP_CLIENT, redirectURI:redirectURI, scopes:"openid profile email"});
-  }
-  /* END PING INTEGRATION: */
-
   render() {
     return (
       <div>

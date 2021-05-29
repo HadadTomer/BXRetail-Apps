@@ -27,6 +27,11 @@
 					"text": "Text me a one-time passcode",
 					"faceid": "With FaceID (Mobile App Required)"
 				}
+			},
+			"regVerification": {
+				"label": "Verification Code",
+				"placeholder": "",
+				"title": "Enter the registration verification code from your email"
 			}
 		},
 		"buttons": {
@@ -36,7 +41,8 @@
 			"login": "Sign In",
 			"help": "Need help signing in?",
 			"recover_username": "Recover Username",
-			"recover_password": "Recover Password"
+			"recover_password": "Recover Password",
+			"reg_verification": "Submit my code"
 		}
 	},
 	"mobile": {

@@ -61,12 +61,17 @@ class Session {
     Gets an item from the current origin's session storage.
 
     @param {string} key The item name in storage.
+    @param {string} type session or local.
     @return {string} DOM String.
     */
-    getAuthenticatedUserItem(key) {
+    getAuthenticatedUserItem(key, type) {
         console.info("Session.js", "Getting " + key + " from local browser session.");
 
-        return sessionStorage.getItem(key);
+        if (type === "session") {
+            return sessionStorage.getItem(key);
+        } else {
+             return localStorage.getItem(key);
+       }
     }
 
     /** 
@@ -75,7 +80,8 @@ class Session {
 
     @param {string} key The item name to set in storage.
     @param {string} value The string value of the key.
-    @return {boolean} Success state of item storage.
+    @param {string} type session or local.
+    @return {void} Undefined.
     @throws {storageFullException} Particularly, in Mobile Safari 
                                 (since iOS 5) it always throws when 
                                 the user enters private mode. 
@@ -84,11 +90,14 @@ class Session {
                                 which allow storage in private mode 
                                 using separate data containers.)
     */
-    setAuthenticatedUserItem(key, value) {
+    setAuthenticatedUserItem(key, value, type) {
         console.info("Session.js", "Saving " + key + " into local browser session.");
 
-        sessionStorage.setItem(key, value);
-        return true;
+        if (type === "session") {
+            sessionStorage.setItem(key, value);
+        } else {
+            localStorage.setItem(key, value);
+        }
     }
 
     /** 
@@ -96,25 +105,43 @@ class Session {
     Removes an item from the current origin's session storage.
 
     @param {string} key The item name in storage to remove.
-    @return {boolean} Success state of item removal from storage.
+    @param {string} type session or local.
+    @return {void} Undefined.
     */
-    removeAuthenticatedUserItem(key) {
+    removeAuthenticatedUserItem(key, type) {
         console.info("Session.js", "Removing " + key + " from local browser session.");
 
-        sessionStorage.removeItem(key);
-        return true;
+        if (type === "session") {
+            sessionStorage.removeItem(key);
+        } else {
+            localStorage.removeItem(key);
+        }
     }
 
     /** 
-    Clear User App Session:
+    Clears a user's local app session:
     Clears out everything in the current origin's session storage.
-
-    @return {void} Void. 
+    @param {string} type session, local, all.
+    @return {void} Undefined.
      */
-    clearUserAppSession() {
+    clearUserAppSession(type) {
         console.info("Session.js", "Removing local browser session.");
 
-        sessionStorage.clear();
+        switch (type) {
+            case "session":
+                sessionStorage.clear();
+                break;
+            case "local":
+                localStorage.clear();
+                break;
+            case "all":
+                sessionStorage.clear();
+                localStorage.clear();
+                break;
+            default:
+                console.error("Storage Error:", "The 'type' param to clearUserAppSession was not recognized or excluded. No storage has been cleared.");
+        }
+        
     }
 
     /** 

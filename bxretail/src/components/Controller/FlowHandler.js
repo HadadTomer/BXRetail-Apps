@@ -10,15 +10,15 @@ Implements methods to integrate with PingOne authentication-related API endpoint
 */
 
 // Components
-import React from 'react';
 import PingOneAuthZ from '../Integration/PingOneAuthZ';
+import PingOneRegistration from '../Integration/PingOneRegistration';
 
-class FlowHandler extends React.Component {
+class FlowHandler {
 
-    constructor(props) {
-        super(props);
+    constructor() {
         this.envVars = window._env_;
         this.Ping1AuthZ = new PingOneAuthZ(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
+        this.Ping1Reg = new PingOneRegistration(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
     }
 
     /**
@@ -30,13 +30,41 @@ class FlowHandler extends React.Component {
     * @param {String} scopes the app or OIDC scopes being requested by the client.
     */
     initAuthNFlow({ grantType, clientId, redirectURI, scopes }) {
-        if (grantType !== "implicit" && grantType !== "authCode") { throw "Invalid grant type provided.";}
+        console.info("FlowHandler.js", "Initializing an authorization flow with PingOne.");
+
+        if (grantType !== "implicit" && grantType !== "authCode") { throw "Invalid grant type provided. Controller.FlowHandler.";}
 
         const responseType = (grantType === "implicit" ? "token" : "code");
 
-        return this.Ping1AuthZ.authorize({responseType:responseType, clientId:clientId, redirectURI:redirectURI, scopes:scopes});
+        this.Ping1AuthZ.authorize({responseType:responseType, clientId:clientId, redirectURI:redirectURI, scopes:scopes});
    }
 
+   /**
+    * Parse and prepare a user registration.
+    * @param {object} regData state object from user input.
+    * @returns {string} the flow status.
+    */
+   async registerUser({regData}) {
+       console.info("FlowHandler.js", "Starting registration.");
+
+       const rawPayload = JSON.stringify({
+           "username": regData.email,
+           "email": regData.email,
+           "name.given": regData.firstname,
+           "mobilePhone": regData.phone,
+           "password": regData.password
+       });
+
+       const response = await this.Ping1Reg.userRegister({regPayLoad:rawPayload, flowId:regData.flowId});
+       console.log("response", JSON.stringify(response));
+       const status = await response.status;
+       return status; 
+   }
+
+
+//    ####################################
+//    NOT SURE IF WE'RE USING THE BELOW METHOD.
+//    TAKEN FROM BXF. NOT FEELING LIKE AN IDEAL DESIGN IN CONTROLLER TERMS. TBD.
     /** 
     * Authentication API's flow handler.
     * Handler for different authentication API request and responses.
