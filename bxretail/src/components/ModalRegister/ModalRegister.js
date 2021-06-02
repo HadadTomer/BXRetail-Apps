@@ -29,26 +29,18 @@ import "./ModalRegister.scss";
 import data from './data.json';
 
 // Components
-import PingOneAuthN from '../Integration/PingOneAuthN';
-
-const envVars = window._env_;
-console.log("envVars:", envVars);
-const p1AuthN = new PingOneAuthN(envVars.REACT_APP_AUTHPATH, envVars.REACT_APP_ENVId);
+import FlowHandler from '../Controller/FlowHandler';
 
 class ModalRegister extends React.Component {
+
   constructor() {
     super();
     this.state = {
       isOpen: false,
       isPopoverOpen: false,
-      email: "",            /* PING INTEGRATION: */
-      firstname: "",        /* PING INTEGRATION: */
-      phone: "",            /* PING INTEGRATION: */
-      password: "",         /* PING INTEGRATION: */
-      password_confirm: "", /* PING INTEGRATION: */
-      login: "",            /* PING INTEGRATION: */
     };
-    this.handleFormInput = this.handleFormInput.bind(this); /* PING INTEGRATION: */
+    this.envVars = window._env_;
+    this.FlowHandler = new FlowHandler();
   }
   toggle() {
     this.setState({
@@ -60,17 +52,7 @@ class ModalRegister extends React.Component {
       isPopoverOpen: !this.state.isPopoverOpen
     });
   }
-  /* BEGIN PING INTEGRATION: */
-  handleFormInput(event) {
-    //Update state based on the input's Id and value.
-    let formData = {};
-    formData[event.target.id] = event.target.value;
-    this.setState(formData, () => {
-      console.log("STATE:", this.state);
-    });
-  }
 
-  /* END PING INTEGRATION: */
   render() {
     return (
       <div>
@@ -83,26 +65,26 @@ class ModalRegister extends React.Component {
                 <Col md={6}>
                   <FormGroup>
                     <Label for="email">{data.form.fields.email.label}</Label>
-                    <Input onChange={this.handleFormInput} type="email" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
+                    <Input onChange={this.props.handleFormInput} type="email" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
                   </FormGroup>
                   <FormGroup>
                     <Label for="firstname">{data.form.fields.firstname.label}</Label>
-                    <Input onChange={this.handleFormInput} type="text" name="firstname" id="firstname" placeholder={data.form.fields.firstname.placeholder} />
+                    <Input onChange={this.props.handleFormInput} type="text" name="firstname" id="firstname" placeholder={data.form.fields.firstname.placeholder} />
                   </FormGroup>
                   <FormGroup>
                     <Label for="phone">{data.form.fields.phone.label}</Label>
-                    <Input onChange={this.handleFormInput} type="tel" name="phone" id="phone" placeholder={data.form.fields.phone.placeholder} />
+                    <Input onChange={this.props.handleFormInput} type="tel" name="phone" id="phone" placeholder={data.form.fields.phone.placeholder} />
                     <FormText>{data.form.fields.phone.requirements}</FormText>
                   </FormGroup>
                 </Col>
                 <Col md={6}>
                   <FormGroup>
                     <Label for="password">{data.form.fields.password.label}</Label>
-                    <Input onChange={this.handleFormInput} type="password" name="password" id="password" placeholder={data.form.fields.password.placeholder} />
+                    <Input onChange={this.props.handleFormInput} type="password" name="password" id="password" placeholder={data.form.fields.password.placeholder} />
                   </FormGroup>
                   <FormGroup>
                     <Label for="password_confirm">{data.form.fields.password_confirm.label}</Label>
-                    <Input onChange={this.handleFormInput} type="password" name="password_confirm" id="password_confirm" placeholder={data.form.fields.password_confirm.placeholder} />
+                    <Input onChange={this.props.handleFormInput} type="password" name="password_confirm" id="password_confirm" placeholder={data.form.fields.password_confirm.placeholder} />
                     <FormText>{data.form.fields.password_requirements.text}</FormText>
                   </FormGroup>
                   {/* CAN'T DO TRUE OPT-IN PASSWORDLESS IN P1 YET. SEE PROFILE MGMT TO OPT-IN FOR PASSWORD + MFA OPT-IN. */}
@@ -119,7 +101,7 @@ class ModalRegister extends React.Component {
                     </Label>
                   </FormGroup>
                   <FormGroup>
-                    <Input onChange={this.handleFormInput} type="select" name="login" id="login">
+                    <Input onChange={this.props.handleFormInput} type="select" name="login" id="login">
                       <option>{data.form.fields.login.options.default}</option>
                       <option value="mobile">{data.form.fields.login.options.mobile}</option>
                       <option value="password">{data.form.fields.login.options.password}</option>
@@ -145,7 +127,7 @@ class ModalRegister extends React.Component {
               </Row>
               <Row form className="form-row-light">
                 <Col className="text-right">
-                  <img src={window._env_.PUBLIC_URL + "/images/social-signup-facebook.png"} alt="Facebook" className="social-signup mr-1" />
+                  <img src={window._env_.PUBLIC_URL + "/images/SignUpEOC-500x109.png"} alt="Facebook" className="social-signup mr-1" />
                 </Col>
                 <Col>
                   <img src={window._env_.PUBLIC_URL + "/images/social-signup-google.png"} alt="Google" className="social-signup ml-1" />

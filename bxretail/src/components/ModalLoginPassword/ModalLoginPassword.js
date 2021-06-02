@@ -18,6 +18,7 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 // Components
 import FormPassword from '../../components/FormPassword';
+import FlowHandler from '../Controller/FlowHandler'; /* PING INTEGRATION: */
 
 // Styles
 import "./ModalLoginPassword.scss";
@@ -26,14 +27,16 @@ import "./ModalLoginPassword.scss";
 import data from './data.json';
 
 class ModalLoginPassword extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isOpen: false,
       activeTab: '1',
       loginMethodUnset: true,
-      loginMethodFormGroupClass: ''
+      loginMethodFormGroupClass: '',
+      regCode: 0
     };
+    this.FlowHandler = new FlowHandler(); /* PING INTEGRATION: */
   }
   onClosed() {
     this.setState({
@@ -42,15 +45,30 @@ class ModalLoginPassword extends React.Component {
       loginMethodFormGroupClass: ''
     });
   }
-  toggle() {
+  toggle(tab) {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
+      activeTab: tab
     });
   }
   toggleTab(tab) {
+    console.log("flowId", this.props.flowId);
     this.setState({
       activeTab: tab
     });
+    //TODO send reg verification code here if tab 3. but what about other uses of tab 3????
+    if (tab === "3") {
+      console.log("TAB", tab);
+      this.FlowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
+        .then(response => {
+          console.log("response", response);
+          if (response.status === "COMPLETED") {
+            window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the reg process.
+          } else {
+            console.log("UNEXPECTED STATUS", response);
+          }
+        });
+    }
   }
   setLoginMethod() {
     this.setState({
@@ -58,6 +76,16 @@ class ModalLoginPassword extends React.Component {
       loginMethodFormGroupClass: 'form-group-light'
     });
   }
+  /* BEGIN PING INTEGRATION: */
+  handleFormInput(e) {
+    //Update state based on the input's Id and value.
+    let formData = {};
+    formData[e.target.id] = e.target.value;
+    this.setState(formData, () => {
+      console.log("STATE:", this.state);
+    });
+  }
+  /* END PING INTEGRATION: */
   render() {
     const closeBtn = <div />;
     return (
@@ -87,7 +115,7 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="link" size="sm" className="text-info pl-0" onClick={() => { this.toggleTab('5'); }}>{data.form.buttons.reset_password}</Button>
                   </div>
                   <div className="text-center">
-                    <img src={window._env_.PUBLIC_URL + "/images/social-signin-facebook.png"} alt="Facebook" className="social-signup" />
+                    <img src={window._env_.PUBLIC_URL + "/images/SignInEOC-500x109.png"} alt="Facebook" className="social-signup" />
                   </div>
                   <div className="text-center">
                     <img src={window._env_.PUBLIC_URL + "/images/social-signin-google.png"} alt="Google" className="social-signup" />
@@ -146,6 +174,16 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('1'); }}>{data.form.buttons.login}</Button>
                   </div>
                 </TabPane> */}
+                <TabPane tabId="7">
+                  <h4>{data.form.buttons.reg_verification}</h4>
+                  <FormGroup className="form-group-light">
+                    <Label for="regCode">{data.form.fields.regVerification.label}</Label>
+                    <Input onChange={this.handleFormInput.bind(this)} type="text" name="regCode" id="regCode" placeholder={data.form.fields.regVerification.placeholder} />
+                  </FormGroup>
+                  <div className="mb-3">
+                    <Button type="button" color="primary" onClick={() => { this.toggleTab('3'); }}>{data.form.buttons.reg_verification}</Button>
+                  </div>
+                </TabPane>
               </TabContent>
             </form>
           </ModalBody>

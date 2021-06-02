@@ -17,61 +17,112 @@ import ModalRegisterConfirm from '../ModalRegisterConfirm';
 // import ModalLogin from '../ModalLogin';
 import ModalLoginPassword from '../ModalLoginPassword';
 import Session from '../Utils/Session'; /* PING INTEGRATION: */
+import FlowHandler from '../Controller/FlowHandler';
 
 // Styles
 import './NavbarMain.scss';
 
 // Data
 import data from './data.json';
+import { faRegistered } from '@fortawesome/free-regular-svg-icons';
 
 class NavbarMain extends React.Component {
   constructor() {
     super();
     this.state = {
-      isOpen: false
+      isOpen: false,
+      email: "",            /* PING INTEGRATION: */
+      firstname: "",        /* PING INTEGRATION: */
+      phone: "",            /* PING INTEGRATION: */
+      password: "",         /* PING INTEGRATION: */
+      password_confirm: "", /* PING INTEGRATION: */
+      /*login: "",             PING INTEGRATION: */
+      flowId: ""            /* PING INTEGRATION: */
     };
-    
+
     this.Session = new Session(); /* PING INTEGRATION: */
+    this.envVars = window._env_; /* PING INTEGRATION: */
+    this.FlowHandler = new FlowHandler(); /* PING INTEGRATION: */
     this.modalRegister = React.createRef();
     this.modalRegisterConfirm = React.createRef();
     this.modalLoginPassword = React.createRef();
   }
 
   triggerModalRegister() {
-    // this.modalRegister.current.toggle();
-    this.modalRegister.current.toggle();
+    this.Session.setAuthenticatedUserItem("authMode", "Registration", "local");
+    const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
+    this.FlowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
+    // this.modalRegister.current.toggle(); //Moved to componentDidMount because we have to send them to P1 first.
   }
   // Sent as callback to ModalRegister.js
   onModalRegisterSubmit() {
-    // console.log("REG STATE:", JSON.stringify(passedState));
+    this.FlowHandler.registerUser({regData:this.state})
+      .then(status => {
+        console.log("STATUS", status);
+        if (status === "VERIFICATION_CODE_REQUIRED") { //TODO need to handle status UNIQUENESS_VIOLATION
+          this.modalLoginPassword.current.toggle("7");
+        }
+      });
     this.modalRegister.current.toggle();
-    this.modalRegister.current.Confirm.toggle();
+    // this.modalRegisterConfirm.current.toggle();
   }
   triggerModalRegisterConfirm() {
-    this.modalRegister.current.Confirm.toggle();
+    this.modalRegisterConfirm.current.toggle();
   }
   // Not doing identifier first in BXR
   /* triggerModalLogin() {
     this.refs.modalLogin.toggle();
   } */
   triggerModalLoginPassword() {
-    this.modalLoginPassword.current.toggle();
+    this.Session.setAuthenticatedUserItem("authMode", "Login", "local");
+    const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
+    this.FlowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
+    // this.modalLoginPassword.current.toggle();
   }
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
   }
-  componentDidMount () {
-    // BEGIN PING INTEGRATION
+  /* BEGIN PING INTEGRATION: */
+  handleFormInput(e) {
+    //Update state based on the input's Id and value.
+    let formData = {};
+    formData[e.target.id] = e.target.value;
+    this.setState(formData, () => {
+      //console.log("STATE:", this.state);
+    });
+  }
+  componentDidMount() {
     const isLoggedOut = (this.Session.getAuthenticatedUserItem("subject") === null || this.Session.getAuthenticatedUserItem("subject") === 'undefined') ? true : false;
     //TODO this is commented out until we have login working.
     // this.Session.protectPage(isLoggedOut, window.location.pathname, this.Session.getAuthenticatedUserItem("bxFinanceUserType"));
 
-    if ( window.location.search ) {
-      this.refs.modalRegisterConfirm.toggle();
+    if (window.location.search) {
+      const queryParams = new URLSearchParams(window.location.search);
+      const flowId = queryParams.get("flowId");
+      const authCode = queryParams.get("code");
+      this.setState({ flowId: flowId }, () => {
+        console.log("new flowId", this.state.flowId);
+      });
+      if (flowId) {
+        // TODO I think we probably need to clear localStorage after using it here. Validate that.
+        if (this.Session.getAuthenticatedUserItem("authMode", "local") === "Login") {
+          this.modalLoginPassword.current.toggle();
+        } else {
+          this.modalRegister.current.toggle();
+        }
+      } else if (authCode) {
+        // TODO need to process the authCode call and get a token first.
+        // This is just being displayed prematurely so we can wrap up happy path reg flow.
+        this.modalRegisterConfirm.current.toggle();
+      }
+     
+      
     }
   }
+
+  /* END PING INTEGRATION: */
   render() {
     return (
       <section className="navbar-main">
@@ -107,7 +158,7 @@ class NavbarMain extends React.Component {
         <Navbar color="dark" dark expand="md" className="navbar-desktop">
           <Container>
             <Nav className="mr-auto navbar-nav-main" navbar>
-              { this.props && this.props.data && this.props.data.menus && this.props.data.menus.primary ? (
+              {this.props && this.props.data && this.props.data.menus && this.props.data.menus.primary ? (
                 this.props.data.menus.primary.map((item, i) => {
                   return (
                     <NavItem key={i}>
@@ -141,7 +192,7 @@ class NavbarMain extends React.Component {
           </div>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="navbar-nav-main navbar-light bg-light" navbar>
-              { this.props && this.props.data && this.props.data.menus && this.props.data.menus.primary ? (
+              {this.props && this.props.data && this.props.data.menus && this.props.data.menus.primary ? (
                 this.props.data.menus.primary.map((item, i) => {
                   return (
                     <NavItem key={i}>
@@ -181,10 +232,10 @@ class NavbarMain extends React.Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <ModalRegister ref={this.modalRegister} onSubmit={this.onModalRegisterSubmit.bind(this)} />
+        <ModalRegister ref={this.modalRegister} onSubmit={this.onModalRegisterSubmit.bind(this)} handleFormInput={this.handleFormInput.bind(this)} />
         <ModalRegisterConfirm ref={this.modalRegisterConfirm} />
         {/* <ModalLogin ref="modalLogin" /> */}
-        <ModalLoginPassword ref={this.modalLoginPassword} />
+        <ModalLoginPassword ref={this.modalLoginPassword} flowId={this.state.flowId} />
       </section>
     );
   }
