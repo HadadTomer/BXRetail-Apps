@@ -22,79 +22,79 @@ class PingOneRegistration {
      * 
      * @param {object} regPayload User input object.
      * @param {string} flowId flowId from initial authorize endpoint call.
-     * @return {type} Name Description
+     * @return {object} jsonResponse API response object in JSON format.
      **/
-   async userRegister({regPayload, flowId}) {
-       console.info("PingOneRegistration.js", "Registering the user input at PingOne.");
+    async userRegister({ regPayload, flowId }) {
+        console.info("PingOneRegistration.js", "Registering the user input at PingOne.");
 
-       let myHeaders = new Headers();
-       myHeaders.append("Content-Type", "application/vnd.pingidentity.user.register+json");
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/vnd.pingidentity.user.register+json");
 
-       const requestOptions = {
-           method: 'POST',
-           headers: myHeaders,
-           body: arguments[0]["regPayLoad"],
-           redirect: 'manual'
-       };
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: arguments[0]["regPayLoad"],
+            redirect: 'manual',
+            credentials: 'include'
+        };
 
-       const url = this.authPath + "/" + this.envId + "/flows/" + flowId;
-       const response = await fetch(url, requestOptions);
-       const jsonResponse = await response.json();
-       return jsonResponse;
-   }
+        const url = this.authPath + "/" + this.envId + "/flows/" + flowId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    }
 
-   /**
-    * Resend user verification if they didn't receive the orignal verification code in email.
-    * @param {type} Name Description
-    * @return {type} Name Description
-    */
-   userSendVerification({}) {
-       let myHeaders = new Headers();
-       myHeaders.append("Content-Type", "application/vnd.pingidentity.user.sendVerificationCode+json");
-       myHeaders.append("Cookie", "ST=f3d863e9-84ec-43f4-8213-0c0bf58532d9; ST-NO-SS=f3d863e9-84ec-43f4-8213-0c0bf58532d9");
+    /**
+     * Verify the user's registration email code.
+     * @param {string} rawPayload JSON of the verificationCode payload to send to the API.
+     * @param {string} flowId Id for the current authZ/authN transaction.
+     * @return {} something
+     */
+    async userVerify({ regCodePayload, flowId }) {
+        console.log("PingOneRegistration.js", "Sending in user's registration email verification code.")
+        console.log("regCodePayload", regCodePayload);
+        console.log("flowId in reg", flowId);
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/vnd.pingidentity.user.verify+json");
 
-       let rawPayload = JSON.stringify({
-           "verificationCode": "y1pwj6fl"
-       });
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: regCodePayload,
+            redirect: 'manual',
+            credentials: 'include'
+        };
 
-       let requestOptions = {
-           method: 'POST',
-           headers: myHeaders,
-           body: rawPayload,
-           redirect: 'manual'
-       };
+        const url = this.authPath + "/" + this.envId + "/flows/" + flowId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    }
 
-       fetch("https://auth.pingone.com/40f745f6-3f91-4f88-a305-93c0a4369293/flows/03e94068-d8fb-43d7-a8f1-e9f6f692ea29", requestOptions)
-           .then(response => response.text())
-           .then(result => console.log(result))
-           .catch(error => console.log('error', error));
-   }
+    /**
+     * Resend user verification if they didn't receive the orignal verification code in email.
+     * @param {type} Name Description
+     * @return {type} Name Description
+     */
+    userSendVerification({ regVerifyPayLoad, flowId }) { //TODO not implemented yet.
+        console.log("PingOneRegistration.js", "REsending registration email verification code.")
 
-   /**
-    * Verify the user.
-    * @param {type} Name Description
-    * @return {type} Name Description
-    */
-   userVerify({}) {
-       let myHeaders = new Headers();
-       myHeaders.append("Content-Type", "application/vnd.pingidentity.user.verify+json");
-       myHeaders.append("Cookie", "ST=f3d863e9-84ec-43f4-8213-0c0bf58532d9; ST-NO-SS=f3d863e9-84ec-43f4-8213-0c0bf58532d9");
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/vnd.pingidentity.user.sendVerificationCode+json");
 
-       let rawPayload = JSON.stringify({
-           "verificationCode": "w8t0bigb"
-       });
+        let requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: regVerifyPayLoad,
+            redirect: 'manual',
+            credentials: 'include'
+        };
 
-       let requestOptions = {
-           method: 'POST',
-           headers: myHeaders,
-           body: rawPayload,
-           redirect: 'manual'
-       };
-
-       fetch("https://auth.pingone.com/40f745f6-3f91-4f88-a305-93c0a4369293/flows/03e94068-d8fb-43d7-a8f1-e9f6f692ea29", requestOptions)
-           .then(response => response.text())
-           .then(result => console.log(result))
-           .catch(error => console.log('error', error));
-   }
+        const url = this.authPath + "/" + this.envId + "/flows/" + flowId;
+        fetch(url, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+    }
 }
 export default PingOneRegistration;

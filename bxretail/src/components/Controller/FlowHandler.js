@@ -45,21 +45,45 @@ class FlowHandler {
     * @returns {string} the flow status.
     */
    async registerUser({regData}) {
-       console.info("FlowHandler.js", "Starting registration.");
+       console.info("FlowHandler.js", "Parsing and preparing user registation data.");
 
        const rawPayload = JSON.stringify({
            "username": regData.email,
            "email": regData.email,
-           "name.given": regData.firstname,
+           "given": regData.firstname,
            "mobilePhone": regData.phone,
            "password": regData.password
        });
-
+       console.log("rawPayload", rawPayload);
        const response = await this.Ping1Reg.userRegister({regPayLoad:rawPayload, flowId:regData.flowId});
        console.log("response", JSON.stringify(response));
        const status = await response.status;
        return status; 
    }
+
+    /**
+     * Verify the user's registration email code.
+     * @param {object} regData state object from user input.
+     * @returns {string} the flow status.
+     */
+    async verifyRegEmailCode({ regEmailCode, flowId }) {
+        console.info("FlowHandler.js", "Parsing and preparing user registration verification code.");
+        console.log("regEmailCode", regEmailCode);
+        console.log("flowId in FlowHandler", flowId);
+        const rawPayload = JSON.stringify({
+            "verificationCode": regEmailCode
+        });
+
+        const response = await this.Ping1Reg.userVerify({ regCodePayload: rawPayload, flowId: flowId });
+        console.log("response", JSON.stringify(response));
+        //TODO do we want to keep this pattern? return status and resumeUrl if "completed", otherwise entire response? Or just error data?
+        const status = await response.status;
+        if (status === "COMPLETED") {
+            return {status:status, resumeUrl:response.resumeUrl};
+        } else {
+            return response.JSON();
+        }
+    }
 
 
 //    ####################################

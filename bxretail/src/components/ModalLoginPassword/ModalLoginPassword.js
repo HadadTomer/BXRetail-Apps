@@ -18,6 +18,7 @@ import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 // Components
 import FormPassword from '../../components/FormPassword';
+import FlowHandler from '../Controller/FlowHandler'; /* PING INTEGRATION: */
 
 // Styles
 import "./ModalLoginPassword.scss";
@@ -26,8 +27,8 @@ import "./ModalLoginPassword.scss";
 import data from './data.json';
 
 class ModalLoginPassword extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isOpen: false,
       activeTab: '1',
@@ -35,6 +36,7 @@ class ModalLoginPassword extends React.Component {
       loginMethodFormGroupClass: '',
       regCode: 0
     };
+    this.FlowHandler = new FlowHandler(); /* PING INTEGRATION: */
   }
   onClosed() {
     this.setState({
@@ -46,13 +48,27 @@ class ModalLoginPassword extends React.Component {
   toggle(tab) {
     this.setState({
       isOpen: !this.state.isOpen,
-      activeTab: "7"
+      activeTab: tab
     });
   }
   toggleTab(tab) {
+    console.log("flowId", this.props.flowId);
     this.setState({
       activeTab: tab
     });
+    //TODO send reg verification code here if tab 3. but what about other uses of tab 3????
+    if (tab === "3") {
+      console.log("TAB", tab);
+      this.FlowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
+        .then(response => {
+          console.log("response", response);
+          if (response.status === "COMPLETED") {
+            window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the reg process.
+          } else {
+            console.log("UNEXPECTED STATUS", response);
+          }
+        });
+    }
   }
   setLoginMethod() {
     this.setState({

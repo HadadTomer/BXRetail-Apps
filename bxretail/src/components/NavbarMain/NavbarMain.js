@@ -59,7 +59,7 @@ class NavbarMain extends React.Component {
     this.FlowHandler.registerUser({regData:this.state})
       .then(status => {
         console.log("STATUS", status);
-        if (status === "VERIFICATION_CODE_REQUIRED") {
+        if (status === "VERIFICATION_CODE_REQUIRED") { //TODO need to handle status UNIQUENESS_VIOLATION
           this.modalLoginPassword.current.toggle("7");
         }
       });
@@ -101,13 +101,24 @@ class NavbarMain extends React.Component {
     if (window.location.search) {
       const queryParams = new URLSearchParams(window.location.search);
       const flowId = queryParams.get("flowId");
-      this.setState({ flowId: flowId });
-      if (this.Session.getAuthenticatedUserItem("authMode", "local") === "Login") {
-        this.modalLoginPassword.current.toggle();
-      } else {
-        this.modalRegister.current.toggle();
+      const authCode = queryParams.get("code");
+      this.setState({ flowId: flowId }, () => {
+        console.log("new flowId", this.state.flowId);
+      });
+      if (flowId) {
+        // TODO I think we probably need to clear localStorage after using it here. Validate that.
+        if (this.Session.getAuthenticatedUserItem("authMode", "local") === "Login") {
+          this.modalLoginPassword.current.toggle();
+        } else {
+          this.modalRegister.current.toggle();
+        }
+      } else if (authCode) {
+        // TODO need to process the authCode call and get a token first.
+        // This is just being displayed prematurely so we can wrap up happy path reg flow.
+        this.modalRegisterConfirm.current.toggle();
       }
-      // this.modalRegisterConfirm.current.toggle();
+     
+      
     }
   }
 
@@ -224,7 +235,7 @@ class NavbarMain extends React.Component {
         <ModalRegister ref={this.modalRegister} onSubmit={this.onModalRegisterSubmit.bind(this)} handleFormInput={this.handleFormInput.bind(this)} />
         <ModalRegisterConfirm ref={this.modalRegisterConfirm} />
         {/* <ModalLogin ref="modalLogin" /> */}
-        <ModalLoginPassword ref={this.modalLoginPassword} />
+        <ModalLoginPassword ref={this.modalLoginPassword} flowId={this.state.flowId} />
       </section>
     );
   }
