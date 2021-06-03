@@ -49,7 +49,7 @@ class NavbarMain extends React.Component {
   }
 
   triggerModalRegister() {
-    this.Session.setAuthenticatedUserItem("authMode", "Registration", "local");
+    this.Session.setAuthenticatedUserItem("authMode", "registration", "local");
     const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
     this.FlowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
     // this.modalRegister.current.toggle(); //Moved to componentDidMount because we have to send them to P1 first.
@@ -58,7 +58,6 @@ class NavbarMain extends React.Component {
   onModalRegisterSubmit() {
     this.FlowHandler.registerUser({regData:this.state})
       .then(status => {
-        console.log("STATUS", status);
         if (status === "VERIFICATION_CODE_REQUIRED") { //TODO need to handle status UNIQUENESS_VIOLATION
           this.modalLoginPassword.current.toggle("7");
         }
@@ -74,7 +73,7 @@ class NavbarMain extends React.Component {
     this.refs.modalLogin.toggle();
   } */
   triggerModalLoginPassword() {
-    this.Session.setAuthenticatedUserItem("authMode", "Login", "local");
+    this.Session.setAuthenticatedUserItem("authMode", "login", "local");
     const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
     this.FlowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
     // this.modalLoginPassword.current.toggle();
@@ -103,11 +102,10 @@ class NavbarMain extends React.Component {
       const flowId = queryParams.get("flowId");
       const authCode = queryParams.get("code");
       this.setState({ flowId: flowId }, () => {
-        console.log("new flowId", this.state.flowId);
       });
       if (flowId) {
         // TODO I think we probably need to clear localStorage after using it here. Validate that.
-        if (this.Session.getAuthenticatedUserItem("authMode", "local") === "Login") {
+        if (this.Session.getAuthenticatedUserItem("authMode", "local") === "login") {
           this.modalLoginPassword.current.toggle();
         } else {
           this.modalRegister.current.toggle();
@@ -115,6 +113,7 @@ class NavbarMain extends React.Component {
       } else if (authCode) {
         // TODO need to process the authCode call and get a token first.
         // This is just being displayed prematurely so we can wrap up happy path reg flow.
+        // Or maybe we show modalRegisterConfirm and then make code/token calls??????
         this.modalRegisterConfirm.current.toggle();
       }
      

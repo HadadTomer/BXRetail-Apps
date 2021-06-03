@@ -10,8 +10,9 @@ Implements methods to integrate with PingOne authentication-related API endpoint
 */
 
 // Components
-import PingOneAuthZ from '../Integration/PingOneAuthZ';
-import PingOneRegistration from '../Integration/PingOneRegistration';
+import PingOneAuthZ from '../Integration/PingOneAuthZ'; /* PING INTEGRATION: */
+import PingOneRegistration from '../Integration/PingOneRegistration'; /* PING INTEGRATION: */
+import PingOneAuthN from '../Integration/PingOneAuthN'; /* PING INTEGRATION: */
 
 class FlowHandler {
 
@@ -19,6 +20,7 @@ class FlowHandler {
         this.envVars = window._env_;
         this.Ping1AuthZ = new PingOneAuthZ(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
         this.Ping1Reg = new PingOneRegistration(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
+        this.Ping1AuthN = new PingOneAuthN(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
     }
 
     /**
@@ -54,9 +56,7 @@ class FlowHandler {
            "mobilePhone": regData.phone,
            "password": regData.password
        });
-       console.log("rawPayload", rawPayload);
        const response = await this.Ping1Reg.userRegister({regPayLoad:rawPayload, flowId:regData.flowId});
-       console.log("response", JSON.stringify(response));
        const status = await response.status;
        return status; 
    }
@@ -64,18 +64,16 @@ class FlowHandler {
     /**
      * Verify the user's registration email code.
      * @param {object} regData state object from user input.
-     * @returns {string} the flow status.
+     * @returns {string} the flow status, or response object if there's an error.
      */
     async verifyRegEmailCode({ regEmailCode, flowId }) {
         console.info("FlowHandler.js", "Parsing and preparing user registration verification code.");
-        console.log("regEmailCode", regEmailCode);
-        console.log("flowId in FlowHandler", flowId);
+        
         const rawPayload = JSON.stringify({
             "verificationCode": regEmailCode
         });
 
         const response = await this.Ping1Reg.userVerify({ regCodePayload: rawPayload, flowId: flowId });
-        console.log("response", JSON.stringify(response));
         //TODO do we want to keep this pattern? return status and resumeUrl if "completed", otherwise entire response? Or just error data?
         const status = await response.status;
         if (status === "COMPLETED") {
@@ -85,50 +83,25 @@ class FlowHandler {
         }
     }
 
+    /**
+     * Login the user.
+     * @param {object} loginData state object from user input.
+     * @returns {string} something.
+     */
+    async loginUser({loginData, flowId}) {
+        console.info("FlowHandler.js", "Parsing and preparing username and password for login.");
 
-//    ####################################
-//    NOT SURE IF WE'RE USING THE BELOW METHOD.
-//    TAKEN FROM BXF. NOT FEELING LIKE AN IDEAL DESIGN IN CONTROLLER TERMS. TBD.
-    /** 
-    * Authentication API's flow handler.
-    * Handler for different authentication API request and responses.
-    * @param {String} flowResponse - The API response object from the previous flow request.
-    * @param {String} identifier the userName of the authenticating user.
-    * @param {String} swaprods - The user's password if doing password authentication.
-    * @param {boolean} rememberMe - Whether the user wants their userName remembered at future visits.
-    */
-    handleAuthNflow({ flowResponse, identifier, swaprods, rememberMe }) {
-        console.info("PingOneAuthZ.js", "Handling flow response from authN API.");
-
-        let payload = '{}';
-        if (!flowResponse) { flowResponse = {}; } //This won't exist if we only get a flowId. So create it to let switch/case default kick in.
-        console.info("flowResponse.status", flowResponse.status);
-        switch (flowResponse.status) {
-            case "REGISTRATION_REQUIRED":
-                console.info("PingOneAuthZ.js", "REGISTRATION_REQUIRED");
-                //TODO can probably remove this case. nothing to do here. app needs to trigger modalRegister.
-                break;
-            case "IDENTIFIER_REQUIRED":
-                console.info("PingOneAuthZ.js", "IDENTIFIER_REQUIRED");
-                payload = '{\n  \"identifier\": \"' + identifier + '\"\n}';
-                return this.authnAPI({ method: "POST", flowId: flowResponse.id, contentType: "application/vnd.pingidentity.submitIdentifier+json", body: payload });
-                break;
-            case "USERNAME_PASSWORD_REQUIRED":
-                console.info("PingOneAuthZ.js", "USERNAME_PASSWORD_REQUIRED");
-                payload = '{\n \"username\": \"' + flowResponse.username + '\", \"password\": \"' + swaprods + '\", \"rememberMyUsername\": \"' + rememberMe + '\", \"captchaResponse\": \"\" \n}';
-                return this.authnAPI({ method: "POST", flowId: flowResponse.id, contentType: "application/vnd.pingidentity.checkUsernamePassword+json", body: payload });
-                break;
-            case "RESUME":
-                console.info("PingOneAuthZ.js", "RESUME");
-                window.location.assign(flowResponse.resumeUrl);
-                break;
-            case "FAILED":
-                console.info("PingOneAuthZ.js", flowResponse.message);
-                return flowResponse;
-            default: // Why are we here???
-                console.error("PingOneAuthZ.js", "In default case. We shouldn't be here. Whisky tango foxtrot?");
-                console.error("Arguments received:", arguments);
+        let rawPayload = JSON.stringify({
+            "username": loginData.username,
+            "password": loginData.password
+        });
+        const response = await this.Ping1AuthN.usernamePasswordCheck({ loginPayload: rawPayload, flowId: flowId});
+        const status = await response.status;
+        if (status === "COMPLETED") {
+            return { status: status, resumeUrl: response.resumeUrl };
+        } else {
+            return response.JSON();
         }
-    }
+    } 
 }
 export default FlowHandler;
