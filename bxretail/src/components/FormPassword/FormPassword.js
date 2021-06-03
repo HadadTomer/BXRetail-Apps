@@ -6,6 +6,10 @@ import { FormGroup, Label, Input} from 'reactstrap';
 import "./FormPassword.scss";
 
 class FormPassword extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
   componentDidMount () {
     var eye = document.querySelectorAll(".icon-eye");
     var inputEye = document.querySelectorAll(".form-password > input");
@@ -24,7 +28,7 @@ class FormPassword extends React.Component {
       <FormGroup className="form-group-light form-password">
         <Label for="password">{this.props.label}</Label>
         <img src={window._env_.PUBLIC_URL + "/images/icons/password-hide.svg"} alt="password" className="icon-eye" />
-        <Input type="password" name={this.props.name} id={this.props.name} placeholder={this.props.placeholder} />
+        <Input onChange={this.props.handleFormInput} type="password" name={this.props.name} id={this.props.name} placeholder={this.props.placeholder} />
       </FormGroup>
     );
   }

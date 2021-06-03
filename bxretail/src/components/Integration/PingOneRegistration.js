@@ -52,8 +52,7 @@ class PingOneRegistration {
      */
     async userVerify({ regCodePayload, flowId }) {
         console.log("PingOneRegistration.js", "Sending in user's registration email verification code.")
-        console.log("regCodePayload", regCodePayload);
-        console.log("flowId in reg", flowId);
+
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/vnd.pingidentity.user.verify+json");
 
@@ -76,7 +75,8 @@ class PingOneRegistration {
      * @param {type} Name Description
      * @return {type} Name Description
      */
-    userSendVerification({ regVerifyPayLoad, flowId }) { //TODO not implemented yet.
+    //TODO not implemented yet.
+    userSendVerification({ regVerifyPayLoad, flowId }) {
         console.log("PingOneRegistration.js", "REsending registration email verification code.")
 
         let myHeaders = new Headers();
