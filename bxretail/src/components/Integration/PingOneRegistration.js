@@ -76,7 +76,8 @@ class PingOneRegistration {
      * @param {type} Name Description
      * @return {type} Name Description
      */
-    userSendVerification({ regVerifyPayLoad, flowId }) { //TODO not implemented yet.
+    //TODO not implemented yet.
+    userSendVerification({ regVerifyPayLoad, flowId }) {
         console.log("PingOneRegistration.js", "REsending registration email verification code.")
 
         let myHeaders = new Headers();
