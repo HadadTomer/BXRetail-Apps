@@ -37,14 +37,16 @@ class PingOneAuthN {
         myHeaders.append("Content-Type", "application/vnd.pingidentity.usernamePassword.check+json");
 
         let  requestOptions = {
-            method: 'POST',
+            method: "POST",
             headers: myHeaders,
             body: loginPayload,
-            redirect: 'manual'
+            redirect: "manual",
+            credentials: "include"
         };
-        const url = this.authPath + "/" + this.envId + "/flows/" + flowId;
+        const url = this.authPath + "/flows/" + flowId;
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
+        console.log("jsonResponse", jsonResponse);
         return jsonResponse;
     }
 }

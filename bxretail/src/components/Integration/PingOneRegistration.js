@@ -31,16 +31,17 @@ class PingOneRegistration {
         myHeaders.append("Content-Type", "application/vnd.pingidentity.user.register+json");
 
         const requestOptions = {
-            method: 'POST',
+            method: "POST",
             headers: myHeaders,
             body: arguments[0]["regPayLoad"],
-            redirect: 'manual',
-            credentials: 'include'
+            redirect: "manual",
+            credentials: "include"
         };
 
-        const url = this.authPath + "/" + this.envId + "/flows/" + flowId;
+        const url = this.authPath + "/flows/" + flowId;
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
+        console.log("model reg response", jsonResponse);
         return jsonResponse;
     }
 
@@ -57,16 +58,17 @@ class PingOneRegistration {
         myHeaders.append("Content-Type", "application/vnd.pingidentity.user.verify+json");
 
         let requestOptions = {
-            method: 'POST',
+            method: "POST",
             headers: myHeaders,
             body: regCodePayload,
-            redirect: 'manual',
-            credentials: 'include'
+            redirect: "manual",
+            credentials: "include"
         };
 
-        const url = this.authPath + "/" + this.envId + "/flows/" + flowId;
+        const url = this.authPath + "/flows/" + flowId;
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
+        console.log("model code response", jsonResponse);
         return jsonResponse;
     }
 
@@ -83,14 +85,14 @@ class PingOneRegistration {
         myHeaders.append("Content-Type", "application/vnd.pingidentity.user.sendVerificationCode+json");
 
         let requestOptions = {
-            method: 'POST',
+            method: "POST",
             headers: myHeaders,
             body: regVerifyPayLoad,
-            redirect: 'manual',
-            credentials: 'include'
+            redirect: "manual",
+            credentials: "include"
         };
 
-        const url = this.authPath + "/" + this.envId + "/flows/" + flowId;
+        const url = this.authPath + "/flows/" + flowId;
         fetch(url, requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))

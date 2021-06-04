@@ -57,6 +57,7 @@ class FlowHandler {
            "password": regData.password
        });
        const response = await this.Ping1Reg.userRegister({regPayLoad:rawPayload, flowId:regData.flowId});
+       console.log("controller reg response", response);
        const status = await response.status;
        return status; 
    }
@@ -75,11 +76,12 @@ class FlowHandler {
 
         const response = await this.Ping1Reg.userVerify({ regCodePayload: rawPayload, flowId: flowId });
         //TODO do we want to keep this pattern? return status and resumeUrl if "completed", otherwise entire response? Or just error data?
+        console.log("controller code response", response);
         const status = await response.status;
         if (status === "COMPLETED") {
             return {status:status, resumeUrl:response.resumeUrl};
         } else {
-            return response.JSON();
+            return response;
         }
     }
 
@@ -100,7 +102,7 @@ class FlowHandler {
         if (status === "COMPLETED") {
             return { status: status, resumeUrl: response.resumeUrl };
         } else {
-            return response.JSON();
+            return response;
         }
     } 
 }
