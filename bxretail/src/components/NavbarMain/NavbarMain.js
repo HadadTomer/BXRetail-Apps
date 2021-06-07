@@ -116,8 +116,6 @@ class NavbarMain extends React.Component {
         // Or maybe we show modalRegisterConfirm and then make code/token calls??????
         this.modalRegisterConfirm.current.toggle();
       }
-     
-      
     }
   }
 

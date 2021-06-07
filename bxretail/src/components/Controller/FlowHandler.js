@@ -10,9 +10,10 @@ Implements methods to integrate with PingOne authentication-related API endpoint
 */
 
 // Components
-import PingOneAuthZ from '../Integration/PingOneAuthZ'; /* PING INTEGRATION: */
-import PingOneRegistration from '../Integration/PingOneRegistration'; /* PING INTEGRATION: */
-import PingOneAuthN from '../Integration/PingOneAuthN'; /* PING INTEGRATION: */
+import PingOneAuthZ from "../Integration/PingOneAuthZ"; /* PING INTEGRATION: */
+import PingOneRegistration from "../Integration/PingOneRegistration"; /* PING INTEGRATION: */
+import PingOneAuthN from "../Integration/PingOneAuthN"; /* PING INTEGRATION: */
+import JSONSearch from "../Utils/JSONSearch"; /* PING INTEGRATION: */
 
 class FlowHandler {
 
@@ -21,6 +22,7 @@ class FlowHandler {
         this.Ping1AuthZ = new PingOneAuthZ(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
         this.Ping1Reg = new PingOneRegistration(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
         this.Ping1AuthN = new PingOneAuthN(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
+        this.JSONSearch = new JSONSearch();
     }
 
     /**
@@ -65,7 +67,8 @@ class FlowHandler {
     /**
      * Verify the user's registration email code.
      * @param {object} regData state object from user input.
-     * @returns {string} the flow status, or response object if there's an error.
+     * @param {string} flowId Id for the current authN transaction.
+     * @returns {*} the flow status, or response object if there's an error.
      */
     async verifyRegEmailCode({ regEmailCode, flowId }) {
         console.info("FlowHandler.js", "Parsing and preparing user registration verification code.");
@@ -88,7 +91,8 @@ class FlowHandler {
     /**
      * Login the user.
      * @param {object} loginData state object from user input.
-     * @returns {string} something.
+     * @param {string} flowId Id for the current authN transaction.
+     * @returns {*} Response status, or response object if there's an issue.
      */
     async loginUser({loginData, flowId}) {
         console.info("FlowHandler.js", "Parsing and preparing username and password for login.");
@@ -104,6 +108,24 @@ class FlowHandler {
         } else {
             return response;
         }
-    } 
+    }
+
+    /**
+     * Get requested social provider.
+     * @param {string} IdP name of the external IdP for which data is needed.
+     * @param {string} flowId Id for the current authN transaction.
+     * @returns {object} Portion of the response object for a given social provider.
+     */
+    async getRequestedSocialProvider({IdP, flowId}) {
+        console.log("IdP", arguments);
+
+        const response = await this.Ping1AuthN.readAuthNFlowData({flowId: flowId});
+        console.log("response", response);
+        const resultsArr = await response._embedded.socialProviders;
+        console.log("resultsArr", resultsArr);
+        const result = resultsArr.find(provider => provider["name"] === IdP);
+        console.log("results", result);
+        return result._links.authenticate.href;
+    }
 }
 export default FlowHandler;

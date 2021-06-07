@@ -30,13 +30,13 @@ class PingOneAuthN {
      * @see https://apidocs.pingidentity.com/pingone/platform/v1/api/#post-check-usernamepassword
      * @param {string} loginPayload - User input object.
      * @param {string} flowId Id for the current authN transaction.
-     * @return {type} What's being returned.
+     * @return {object} JSON formatted response object.
     */
-    async usernamePasswordCheck({ loginPayload, flowId}) {
-        let  myHeaders = new Headers();
+    async usernamePasswordCheck({ loginPayload, flowId }) {
+        let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/vnd.pingidentity.usernamePassword.check+json");
 
-        let  requestOptions = {
+        let requestOptions = {
             method: "POST",
             headers: myHeaders,
             body: loginPayload,
@@ -46,7 +46,25 @@ class PingOneAuthN {
         const url = this.authPath + "/flows/" + flowId;
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
-        console.log("jsonResponse", jsonResponse);
+        return jsonResponse;
+    }
+
+    /**
+     * Read the user's current authN API flow data.
+     * @see https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-read-flow
+     * @param {string} flowId Id for the current authN transaction.
+     * @return {type} What's being returned.
+    */
+    async readAuthNFlowData({ flowId }) {
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'manual',
+            credentials: "include"
+        };
+
+        const url = this.authPath + "/flows/" + flowId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
         return jsonResponse;
     }
 }
