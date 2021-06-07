@@ -52,34 +52,24 @@ class ModalLoginPassword extends React.Component {
   }
   toggle(tab) {
     this.setState({
-      isOpen: !this.state.isOpen,
-      // activeTab: tab // toggle() is stricly for show and hide. not sure why this is here. Same with tab arg.
+      isOpen: !this.state.isOpen
     });
+    /* PING INTEGRATION: */
+    //toggle() is only about show/hide modal UIs. Added tab arg
+    // and call to toggleTab() because 
+    // some uses cases require us to show a different default tabPane.
+    if (tab) { 
+      this.toggleTab(tab); 
+    }
   }
   toggleTab(tab) {
     this.setState({
       activeTab: tab
     });
-    //TODO Might be worth putting authMode in a switch/case inside of tab check. And what about other usecases for tab 3????
-    // TODO need to move this logic into its own method. This has nothing to do with toggling tabs.
-    if (tab === "3" & this.Session.getAuthenticatedUserItem("authMode", "local") === "registation") {
-      this.FlowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
-        .then(response => {
-          if (response.status === "COMPLETED") {
-            window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the reg process.
-          } else {
-            console.log("UNEXPECTED STATUS", response);
-          }
-        });
-    } else if (tab === "3" & this.Session.getAuthenticatedUserItem("authMode", "local") === "login") {
-      this.FlowHandler.loginUser({loginData: this.state, flowId: this.props.flowId})
-        .then(response => {
-          if (response.status === "COMPLETED") {
-            window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the login process.
-          } else {
-            console.log("UNEXPECTED STATUS", response);
-          }
-        });
+    console.log("made it here with tab", tab);
+    // Tab 3 is the progress spinner. so we either in process of logging in or registering.
+    if (tab === "3") {
+      this.handleUserAction(this.Session.getAuthenticatedUserItem("authMode", "local"));
     }
   }
   setLoginMethod() {
@@ -100,6 +90,47 @@ class ModalLoginPassword extends React.Component {
     } else {
       formData[e.target.id] = e.target.value;
       this.setState(formData);
+    }
+  }
+  handleUserAction(authMode) {
+    switch (authMode) {
+      case "registration":
+        console.log("made it to reg");
+        this.FlowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
+          .then(response => {
+            console.log("UI response", response);
+            if (response.status === "COMPLETED") {
+              window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the reg process.
+            } else {
+              console.log("UNEXPECTED STATUS", response);
+            }
+          });
+          break;
+      case "login":
+        console.log("made it to login");
+        this.FlowHandler.loginUser({ loginData: this.state, flowId: this.props.flowId })
+          .then(response => {
+            if (response.status === "COMPLETED") {
+              window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the login process.
+            } else {
+              console.log("UNEXPECTED STATUS", response);
+            }
+          });
+          break;
+      case "EClogin":
+        console.log("authMode", authMode);
+        break;
+      case "Google":
+          console.log("authMode", authMode);
+          this.FlowHandler.getRequestedSocialProvider({IdP: authMode, flowId: this.props.flowId})
+            .then(idpURL => {
+              console.log("authNURL", idpURL);
+              window.location.assign(idpURL)
+            });
+        
+          break;
+      default:
+        throw "Unexpected authMode for FowHandler.handleUserAction.";
     }
   }
   /* END PING INTEGRATION: */
@@ -132,10 +163,10 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="link" size="sm" className="text-info pl-0" onClick={() => { this.toggleTab('5'); }}>{data.form.buttons.reset_password}</Button>
                   </div>
                   <div className="text-center">
-                    <img src={window._env_.PUBLIC_URL + "/images/SignInEOC-500x109.png"} alt="Facebook" className="social-signup" />
+                    <img onClick={() => { this.handleUserAction("EClogin") }} src={window._env_.PUBLIC_URL + "/images/SignInEOC-500x109.png"} alt="Facebook" className="social-signup" />
                   </div>
                   <div className="text-center">
-                    <img src={window._env_.PUBLIC_URL + "/images/social-signin-google.png"} alt="Google" className="social-signup" />
+                    <img onClick={() => {this.handleUserAction("Google")}} src={window._env_.PUBLIC_URL + "/images/social-signin-google.png"} alt="Google" className="social-signup" />
                   </div>
                 </TabPane>
                 {/* <TabPane tabId="2"> PASSWORDLESS UI. NOT SUPPORTED IN BXR USE CASES.

@@ -10,7 +10,7 @@ Implements methods to integrate with PingOne authentication-related API endpoint
 // Packages
 
 // Components
-import { uuidv4 } from '../Utils/Utils';
+// import { uuidv4 } from '../Utils/Utils';
 
 class PingOneAuthZ {
     authzEndpoint = "/as/authorize";
@@ -32,7 +32,7 @@ class PingOneAuthZ {
     async authorize({ responseType, clientId, redirectURI, scopes }) {
         console.info("PingOneAuthZ.js", "Sending user to the authorize endpoint to start an authN flow and get a flowId.");
 
-        const url = this.authPath + "/" + this.envId + "/as/authorize?response_type=" + responseType + "&client_id=" + clientId + "&redirect_uri=" + redirectURI + "&scope=" + scopes;
+        const url = this.authPath + "/as/authorize?response_type=" + responseType + "&client_id=" + clientId + "&redirect_uri=" + redirectURI + "&scope=" + scopes;
         
         window.location.assign(url);
     }
