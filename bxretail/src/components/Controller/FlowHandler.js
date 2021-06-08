@@ -50,16 +50,13 @@ class FlowHandler {
     */
    async registerUser({regData}) {
        console.info("FlowHandler.js", "Parsing and preparing user registation data.");
-
        const rawPayload = JSON.stringify({
            "username": regData.email,
            "email": regData.email,
-           "given": regData.firstname,
-           "mobilePhone": regData.phone,
            "password": regData.password
        });
+
        const response = await this.Ping1Reg.userRegister({regPayLoad:rawPayload, flowId:regData.flowId});
-       console.log("controller reg response", response);
        const status = await response.status;
        return status; 
    }
@@ -79,7 +76,6 @@ class FlowHandler {
 
         const response = await this.Ping1Reg.userVerify({ regCodePayload: rawPayload, flowId: flowId });
         //TODO do we want to keep this pattern? return status and resumeUrl if "completed", otherwise entire response? Or just error data?
-        console.log("controller code response", response);
         const status = await response.status;
         if (status === "COMPLETED") {
             return {status:status, resumeUrl:response.resumeUrl};
@@ -117,7 +113,6 @@ class FlowHandler {
      * @returns {object} Portion of the response object for a given social provider.
      */
     async getRequestedSocialProvider({IdP, flowId}) {
-        console.log("IdP", arguments);
 
         const response = await this.Ping1AuthN.readAuthNFlowData({flowId: flowId});
         console.log("response", response);
@@ -126,6 +121,21 @@ class FlowHandler {
         const result = resultsArr.find(provider => provider["name"] === IdP);
         console.log("results", result);
         return result._links.authenticate.href;
+    }
+
+    /**
+     * Swap an authZ code for an authZ and ID token.
+     * @param {string} code authorization code from AS.
+     * @param {string} redirectURI App URL user should be redirected to after swap for token.
+     * @returns {object} something here.
+     */
+    async swapCodeForToken({code, redirectURI}) {
+        console.log("args", arguments);
+
+        const response = await this.Ping1AuthZ.getToken({code:code, redirectURI:redirectURI});
+        return response;
+        // const access_token = await response.access_token;
+        // const id_token = await response.id_token;
     }
 }
 export default FlowHandler;
