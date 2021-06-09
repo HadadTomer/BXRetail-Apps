@@ -49,6 +49,7 @@ class NavbarMain extends React.Component {
   triggerModalRegister() {
     this.Session.setAuthenticatedUserItem("authMode", "registration", "local");
     const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
+    //TODO should we move envVars param to controller like get token. Consistent pattern for things UI shouldn't know or care about?
     this.FlowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
     // this.modalRegister.current.toggle(); //Moved to componentDidMount because we have to send them to P1 first.
   }

@@ -130,9 +130,11 @@ class FlowHandler {
      * @returns {object} something here.
      */
     async swapCodeForToken({code, redirectURI}) {
-        console.log("args", arguments);
+        console.info("FlowHandler.js", "Swapping an auth code for an access token.");
 
-        const response = await this.Ping1AuthZ.getToken({code:code, redirectURI:redirectURI});
+        const bauth = this.envVars.REACT_APP_CLIENT + ":" + this.envVars.REACT_APP_RECSET;
+        const swaprods = btoa(bauth);
+        const response = await this.Ping1AuthZ.getToken({code:code, redirectURI:redirectURI, swaprods:swaprods});
         return response;
         // const access_token = await response.access_token;
         // const id_token = await response.id_token;
