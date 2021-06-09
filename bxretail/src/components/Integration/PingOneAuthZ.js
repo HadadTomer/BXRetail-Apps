@@ -36,4 +36,32 @@ class PingOneAuthZ {
         
         window.location.assign(url);
     }
+
+    /**
+     * Get OAuth token.
+     * @param {string} code authorization code from AS.
+     * @param {string} redirectURI App URL user should be redirected to after swap for token.
+     * @returns {object} something here.
+     */
+    async getToken({code, redirectURI}) {
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", "Basic MGI1MDEyNzQtMzZjMC00YzFmLTg3MWYtMjRiY2FiZDBhNDc5OkFOOWtQdHdDeUlrRkxNVndtfmVYRDFxeC1CZkRDZkNha0ZOb1hDOHR+QUdFZS1JeVRaYnYuRElSZmVWbHRRTUw=");
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        let urlencoded = new URLSearchParams();
+        urlencoded.append("grant_type", "authorization_code");
+        urlencoded.append("code", code);
+        urlencoded.append("redirect_uri", redirectURI);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'manual'
+        };
+        const url = this.authPath + "/as/token";
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    }
 } export default PingOneAuthZ;

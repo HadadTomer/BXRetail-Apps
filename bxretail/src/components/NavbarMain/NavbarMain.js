@@ -9,7 +9,7 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap';
-import { Link, NavLink as RRNavLink } from 'react-router-dom';
+import { Link, NavLink as RRNavLink, withRouter } from 'react-router-dom';
 
 // Components
 import ModalRegister from '../ModalRegister';
@@ -24,16 +24,14 @@ import './NavbarMain.scss';
 
 // Data
 import data from './data.json';
-import { faRegistered } from '@fortawesome/free-regular-svg-icons';
+// import { faRegistered } from '@fortawesome/free-regular-svg-icons';
 
 class NavbarMain extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isOpen: false,
       email: "",            /* PING INTEGRATION: */
-      firstname: "",        /* PING INTEGRATION: */
-      phone: "",            /* PING INTEGRATION: */
       password: "",         /* PING INTEGRATION: */
       password_confirm: "", /* PING INTEGRATION: */
       /*login: "",             PING INTEGRATION: */
@@ -97,6 +95,7 @@ class NavbarMain extends React.Component {
     //TODO this is commented out until we have login working.
     // this.Session.protectPage(isLoggedOut, window.location.pathname, this.Session.getAuthenticatedUserItem("bxFinanceUserType"));
 
+    console.log("path", this.props.location.pathname);
     if (window.location.search) {
       const queryParams = new URLSearchParams(window.location.search);
       const flowId = queryParams.get("flowId");
@@ -114,7 +113,13 @@ class NavbarMain extends React.Component {
         // TODO need to process the authCode call and get a token first.
         // This is just being displayed prematurely so we can wrap up happy path reg flow.
         // Or maybe we show modalRegisterConfirm and then make code/token calls??????
-        this.modalRegisterConfirm.current.toggle();
+        const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
+        this.FlowHandler.swapCodeForToken({ code: authCode, redirectURI: redirectURI})
+        .then(response => {
+          this.Session.setAuthenticatedUserItem("AT", response.access_token, "session");
+          this.Session.setAuthenticatedUserItem("IdT", response.id_token, "session");
+          this.props.history.push("shop");
+        });
       }
     }
   }
@@ -238,4 +243,4 @@ class NavbarMain extends React.Component {
   }
 }
 
-export default NavbarMain;
+export default withRouter(NavbarMain);

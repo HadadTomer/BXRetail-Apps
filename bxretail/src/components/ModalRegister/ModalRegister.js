@@ -68,20 +68,21 @@ class ModalRegister extends React.Component {
                     <Input onChange={this.props.handleFormInput} type="email" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
                   </FormGroup>
                   <FormGroup>
-                    <Label for="firstname">{data.form.fields.firstname.label}</Label>
-                    <Input onChange={this.props.handleFormInput} type="text" name="firstname" id="firstname" placeholder={data.form.fields.firstname.placeholder} />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="phone">{data.form.fields.phone.label}</Label>
-                    <Input onChange={this.props.handleFormInput} type="tel" name="phone" id="phone" placeholder={data.form.fields.phone.placeholder} />
-                    <FormText>{data.form.fields.phone.requirements}</FormText>
-                  </FormGroup>
-                </Col>
-                <Col md={6}>
-                  <FormGroup>
                     <Label for="password">{data.form.fields.password.label}</Label>
                     <Input onChange={this.props.handleFormInput} type="password" name="password" id="password" placeholder={data.form.fields.password.placeholder} />
                   </FormGroup>
+                  {/* <FormGroup>
+                    <Label for="firstname">{data.form.fields.firstname.label}</Label>
+                    <Input onChange={this.props.handleFormInput} type="text" name="firstname" id="firstname" placeholder={data.form.fields.firstname.placeholder} />
+                  </FormGroup> */}
+                  {/* <FormGroup>
+                    <Label for="phone">{data.form.fields.phone.label}</Label>
+                    <Input onChange={this.props.handleFormInput} type="tel" name="phone" id="phone" placeholder={data.form.fields.phone.placeholder} />
+                    <FormText>{data.form.fields.phone.requirements}</FormText>
+                  </FormGroup> */}
+                </Col>
+                <Col md={6}>
+                  
                   <FormGroup>
                     <Label for="password_confirm">{data.form.fields.password_confirm.label}</Label>
                     <Input onChange={this.props.handleFormInput} type="password" name="password_confirm" id="password_confirm" placeholder={data.form.fields.password_confirm.placeholder} />
