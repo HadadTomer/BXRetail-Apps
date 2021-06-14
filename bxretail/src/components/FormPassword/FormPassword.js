@@ -11,15 +11,30 @@ class FormPassword extends React.Component {
     super(props);
   }
   componentDidMount () {
-    var eye = document.querySelectorAll(".icon-eye");
-    var inputEye = document.querySelectorAll(".form-password > input");
+    const eye = document.querySelectorAll(".icon-eye");
+    const inputEye = document.querySelectorAll(".form-password > input");
+    let idx;
 
     for(var i=0; i < eye.length; i++){
-      eye[i].addEventListener('mousedown', function(){
-        inputEye[i - 1].type = "text";
+      eye[i].addEventListener('mousedown', function(e){
+        console.log("index 0", inputEye[0]);
+        inputEye.forEach((currentValue, currentIndex) => {
+          if (currentValue.id === e.target.name) {
+            idx = currentIndex;
+            console.log("idx", idx);
+          }
+        });
+        inputEye[idx].type = "text";
       });  
-      eye[i].addEventListener('mouseup', function(){
-        inputEye[i - 1].type = "password";
+      eye[i].addEventListener('mouseup', function(e){
+        console.log("index 1", inputEye[1])
+        inputEye.forEach((currentValue, currentIndex) => {
+          if (currentValue.id === e.target.name) {
+            idx = currentIndex;
+            console.log("idx", idx);
+          }
+        });
+        inputEye[idx].type = "password";
       });
     }
   }
@@ -27,7 +42,7 @@ class FormPassword extends React.Component {
     return (
       <FormGroup className="form-group-light form-password">
         <Label for="password">{this.props.label}</Label>
-        <img src={window._env_.PUBLIC_URL + "/images/icons/password-hide.svg"} alt="password" className="icon-eye" />
+        <img src={window._env_.PUBLIC_URL + "/images/icons/password-hide.svg"} alt="password" name={this.props.name} className="icon-eye" />
         <Input onChange={this.props.handleFormInput} type="password" name={this.props.name} id={this.props.name} placeholder={this.props.placeholder} />
       </FormGroup>
     );
