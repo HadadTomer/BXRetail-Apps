@@ -17,21 +17,17 @@ class FormPassword extends React.Component {
 
     for(var i=0; i < eye.length; i++){
       eye[i].addEventListener('mousedown', function(e){
-        console.log("index 0", inputEye[0]);
         inputEye.forEach((currentValue, currentIndex) => {
           if (currentValue.id === e.target.name) {
             idx = currentIndex;
-            console.log("idx", idx);
           }
         });
         inputEye[idx].type = "text";
       });  
       eye[i].addEventListener('mouseup', function(e){
-        console.log("index 1", inputEye[1])
         inputEye.forEach((currentValue, currentIndex) => {
           if (currentValue.id === e.target.name) {
             idx = currentIndex;
-            console.log("idx", idx);
           }
         });
         inputEye[idx].type = "password";
