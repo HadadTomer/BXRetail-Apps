@@ -53,21 +53,7 @@ class ModalRegister extends React.Component {
       isPopoverOpen: !this.state.isPopoverOpen
     });
   }
-  /* BEGIN PING INTEGRATION: */
-  handleFormInput(e) {
-    //Update state based on the input's Id and value.
-    let formData = {};
-    //If rememberme checkbox, just flip its value.
-    if (e.target.id === "rememberme") {
-      this.setState(previousState => ({
-        rememberme: !previousState.rememberme
-      }))
-    } else {
-      formData[e.target.id] = e.target.value;
-      this.setState(formData);
-    }
-  }
-  /* END PING INTEGRATION: */
+
   render() {
     return (
       <div>
@@ -82,7 +68,7 @@ class ModalRegister extends React.Component {
                     <Label for="email">{data.form.fields.email.label}</Label>
                     <Input onChange={this.props.handleFormInput} type="email" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
                   </FormGroup>
-                  <FormPassword handleFormInput={this.handleFormInput.bind(this)} name="password" label={data.form.fields.password.label} placeholder={data.form.fields.password.placeholder} />
+                  <FormPassword handleFormInput={this.props.handleFormInput} name="password" label={data.form.fields.password.label} placeholder={data.form.fields.password.placeholder} />
                   {/* <FormGroup>
                     <Label for="password">{data.form.fields.password.label}</Label>
                     <Input onChange={this.props.handleFormInput} type="password" name="password" id="password" placeholder={data.form.fields.password.placeholder} />
@@ -98,7 +84,7 @@ class ModalRegister extends React.Component {
                   </FormGroup> */}
                 </Col>
                 <Col md={6}>
-                  <FormPassword handleFormInput={this.handleFormInput.bind(this)} name="password_confirm" label={data.form.fields.password_confirm.label} placeholder={data.form.fields.password_confirm.placeholder} />
+                  <FormPassword handleFormInput={this.props.handleFormInput} name="password_confirm" label={data.form.fields.password_confirm.label} placeholder={data.form.fields.password_confirm.placeholder} />
                   {/* <FormGroup>
                     <Label for="password_confirm">{data.form.fields.password_confirm.label}</Label>
                     <Input onChange={this.props.handleFormInput} type="password" name="password_confirm" id="password_confirm" placeholder={data.form.fields.password_confirm.placeholder} />
