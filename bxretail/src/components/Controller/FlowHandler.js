@@ -13,16 +13,16 @@ Implements methods to integrate with PingOne authentication-related API endpoint
 import PingOneAuthZ from "../Integration/PingOneAuthZ"; /* PING INTEGRATION: */
 import PingOneRegistration from "../Integration/PingOneRegistration"; /* PING INTEGRATION: */
 import PingOneAuthN from "../Integration/PingOneAuthN"; /* PING INTEGRATION: */
-import JSONSearch from "../Utils/JSONSearch"; /* PING INTEGRATION: */
+// import JSONSearch from "../Utils/JSONSearch"; /* PING INTEGRATION: */
 
 class FlowHandler {
 
     constructor() {
         this.envVars = window._env_;
-        this.Ping1AuthZ = new PingOneAuthZ(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
-        this.Ping1Reg = new PingOneRegistration(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
-        this.Ping1AuthN = new PingOneAuthN(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
-        this.JSONSearch = new JSONSearch();
+        this.ping1AuthZ = new PingOneAuthZ(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
+        this.ping1Reg = new PingOneRegistration(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
+        this.ping1AuthN = new PingOneAuthN(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
+        // this.jsonSearch = new JSONSearch();
     }
 
     /**
@@ -40,7 +40,7 @@ class FlowHandler {
 
         const responseType = (grantType === "implicit" ? "token" : "code");
 
-        this.Ping1AuthZ.authorize({responseType:responseType, clientId:clientId, redirectURI:redirectURI, scopes:scopes});
+        this.ping1AuthZ.authorize({responseType:responseType, clientId:clientId, redirectURI:redirectURI, scopes:scopes});
    }
 
    /**
@@ -57,7 +57,7 @@ class FlowHandler {
            "password": regData.password
        });
 
-       const response = await this.Ping1Reg.userRegister({regPayLoad:rawPayload, flowId:regData.flowId});
+       const response = await this.ping1Reg.userRegister({regPayLoad:rawPayload, flowId:regData.flowId});
        const status = await response.status;
        return status; 
    }
@@ -75,7 +75,7 @@ class FlowHandler {
             "verificationCode": regEmailCode
         });
 
-        const response = await this.Ping1Reg.userVerify({ regCodePayload: rawPayload, flowId: flowId });
+        const response = await this.ping1Reg.userVerify({ regCodePayload: rawPayload, flowId: flowId });
         //TODO do we want to keep this pattern? return status and resumeUrl if "completed", otherwise entire response? Or just error data?
         const status = await response.status;
         if (status === "COMPLETED") {
@@ -98,7 +98,7 @@ class FlowHandler {
             "username": loginData.username,
             "password": loginData.password
         });
-        const response = await this.Ping1AuthN.usernamePasswordCheck({ loginPayload: rawPayload, flowId: flowId});
+        const response = await this.ping1AuthN.usernamePasswordCheck({ loginPayload: rawPayload, flowId: flowId});
         const status = await response.status;
         if (status === "COMPLETED") {
             return { status: status, resumeUrl: response.resumeUrl };
@@ -115,7 +115,7 @@ class FlowHandler {
      */
     async getRequestedSocialProvider({IdP, flowId}) {
 
-        const response = await this.Ping1AuthN.readAuthNFlowData({flowId: flowId});
+        const response = await this.ping1AuthN.readAuthNFlowData({flowId: flowId});
         console.log("response", response);
         const resultsArr = await response._embedded.socialProviders;
         console.log("resultsArr", resultsArr);
@@ -135,7 +135,7 @@ class FlowHandler {
 
         const bauth = this.envVars.REACT_APP_CLIENT + ":" + this.envVars.REACT_APP_RECSET;
         const swaprods = btoa(bauth);
-        const response = await this.Ping1AuthZ.getToken({code:code, redirectURI:redirectURI, swaprods:swaprods});
+        const response = await this.ping1AuthZ.getToken({code:code, redirectURI:redirectURI, swaprods:swaprods});
         return response;
         // const access_token = await response.access_token;
         // const id_token = await response.id_token;

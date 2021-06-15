@@ -40,8 +40,8 @@ class ModalLoginPassword extends React.Component {
       password: "",
       rememberme: false
     };
-    this.FlowHandler = new FlowHandler(); /* PING INTEGRATION: */
-    this.Session = new Session(); /* PING INTEGRATION: */
+    this.flowHandler = new FlowHandler(); /* PING INTEGRATION: */
+    this.session = new Session(); /* PING INTEGRATION: */
   }
   onClosed() {
     this.setState({
@@ -73,7 +73,7 @@ class ModalLoginPassword extends React.Component {
     console.log("made it here with tab", tab);
     // Tab 3 is the progress spinner. so we either in process of logging in or registering.
     if (tab === "3") {
-      this.handleUserAction(this.Session.getAuthenticatedUserItem("authMode", "local"));
+      this.handleUserAction(this.session.getAuthenticatedUserItem("authMode", "local"));
     }
 
   }
@@ -101,7 +101,7 @@ class ModalLoginPassword extends React.Component {
     switch (authMode) {
       case "registration":
         console.log("made it to reg");
-        this.FlowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
+        this.flowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
           .then(response => {
             console.log("UI response", response);
             if (response.status === "COMPLETED") {
@@ -113,7 +113,7 @@ class ModalLoginPassword extends React.Component {
           break;
       case "login":
         console.log("made it to login");
-        this.FlowHandler.loginUser({ loginData: this.state, flowId: this.props.flowId })
+        this.flowHandler.loginUser({ loginData: this.state, flowId: this.props.flowId })
           .then(response => {
             if (response.status === "COMPLETED") {
               window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the login process.
@@ -129,7 +129,7 @@ class ModalLoginPassword extends React.Component {
         break;
       case "Google":
           console.log("authMode", authMode);
-          this.FlowHandler.getRequestedSocialProvider({IdP: authMode, flowId: this.props.flowId})
+          this.flowHandler.getRequestedSocialProvider({IdP: authMode, flowId: this.props.flowId})
             .then(idpURL => {
               console.log("authNURL", idpURL);
               window.location.assign(idpURL)

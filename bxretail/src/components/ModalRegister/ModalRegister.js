@@ -41,7 +41,7 @@ class ModalRegister extends React.Component {
       isPopoverOpen: false,
     };
     this.envVars = window._env_;
-    this.FlowHandler = new FlowHandler();
+    this.flowHandler = new FlowHandler();
   }
   toggle() {
     this.setState({
