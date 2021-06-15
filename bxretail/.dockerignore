@@ -15,3 +15,4 @@ msanchez.json
 */entrypoint.sh
 */_tests_
 babel.config.js
+component.template
