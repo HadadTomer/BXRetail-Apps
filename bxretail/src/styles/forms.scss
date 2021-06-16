@@ -22,10 +22,10 @@ form {
       font-style: italic;
     }
   }
-
-  input[type="password"] {
-    background: url("/app/images/icons/password-hide.svg") 95% center no-repeat;
-  }
+  // Was causing duplication of icon with FormPassword.js
+  // input[type="password"] {
+  //   background: url("/app/images/icons/password-hide.svg") 95% center no-repeat;
+  // }
 
   .input-currency {
     position: relative;

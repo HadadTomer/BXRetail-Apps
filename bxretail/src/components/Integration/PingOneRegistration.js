@@ -27,9 +27,6 @@ class PingOneRegistration {
     async userRegister({ regPayload, flowId }) {
         console.info("PingOneRegistration.js", "Registering the user input at PingOne.");
         
-        console.log("regPayload", regPayload);
-        console.log("argTest", arguments[0]["regPayLoad"]);
-        
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/vnd.pingidentity.user.register+json");
 

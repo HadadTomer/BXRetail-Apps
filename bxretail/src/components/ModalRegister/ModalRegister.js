@@ -19,8 +19,8 @@ import {
   PopoverBody,
   FormText
 } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
 // Styles
 import "./ModalRegister.scss";
@@ -29,7 +29,8 @@ import "./ModalRegister.scss";
 import data from './data.json';
 
 // Components
-import FlowHandler from '../Controller/FlowHandler';
+import FormPassword from '../../components/FormPassword';
+import FlowHandler from '../Controller/FlowHandler'; /* PING INTEGRATION: */
 
 class ModalRegister extends React.Component {
 
@@ -67,10 +68,11 @@ class ModalRegister extends React.Component {
                     <Label for="email">{data.form.fields.email.label}</Label>
                     <Input onChange={this.props.handleFormInput} type="email" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
                   </FormGroup>
-                  <FormGroup>
+                  <FormPassword handleFormInput={this.props.handleFormInput} name="password" label={data.form.fields.password.label} placeholder={data.form.fields.password.placeholder} />
+                  {/* <FormGroup>
                     <Label for="password">{data.form.fields.password.label}</Label>
                     <Input onChange={this.props.handleFormInput} type="password" name="password" id="password" placeholder={data.form.fields.password.placeholder} />
-                  </FormGroup>
+                  </FormGroup> */}
                   {/* <FormGroup>
                     <Label for="firstname">{data.form.fields.firstname.label}</Label>
                     <Input onChange={this.props.handleFormInput} type="text" name="firstname" id="firstname" placeholder={data.form.fields.firstname.placeholder} />
@@ -82,12 +84,12 @@ class ModalRegister extends React.Component {
                   </FormGroup> */}
                 </Col>
                 <Col md={6}>
-                  
-                  <FormGroup>
+                  <FormPassword handleFormInput={this.props.handleFormInput} name="password_confirm" label={data.form.fields.password_confirm.label} placeholder={data.form.fields.password_confirm.placeholder} />
+                  {/* <FormGroup>
                     <Label for="password_confirm">{data.form.fields.password_confirm.label}</Label>
                     <Input onChange={this.props.handleFormInput} type="password" name="password_confirm" id="password_confirm" placeholder={data.form.fields.password_confirm.placeholder} />
                     <FormText>{data.form.fields.password_requirements.text}</FormText>
-                  </FormGroup>
+                  </FormGroup> */}
                   {/* CAN'T DO TRUE OPT-IN PASSWORDLESS IN P1 YET. SEE PROFILE MGMT TO OPT-IN FOR PASSWORD + MFA OPT-IN. */}
                   {/* <FormGroup> 
                     <Label for="login">

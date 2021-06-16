@@ -114,6 +114,8 @@ class ModalLoginPassword extends React.Component {
               window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the login process.
             } else {
               console.log("UNEXPECTED STATUS", response);
+              // TODO Check for "code" in this case to get data for error modal. Typically bad username/password combo.
+              // TODO had a status of VERIFICATION_CODE_REQUIRED here to handle. incomplete registration???
             }
           });
           break;

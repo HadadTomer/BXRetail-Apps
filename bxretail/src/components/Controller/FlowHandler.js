@@ -50,6 +50,7 @@ class FlowHandler {
     */
    async registerUser({regData}) {
        console.info("FlowHandler.js", "Parsing and preparing user registation data.");
+       console.log("regData", regData);
        const rawPayload = JSON.stringify({
            "username": regData.email,
            "email": regData.email,
