@@ -71,55 +71,55 @@ class CommunicationPreferences extends React.Component {
                   <Col md={4}>
                     <FormGroup>
                       <Label for="firstname">{data.form.fields.firstname.label}</Label>
-                      <Input type="text" name="firstname" id="firstname" placeholder={data.form.fields.firstname.placeholder} value={data.form.fields.firstname.value} />
+                      <Input type="text" autoComplete="new-firstname" name="firstname" id="firstname" placeholder={data.form.fields.firstname.placeholder} value={data.form.fields.firstname.value} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="lastname">{data.form.fields.lastname.label}</Label>
-                      <Input type="text" name="lastname" id="lastname" placeholder={data.form.fields.lastname.placeholder} value={data.form.fields.lastname.value} />
+                      <Input type="text" autoComplete="new-lastname" name="lastname" id="lastname" placeholder={data.form.fields.lastname.placeholder} value={data.form.fields.lastname.value} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="fullname">{data.form.fields.fullname.label}</Label>
-                      <Input type="text" name="fullname" id="fullname" placeholder={data.form.fields.fullname.placeholder} value={data.form.fields.fullname.value} />
+                      <Input type="text" autoComplete="new-fullname" name="fullname" id="fullname" placeholder={data.form.fields.fullname.placeholder} value={data.form.fields.fullname.value} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="email">{data.form.fields.email.label}</Label>
-                      <Input type="email" name="email" id="email" placeholder={data.form.fields.email.placeholder} value={data.form.fields.email.value} />
+                      <Input type="email" autoComplete="new-email" name="email" id="email" placeholder={data.form.fields.email.placeholder} value={data.form.fields.email.value} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="phone">{data.form.fields.phone.label}</Label>
-                      <Input type="tel" name="phone" id="phone" placeholder={data.form.fields.phone.placeholder} value={data.form.fields.phone.value} />
+                      <Input type="tel" autoComplete="new-phone" name="phone" id="phone" placeholder={data.form.fields.phone.placeholder} value={data.form.fields.phone.value} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="birthdate">{data.form.fields.birthdate.label}</Label>
-                      <Input type="text" name="birthdate" id="birthdate" placeholder={data.form.fields.birthdate.placeholder} value={data.form.fields.birthdate.value} />
+                      <Input type="text" autoComplete="new-birthdate" name="birthdate" id="birthdate" placeholder={data.form.fields.birthdate.placeholder} value={data.form.fields.birthdate.value} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="street">{data.form.fields.street.label}</Label>
-                      <Input type="text" name="street" id="street" placeholder={data.form.fields.street.placeholder} />
+                      <Input type="text" autoComplete="new-street" name="street" id="street" placeholder={data.form.fields.street.placeholder} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="city">{data.form.fields.city.label}</Label>
-                      <Input type="text" name="city" id="city" placeholder={data.form.fields.city.placeholder} />
+                      <Input type="text" autoComplete="new-city" name="city" id="city" placeholder={data.form.fields.city.placeholder} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="zipcode">{data.form.fields.zipcode.label}</Label>
-                      <Input type="text" name="zipcode" id="zipcode" placeholder={data.form.fields.zipcode.placeholder} />
+                      <Input type="text" autoComplete="new-zipcode" name="zipcode" id="zipcode" placeholder={data.form.fields.zipcode.placeholder} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>

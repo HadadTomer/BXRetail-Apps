@@ -61,11 +61,11 @@ class ModalPasswordReset extends React.Component {
                   <h4>{data.titles.reset}</h4>
                   <FormGroup className="form-group-light">
                     <Label for="password">{data.form.fields.password.label}</Label>
-                    <Input type="text" name="password" id="password" placeholder={data.form.fields.password.placeholder} />
+                    <Input autoComplete="off" type="text" name="password" id="password" placeholder={data.form.fields.password.placeholder} />
                   </FormGroup>
                   <FormGroup className="form-group-light">
                     <Label for="password_confirm">{data.form.fields.password_confirm.label}</Label>
-                    <Input type="text" name="password_confirm" id="password_confirm" placeholder={data.form.fields.password_confirm.placeholder} />
+                    <Input autoComplete="off" type="text" name="password_confirm" id="password_confirm" placeholder={data.form.fields.password_confirm.placeholder} />
                   </FormGroup>
                   <div className="mb-3">
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('2'); }}>{data.form.buttons.save}</Button>
