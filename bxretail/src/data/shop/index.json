@@ -75,16 +75,16 @@
         "title": "Add a BXRetail Protection Plan",
         "option1": "Two Years, $69.99",
         "option2": "Three Years, $89.99",
-        "content": "Enhance your manufacturer warranty and get extended coverage  when the warranty ends, including: <ul><li>We make house calls to repair TVs 42\" and larger.</li><li>If your screen has bad pixels, we'll correct it.</li><li>If your TV won't work because of a power surge, we'll fix it.</li><li>You'll never pay for parts and labor on covered repairs. No hidden fees.</li><ul>"
+        "content": "Enhance your manufacturer warranty and get extended coverage when the warranty ends, including: <ul><li>We make house calls to repair TVs 42\" and larger.</li><li>If your screen has bad pixels, we'll correct it.</li><li>If your TV won't work because of a power surge, we'll fix it.</li><li>You'll never pay for parts and labor on covered repairs. No hidden fees.</li><ul>"
       },
       "mounting": {
         "title": "Add Mounting and Professional Services",
         "content": "Hassle-free setup from our BXRetail Installation pros.",
-        "option1": "Delivery + Premium TV Mounting 56\" and  larger (Mount, Connect, and Setup included), $199.00",
-        "option2": "Delivery + TV Connect and Setup 56\" and  larger (Connect and Setup only), $129.00",
+        "option1": "Delivery + Premium TV Mounting 56\" and larger (Mount, Connect, and Setup included), $199.00",
+        "option2": "Delivery + TV Connect and Setup 56\" and larger (Connect and Setup only), $129.00",
         "included": "What’s Included?"
       },
-      "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation. See the options below to schedule your delivery and  Professional Services appointment."
+      "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation. See the options below to schedule your delivery and Professional Services appointment."
     },
     {
       "featured": false,
@@ -104,7 +104,7 @@
         "title": "Add a BXRetail Protection Plan",
         "option1": "Two Years, $6.99",
         "option2": "Three Years, $9.99",
-        "content": "Enhance your manufacturer warranty and get extended coverage  when the warranty ends, including: <ul><li>If your video accessory won’t turn on because of a power surge, we'll fix it.</li><li>If the remote that came with your video accessory stops working, we'll replace it.</li><li>If there's a failure from normal wear and tear, we'll repair it.</li><li>You'll never pay for parts and labor on covered repairs. No hidden fees.</li></ul>"
+        "content": "Enhance your manufacturer warranty and get extended coverage when the warranty ends, including: <ul><li>If your video accessory won’t turn on because of a power surge, we'll fix it.</li><li>If the remote that came with your video accessory stops working, we'll replace it.</li><li>If there's a failure from normal wear and tear, we'll repair it.</li><li>You'll never pay for parts and labor on covered repairs. No hidden fees.</li></ul>"
       },
       "mounting": null,
       "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation including the details of your protection plan."
@@ -144,7 +144,7 @@
     {
       "featured": true,
       "img": "widera.jpg",
-      "title": "Widera Tri-Band Mesh  WiFi Router",
+      "title": "Widera Tri-Band Mesh WiFi Router",
       "stars": "5",
       "price": "$152.99",
       "tax": "(excl. tax)",
