@@ -22,7 +22,7 @@ const AccountsSubnav = (props) => {
               {
                 Object.keys(props.subnav.links).map(key => {
                   return (
-                    <li><Link to={props.subnav.links[key].href} className={ props.subnav.links[key].active ? "active" : "" }>{props.subnav.links[key].title}</Link></li>
+                    <li key={key}><Link to={props.subnav.links[key].href} className={ props.subnav.links[key].active ? "active" : "" }>{props.subnav.links[key].title}</Link></li>
                   );
                 })      
               }
