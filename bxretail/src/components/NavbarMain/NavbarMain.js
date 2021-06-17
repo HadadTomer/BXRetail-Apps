@@ -38,24 +38,24 @@ class NavbarMain extends React.Component {
       flowId: ""            /* PING INTEGRATION: */
     };
 
-    this.Session = new Session(); /* PING INTEGRATION: */
+    this.session = new Session(); /* PING INTEGRATION: */
     this.envVars = window._env_; /* PING INTEGRATION: */
-    this.FlowHandler = new FlowHandler(); /* PING INTEGRATION: */
+    this.flowHandler = new FlowHandler(); /* PING INTEGRATION: */
     this.modalRegister = React.createRef();
     this.modalRegisterConfirm = React.createRef();
     this.modalLoginPassword = React.createRef();
   }
 
   triggerModalRegister() {
-    this.Session.setAuthenticatedUserItem("authMode", "registration", "local");
+    this.session.setAuthenticatedUserItem("authMode", "registration", "local");
     const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
     //TODO should we move envVars param to controller like get token. Consistent pattern for things UI shouldn't know or care about?
-    this.FlowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
+    this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
     // this.modalRegister.current.toggle(); //Moved to componentDidMount because we have to send them to P1 first.
   }
   // Sent as callback to ModalRegister.js
   onModalRegisterSubmit() {
-    this.FlowHandler.registerUser({regData:this.state})
+    this.flowHandler.registerUser({regData:this.state})
       .then(status => {
         if (status === "VERIFICATION_CODE_REQUIRED") { //TODO need to handle status UNIQUENESS_VIOLATION
           this.modalLoginPassword.current.toggle("7");
@@ -72,9 +72,9 @@ class NavbarMain extends React.Component {
     this.refs.modalLogin.toggle();
   } */
   triggerModalLoginPassword() {
-    this.Session.setAuthenticatedUserItem("authMode", "login", "local");
+    this.session.setAuthenticatedUserItem("authMode", "login", "local");
     const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
-    this.FlowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
+    this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
     // this.modalLoginPassword.current.toggle();
   }
   toggle() {
@@ -92,9 +92,9 @@ class NavbarMain extends React.Component {
     });
   }
   componentDidMount() {
-    const isLoggedOut = (this.Session.getAuthenticatedUserItem("subject") === null || this.Session.getAuthenticatedUserItem("subject") === 'undefined') ? true : false;
+    const isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
     //TODO this is commented out until we have login working.
-    // this.Session.protectPage(isLoggedOut, window.location.pathname, this.Session.getAuthenticatedUserItem("bxFinanceUserType"));
+    // this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxFinanceUserType"));
 
     console.log("path", this.props.location.pathname);
     if (window.location.search) {
@@ -105,7 +105,7 @@ class NavbarMain extends React.Component {
       });
       if (flowId) {
         // TODO I think we probably need to clear localStorage after using it here. Validate that.
-        if (this.Session.getAuthenticatedUserItem("authMode", "local") === "login") {
+        if (this.session.getAuthenticatedUserItem("authMode", "local") === "login") {
           this.modalLoginPassword.current.toggle();
         } else {
           this.modalRegister.current.toggle();
@@ -115,10 +115,10 @@ class NavbarMain extends React.Component {
         // This is just being displayed prematurely so we can wrap up happy path reg flow.
         // Or maybe we show modalRegisterConfirm and then make code/token calls??????
         const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
-        this.FlowHandler.swapCodeForToken({ code: authCode, redirectURI: redirectURI})
+        this.flowHandler.swapCodeForToken({ code: authCode, redirectURI: redirectURI})
         .then(response => {
-          this.Session.setAuthenticatedUserItem("AT", response.access_token, "session");
-          this.Session.setAuthenticatedUserItem("IdT", response.id_token, "session");
+          this.session.setAuthenticatedUserItem("AT", response.access_token, "session");
+          this.session.setAuthenticatedUserItem("IdT", response.id_token, "session");
           this.props.history.push("shop");
         });
       }
