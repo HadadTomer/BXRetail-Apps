@@ -105,7 +105,6 @@
 				"title": "Select your Installation Date",
 				"content": "Appointment times can vary and will be scheduled at a later date. Appointment windows are from <strong>8am - 1pm</strong> or <strong>1pm - 5pm</strong>",
 				"date_label": "Choose Your Date",
-				"date_value": "MM/DD/YYYY",
 				"button": "Schedule"
 			}
 		},
@@ -115,9 +114,9 @@
 			"products": "<h4>Your Products::</h4> <p>BXManufacturing Clera 65” 4K UHD LED TV</p><p><a href=\"#\">See Product Details</a></p>",
 			"form": {
 				"title": "Your Appointment",
-				"content": "<ul><li>July 21st between <strong>8am - 1pm</strong> or <strong>1pm - 5pm</strong>.</li><li>An AnyTVPartner representative will be in touch with  you to confirm your availability as we get closer to the date. Contact us at 800.543.2276 to speak with a representative or with any questions.</li></ul>",
+				"time": "between <strong>8am - 1pm</strong> or <strong>1pm - 5pm</strong>.",
+				"confirmation": "An AnyTVPartner representative will be in touch with  you to confirm your availability as we get closer to the date. Contact us at 800.543.2276 to speak with a representative or with any questions.",
 				"date_label": "Choose Your Date",
-				"date_value": "07/21/2020",
 				"date_link": "Learn More about Installation",
 				"button": "Change Appointment"
 			}
