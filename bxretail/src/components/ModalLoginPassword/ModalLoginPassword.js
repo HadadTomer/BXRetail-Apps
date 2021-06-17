@@ -73,7 +73,7 @@ class ModalLoginPassword extends React.Component {
     console.log("made it here with tab", tab);
     // Tab 3 is the progress spinner. so we either in process of logging in or registering.
     if (tab === "3") {
-      this.handleUserAction(this.session.getAuthenticatedUserItem("authMode", "local"));
+      this.handleUserAction(this.session.getAuthenticatedUserItem("authMode", "session"));
     }
 
   }
