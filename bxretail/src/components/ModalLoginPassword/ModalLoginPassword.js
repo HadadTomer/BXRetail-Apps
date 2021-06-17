@@ -55,7 +55,7 @@ class ModalLoginPassword extends React.Component {
       isOpen: !this.state.isOpen
     });
     /* PING INTEGRATION: */
-    //toggle() is only about show/hide modal UIs. Added tab arg
+    // toggle() is only about show/hide modal UIs. Added tab arg
     // and call to toggleTab() because 
     // some uses cases require us to show a different default tabPane.
     if (tab) { 
@@ -66,11 +66,16 @@ class ModalLoginPassword extends React.Component {
     this.setState({
       activeTab: tab
     });
+    // Hack for getting focus on subsequent tab fields.... because reactstrap. :-(
+    if (tab === "5"){document.getElementById("email").focus();} // TODO This is not working and I can't figure out why.
+    if (tab === "7"){document.getElementById("regCode").focus();} 
+    
     console.log("made it here with tab", tab);
     // Tab 3 is the progress spinner. so we either in process of logging in or registering.
     if (tab === "3") {
       this.handleUserAction(this.Session.getAuthenticatedUserItem("authMode", "local"));
     }
+
   }
   setLoginMethod() {
     this.setState({
@@ -140,7 +145,7 @@ class ModalLoginPassword extends React.Component {
     const closeBtn = <div />;
     return (
       <div>
-        <Modal isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} onClosed={this.onClosed.bind(this)} className="modal-login">
+        <Modal autoFocus={false} isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} onClosed={this.onClosed.bind(this)} className="modal-login">
           <ModalHeader toggle={this.toggle.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
             <form>
@@ -149,9 +154,9 @@ class ModalLoginPassword extends React.Component {
                   <h4>{data.titles.welcome}</h4>
                   <FormGroup className="form-group-light">
                     <Label for="username">{data.form.fields.username.label}</Label>
-                    <Input onChange={this.handleFormInput.bind(this)} type="text" name="username" id="username" placeholder={data.form.fields.username.placeholder} />
+                    <Input autoFocus={true} autoComplete="off" onChange={this.handleFormInput.bind(this)} type="text" name="username" id="username" placeholder={data.form.fields.username.placeholder} />
                   </FormGroup>
-                  <FormPassword handleFormInput={this.handleFormInput.bind(this)} name="password" label={data.form.fields.password.label} placeholder={data.form.fields.password.placeholder} />
+                  <FormPassword autoComplete="off" handleFormInput={this.handleFormInput.bind(this)} name="password" label={data.form.fields.password.label} placeholder={data.form.fields.password.placeholder} />
                   <FormGroup className="form-group-light">
                     <CustomInput onChange={this.handleFormInput.bind(this)} type="checkbox" id="rememberme" label={data.form.fields.rememberme.label} />
                   </FormGroup>
@@ -208,11 +213,11 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('6'); }}>{data.form.buttons.recover_username}</Button>
                   </div>
                 </TabPane> */}
-                <TabPane tabId="5"> {/* Password reset UI. */}
+                <TabPane tabId="5"> {/* Password reset UI. This is toggling a tab that doesn't exist. */}
                   <h4>{data.form.buttons.recover_password}</h4>
                   <FormGroup className="form-group-light">
                     <Label for="email">{data.form.fields.email.label}</Label>
-                    <Input type="text" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
+                    <Input onChange={this.handleFormInput.bind(this)} autoFocus={true} autoComplete="off" type="text" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
                   </FormGroup>
                   <div className="mb-3">
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('6'); }}>{data.form.buttons.recover_password}</Button>
@@ -228,7 +233,7 @@ class ModalLoginPassword extends React.Component {
                   <h4>{data.form.buttons.reg_verification}</h4>
                   <FormGroup className="form-group-light">
                     <Label for="regCode">{data.form.fields.regVerification.label}</Label>
-                    <Input onChange={this.handleFormInput.bind(this)} type="text" name="regCode" id="regCode" placeholder={data.form.fields.regVerification.placeholder} />
+                    <Input onChange={this.handleFormInput.bind(this)} autoFocus={true} autoComplete="off" type="text" name="regCode" id="regCode" placeholder={data.form.fields.regVerification.placeholder} />
                   </FormGroup>
                   <div className="mb-3">
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('3'); }}>{data.form.buttons.reg_verification}</Button>

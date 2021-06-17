@@ -39,7 +39,7 @@ class FormPassword extends React.Component {
       <FormGroup className="form-group-light form-password">
         <Label for="password">{this.props.label}</Label>
         <img src={window._env_.PUBLIC_URL + "/images/icons/password-hide.svg"} alt="password" name={this.props.name} className="icon-eye" />
-        <Input onChange={this.props.handleFormInput} type="password" name={this.props.name} id={this.props.name} placeholder={this.props.placeholder} />
+        <Input onChange={this.props.handleFormInput} autoComplete="off" type="password" name={this.props.name} id={this.props.name} placeholder={this.props.placeholder} />
       </FormGroup>
     );
   }
