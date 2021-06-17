@@ -84,7 +84,7 @@
         "option2": "Delivery + TV Connect and Setup 56\" and  larger (Connect and Setup only), $129.00",
         "included": "What’s Included?"
       },
-      "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation. See the options below to schedule your delivery and  Professional Services appointment."
+      "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation. See the options below to schedule your delivery and Professional Services appointment."
     },
     {
       "featured": false,
@@ -173,7 +173,13 @@
     },
     "confirmation": {
       "title": "Purchase Confirmed",
-      "buttons": {
+      "subtitle": "Schedule Your Professional Services",
+      "scheduleDescription": "Contact our professional services partner at AnyTVPartner to schedule your delivery to 63456.",
+      "scheduleButtons": {
+        "call": "Call to Schedule: 800.232.5440",
+        "online": "Schedule Online"
+      },
+      "consentButtons": {
         "cancel": "Cancel",
         "save": "Save"
       }

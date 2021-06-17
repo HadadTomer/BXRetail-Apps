@@ -443,8 +443,23 @@ class Shop extends React.Component {
                       </Col>
                     </Row>
                   </Col>
+                  <Col md={4}>
+                  </Col>
                 </Row>
-                <img alt='' src={window._env_.PUBLIC_URL + "/images/shop-confirmation-footer.png"} className="confirmation-footer" onClick={() => { this.toggleTabConfirmation('2'); }} />
+                {this.state.selectedItem.mounting !== null && (
+                  <Row className="bg-light p-4">
+                    <Col md={7}>
+                      <h4>{data.modal.confirmation.subtitle}</h4>
+                      <p dangerouslySetInnerHTML={{__html: data.modal.confirmation.scheduleDescription}}></p>
+                    </Col>
+                    <Col md={5}>
+                      <div className="text-right mt-4" style={{ paddingTop:"70px" }}>
+                        <Button type="button" color="link">{data.modal.confirmation.scheduleButtons.call}</Button>
+                        <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTabConfirmation('2'); }}>{data.modal.confirmation.scheduleButtons.online}</Button>
+                      </div>
+                    </Col>
+                  </Row>
+                )}
               </TabPane>
               <TabPane tabId="2">
                 <p className="text-center mt-4">
@@ -481,8 +496,8 @@ class Shop extends React.Component {
                   </Col>
                 </Row>
                 <div className="text-right mt-2 mr-4 mb-4">
-                  <Button type="button" color="link" onClick={() => { this.toggleTabConfirmation('1'); }}>{data.modal.confirmation.buttons.cancel}</Button>
-                  <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTabConfirmation('3'); }}>{data.modal.confirmation.buttons.save}</Button>
+                  <Button type="button" color="link" onClick={() => { this.toggleTabConfirmation('1'); }}>{data.modal.confirmation.consentButtons.cancel}</Button>
+                  <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTabConfirmation('3'); }}>{data.modal.confirmation.consentButtons.save}</Button>
                 </div>
               </TabPane>
               <TabPane tabId="3">
