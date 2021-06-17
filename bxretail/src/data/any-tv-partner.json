@@ -114,7 +114,7 @@
 			"products": "<h4>Your Products::</h4> <p>BXManufacturing Clera 65” 4K UHD LED TV</p><p><a href=\"#\">See Product Details</a></p>",
 			"form": {
 				"title": "Your Appointment",
-				"time": "between <strong>8am - 1pm</strong> or <strong>1pm - 5pm.</strong>",
+				"time": "between <strong>8am - 1pm</strong> or <strong>1pm - 5pm</strong>.",
 				"confirmation": "An AnyTVPartner representative will be in touch with  you to confirm your availability as we get closer to the date. Contact us at 800.543.2276 to speak with a representative or with any questions.",
 				"date_label": "Choose Your Date",
 				"date_link": "Learn More about Installation",
