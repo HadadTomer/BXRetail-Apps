@@ -47,7 +47,7 @@ class NavbarMain extends React.Component {
   }
 
   triggerModalRegister() {
-    this.session.setAuthenticatedUserItem("authMode", "registration", "local");
+    this.session.setAuthenticatedUserItem("authMode", "registration", "session");
     const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
     //TODO should we move envVars param to controller like get token. Consistent pattern for things UI shouldn't know or care about?
     this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
@@ -72,7 +72,7 @@ class NavbarMain extends React.Component {
     this.refs.modalLogin.toggle();
   } */
   triggerModalLoginPassword() {
-    this.session.setAuthenticatedUserItem("authMode", "login", "local");
+    this.session.setAuthenticatedUserItem("authMode", "login", "session");
     const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
     this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
     // this.modalLoginPassword.current.toggle();
@@ -105,7 +105,7 @@ class NavbarMain extends React.Component {
       });
       if (flowId) {
         // TODO I think we probably need to clear localStorage after using it here. Validate that.
-        if (this.session.getAuthenticatedUserItem("authMode", "local") === "login") {
+        if (this.session.getAuthenticatedUserItem("authMode", "session") === "login") {
           this.modalLoginPassword.current.toggle();
         } else {
           this.modalRegister.current.toggle();
