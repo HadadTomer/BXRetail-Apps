@@ -1,5 +1,6 @@
 // Packages
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Button, Jumbotron, Container, Row, Col } from 'reactstrap';
 
 // Components
@@ -27,7 +28,7 @@ class Home extends React.Component {
               <Col md="5" className="electronics" style={{backgroundImage: `url(${window._env_.PUBLIC_URL}/images/home-hero-electronics-bg.jpg)`}}>
                 <h2>{data.hero.electronics.title}</h2>
                 <p>{data.hero.electronics.content}</p>
-                <a href="/shop" className="btn btn-primary">{data.hero.electronics.button}</a>
+                <a href="" onClick={()=>{this.props.history.push("shop")}} className="btn btn-primary">{data.hero.electronics.button}</a>
               </Col>
               <Col md="7" className="office" style={{backgroundImage: `url(${window._env_.PUBLIC_URL}/images/home-hero-office-bg.png)`}}>
                 <div className="office-content">
@@ -80,4 +81,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default withRouter(Home);
