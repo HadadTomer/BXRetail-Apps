@@ -200,7 +200,7 @@ class ModalLoginPassword extends React.Component {
                     <p>{data.mobile.loading}</p>
                   </div>
                   <div className="mt-4 text-center">
-                    <Button type="button" color="link" size="sm" className="text-info" onClick={this.toggle.bind(this)}>{data.form.buttons.help}</Button>
+                    <Button type="button" color="link" size="sm" className="text-info">{data.form.buttons.help}</Button>
                   </div>
                 </TabPane>
                 {/* <TabPane tabId="4"> USERNAME RECOVERY UI. PINGONE DOESN'T SUPPORT THIS TODAY.

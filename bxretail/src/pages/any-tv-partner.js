@@ -32,9 +32,10 @@ class AnyTVPartner extends React.Component {
     this.state = {
       isOpen: false,
       step: 1,
+      selectedDate: null,
     };
-
     this.showStep2 = this.showStep2.bind(this);
+    this.changeAppointment = this.changeAppointment.bind(this);
   }
   toggle() {
     this.setState({
@@ -46,6 +47,20 @@ class AnyTVPartner extends React.Component {
       step: 2
     });
   }
+  datePicker(event) {
+    this.setState({
+      selectedDate: event.target.value
+    });
+  }
+  changeAppointment() {
+    var element =  document.getElementById("date");
+    var date = element.value;
+    this.setState({
+      selectedDate: date
+    });
+    element.value = null;
+  }
+
   render() {
     return (
       <div className="any-tv-partner">
@@ -165,7 +180,7 @@ class AnyTVPartner extends React.Component {
                       <Col lg="4">
                         <FormGroup>
                           <Label for="date">{data.installation.step_1.form.date_label}</Label>
-                          <Input type="date" name="date" id="date" value={data.installation.step_1.form.date_value} />
+                          <Input type="date" name="date" id="date" value={this.state.selectedDate} onChange={ this.datePicker.bind(this) }/>
                         </FormGroup>
                       </Col>
                       <Col lg="3">
@@ -196,17 +211,18 @@ class AnyTVPartner extends React.Component {
                     <Row className="row-form bg-light">
                       <Col lg="4">
                         <h5>{data.installation.step_2.form.title}</h5>
-                        <p dangerouslySetInnerHTML={{__html: data.installation.step_2.form.content}}></p>
+                        <p dangerouslySetInnerHTML={{__html: new Date(this.state.selectedDate.split('-')).toDateString() + " " + data.installation.step_2.form.time}}></p>
+                        <p dangerouslySetInnerHTML={{__html: data.installation.step_2.form.confirmation}}></p>
                       </Col>
                       <Col lg="4">
                         <FormGroup>
                           <Label for="date">{data.installation.step_2.form.date_label}</Label>
-                          <Input type="date" name="date" id="date" value={data.installation.step_2.form.date_value} />
+                          <Input type="date" name="date" id="date"/>
                         </FormGroup>
                         <a href="#">{data.installation.step_2.form.date_link}</a>
                       </Col>
                       <Col lg="3">
-                        <Button color="primary">{data.installation.step_2.form.button}</Button>
+                        <Button color="primary" onClick={ this.changeAppointment }>{data.installation.step_2.form.button}</Button>
                       </Col>
                     </Row>
                   </div>

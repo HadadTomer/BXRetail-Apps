@@ -84,7 +84,7 @@
         "option2": "Delivery + TV Connect and Setup 56\" and  larger (Connect and Setup only), $129.00",
         "included": "What’s Included?"
       },
-      "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation. See the options below to schedule your delivery and  Professional Services appointment."
+      "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation. See the options below to schedule your delivery and Professional Services appointment."
     },
     {
       "featured": false,
@@ -104,7 +104,8 @@
         "title": "Add a BXRetail Protection Plan",
         "option1": "Two Years, $6.99",
         "option2": "Three Years, $9.99",
-        "content": "Enhance your manufacturer warranty and get extended coverage  when the warranty ends, including: <ul><li>If your video accessory won’t turn on because of a power surge, we'll fix it.</li><li>If the remote that came with your video accessory stops working, we'll replace it.</li><li>If there's a failure from normal wear and tear, we'll repair it.</li><li>You'll never pay for parts and labor on covered repairs. No hidden fees.</li></ul>"
+        "content": "Enhance your manufacturer warranty and get extended coverage  when the warranty ends, including: <ul><li>If your video accessory won’t turn on because of a power surge, we'll fix it.</li><li>If the remote that came with your video accessory stops working, we'll replace it.</li><li>If there's a failure from normal wear and tear, we'll repair it.</li><li>You'll never pay for parts and labor on covered repairs. No hidden fees.</li></ul>",
+        "included": "What's Included?"
       },
       "mounting": null,
       "confirmationSubtitle": "Thanks for your purchase. You'll receive an email confirmation including the details of your protection plan."
@@ -169,13 +170,44 @@
       "buttons": {
         "update": "Update Total",
         "checkout": "Checkout"
+      },
+      "labels": {
+        "subtotal": "Subtotal",
+        "salesTax": "Sales Tax (MO)",
+        "finalTotal": "Final Total"
+      },
+      "paymentOptions": {
+        "title": "Pay With",
+        "option1": "BXRetail Visa Card (...4899) ",
+        "option2": "PayPal",
+        "option3": "Another Payment Method (Choose)"
       }
+    },
+    "loading": {
+      "title": "Please check your trusted mobile device to approve this transaction.",
+      "help": "What is this?"
     },
     "confirmation": {
       "title": "Purchase Confirmed",
-      "buttons": {
+      "subtitle": "Schedule Your Professional Services",
+      "scheduleDescription": "Contact our professional services partner at AnyTVPartner to schedule your delivery to 63456.",
+      "scheduleButtons": {
+        "call": "Call to Schedule: 800.232.5440",
+        "online": "Schedule Online"
+      },
+      "consents":{
+        "description1": "BXRetail partners with AnyTVPartner for Professional Services installations like yours.",
+        "description2": "To begin scheduling your appointment, we need you to approve sharing of your contact info with AnyTVPartner, so they can work directly with you.",
+        "description3": "Please review these settings below.",
+        "iAgree": "I consent to BXRetail sharing with AnyTVPartner:",
+        "phoneLabel": "My Phone Number",
+        "emailLabel": "My Email Address",
+        "confirmation": "BXRetail is now approved to share the following with our Professional Services partner AnyTVPartner:"
+      },
+      "consentButtons": {
         "cancel": "Cancel",
-        "save": "Save"
+        "save": "Save",
+        "changeSettings": "Change Settings"
       }
     }
   }
