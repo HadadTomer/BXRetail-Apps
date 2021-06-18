@@ -189,17 +189,12 @@
     },
     "confirmation": {
       "title": "Purchase Confirmed",
-<<<<<<< HEAD
-      "paymentMethod": " (Charged to BXRetail Visa ...4884)",
-=======
->>>>>>> 169889e (Replaced image for scheduling delivery on checkout confirmation. Eliminated scheduling altogether on stream stick.)
       "subtitle": "Schedule Your Professional Services",
       "scheduleDescription": "Contact our professional services partner at AnyTVPartner to schedule your delivery to 63456.",
       "scheduleButtons": {
         "call": "Call to Schedule: 800.232.5440",
         "online": "Schedule Online"
       },
-<<<<<<< HEAD
       "consents":{
         "description1": "BXRetail partners with AnyTVPartner for Professional Services installations like yours.",
         "description2": "To begin scheduling your appointment, we need you to approve sharing of your contact info with AnyTVPartner, so they can work directly with you.",
@@ -209,8 +204,6 @@
         "emailLabel": "My Email Address",
         "confirmation": "BXRetail is now approved to share the following with our Professional Services partner AnyTVPartner:"
       },
-=======
->>>>>>> 169889e (Replaced image for scheduling delivery on checkout confirmation. Eliminated scheduling altogether on stream stick.)
       "consentButtons": {
         "cancel": "Cancel",
         "save": "Save",
