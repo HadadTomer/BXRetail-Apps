@@ -211,7 +211,7 @@ class AnyTVPartner extends React.Component {
                     <Row className="row-form bg-light">
                       <Col lg="4">
                         <h5>{data.installation.step_2.form.title}</h5>
-                        <p dangerouslySetInnerHTML={{__html: this.state.selectedDate + " " + data.installation.step_2.form.time}}></p>
+                        <p dangerouslySetInnerHTML={{__html: new Date(this.state.selectedDate.split('-')).toDateString() + " " + data.installation.step_2.form.time}}></p>
                         <p dangerouslySetInnerHTML={{__html: data.installation.step_2.form.confirmation}}></p>
                       </Col>
                       <Col lg="4">
