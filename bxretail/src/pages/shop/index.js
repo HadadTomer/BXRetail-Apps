@@ -387,9 +387,15 @@ class Shop extends React.Component {
                     <Row>
                       <Col md={6}>
                         <FormGroup>
+<<<<<<< HEAD
                           <CustomInput type="radio" name="cart_options" checked label={data.modal.cart.paymentOptions.option1} />
                           <CustomInput type="radio" name="cart_options" className="mt-2" label={data.modal.cart.paymentOptions.option2} />
                           <CustomInput type="radio" name="cart_options" className="mt-2" label={data.modal.cart.paymentOptions.option3} />
+=======
+                          <CustomInput readOnly id="cart_options" type="radio" name="cart_options" checked label="BXRetail Visa Card (...4899) " />
+                          <CustomInput id="cart_options" type="radio" name="cart_options" className="mt-2" label="PayPal" />
+                          <CustomInput id="cart_options" type="radio" name="cart_options" className="mt-2" label="Another Payment Method (Choose)" />
+>>>>>>> 49cf74af09e58aac223056fd325a517e4cc774dd
                         </FormGroup>
                       </Col>
                       <Col md={3} className="text-right">
@@ -657,6 +663,7 @@ class Shop extends React.Component {
                     </FormGroup>
                     */}
                     <FormGroup>
+<<<<<<< HEAD
                       <Label>{data.modal.confirmation.consents.phoneLabel}</Label>
                       <CustomInput type="radio" name="phone" label="Yes" />
                       <CustomInput type="radio" name="phone" checked label="No" />
@@ -665,6 +672,16 @@ class Shop extends React.Component {
                       <Label>{data.modal.confirmation.consents.emailLabel}</Label>
                       <CustomInput type="radio" name="email" label="Yes" />
                       <CustomInput type="radio" name="email" checked label="No" />
+=======
+                      <Label>My Phone Number</Label>
+                      <CustomInput id="phone" type="radio" name="phone" label="Yes" />
+                      <CustomInput id="phone" type="radio" name="phone" checked label="No" />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label>My Email Address</Label>
+                      <CustomInput id="email" type="radio" name="email" label="Yes" />
+                      <CustomInput id="email" type="radio" name="email" checked label="No" />
+>>>>>>> 49cf74af09e58aac223056fd325a517e4cc774dd
                     </FormGroup>
                   </Col>
                 </Row>
@@ -689,6 +706,7 @@ class Shop extends React.Component {
                   </FormGroup>
                   */}
                   <FormGroup>
+<<<<<<< HEAD
                     <Label>{data.modal.confirmation.consents.phoneLabel}</Label>
                     <CustomInput type="radio" name="phone2" label="Yes" />
                     <CustomInput type="radio" name="phone2" checked label="No" />
@@ -697,6 +715,16 @@ class Shop extends React.Component {
                     <Label>{data.modal.confirmation.consents.emailLabel}</Label>
                     <CustomInput type="radio" name="email2" label="Yes" />
                     <CustomInput type="radio" name="email2" checked label="No" />
+=======
+                    <Label>My Phone Number</Label>
+                    <CustomInput id="phone2" type="radio" name="phone2" label="Yes" />
+                    <CustomInput id="phone2" type="radio" name="phone2" checked label="No" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>My Email Address</Label>
+                    <CustomInput id="email2" type="radio" name="email2" label="Yes" />
+                    <CustomInput id="email2" type="radio" name="email2" checked label="No" />
+>>>>>>> 49cf74af09e58aac223056fd325a517e4cc774dd
                   </FormGroup>
                   <div className="text-right mt-3">
                     <Button type="button" color="primary" onClick={() => { this.toggleTabConfirmation('2'); }}>{data.modal.confirmation.consentButtons.changeSettings}</Button>
