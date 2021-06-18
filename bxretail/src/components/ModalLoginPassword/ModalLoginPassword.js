@@ -137,7 +137,7 @@ class ModalLoginPassword extends React.Component {
         
           break;
       default:
-        throw "Unexpected authMode for FowHandler.handleUserAction.";
+        throw new Error("Unexpected authMode for FowHandler.handleUserAction.");
     }
   }
   /* END PING INTEGRATION: */
