@@ -44,6 +44,7 @@ class NavbarMain extends React.Component {
     this.modalRegister = React.createRef();
     this.modalRegisterConfirm = React.createRef();
     this.modalLoginPassword = React.createRef();
+    this.toggleCart = this.props.toggleCart;
   }
 
   triggerModalRegister() {
@@ -88,8 +89,15 @@ class NavbarMain extends React.Component {
     let formData = {};
     formData[e.target.id] = e.target.value;
     this.setState(formData, () => {
-      //console.log("STATE:", this.state);
     });
+  }
+  showCart(myProps) {
+    if (window.location.pathname === "/app/shop" ) {
+      console.log("were already on shopping page");
+      this.toggleCart("2");
+    } else {
+      myProps.history.push("shop");
+    }
   }
   componentDidMount() {
     const isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
@@ -143,7 +151,7 @@ class NavbarMain extends React.Component {
                   <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} /></NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} /></NavLink>
+                  <NavLink onClick={()=>{this.showCart(this.props)}}><img src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} /></NavLink>
                 </NavItem>
                 <NavItem className="login">
                   <NavLink href="#" onClick={this.triggerModalLoginPassword.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>

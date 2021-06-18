@@ -177,6 +177,13 @@
         "cancel": "Cancel",
         "save": "Save"
       }
+    },
+    "prompt": {
+      "title": "Checkout as Guest or Sign In?",
+      "buttons" : {
+        "signin": "Sign in",
+        "checkout": "Checkout as guest"
+      }
     }
   }
 }
