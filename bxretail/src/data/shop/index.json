@@ -209,6 +209,13 @@
         "save": "Save",
         "changeSettings": "Change Settings"
       }
+    },
+    "prompt": {
+      "title": "Checkout as Guest or Sign In?",
+      "buttons" : {
+        "signin": "Sign in",
+        "checkout": "Checkout as guest"
+      }
     }
   }
 }

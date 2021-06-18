@@ -66,7 +66,7 @@ class ModalLoginPassword extends React.Component {
     this.setState({
       activeTab: tab
     });
-    // Hack for getting focus on subsequent tab fields.... because reactstrap. :-(
+    // HACK for getting focus on subsequent tab fields.... because reactstrap. :-(
     if (tab === "5"){document.getElementById("email").focus();} // TODO This is not working and I can't figure out why.
     if (tab === "7"){document.getElementById("regCode").focus();} 
     

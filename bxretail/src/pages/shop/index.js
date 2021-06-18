@@ -1,10 +1,12 @@
 import React from 'react'
-import { Container, Row, Col, Button, Modal,
+import {
+  Container, Row, Col, Button, Modal,
   ModalHeader,
   TabContent, TabPane, Badge,
   ModalBody,
   FormGroup,
-  CustomInput, Input, Label } from 'reactstrap';
+  CustomInput, Input, Label
+} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,10 +17,13 @@ import FooterMain from '../../components/FooterMain';
 import AccountsSubnav from '../../components/AccountsSubnav';
 import AccountsDropdown from '../../components/AccountsDropdown';
 // import AccountsSectionNav from '../../components/AccountsSectionNav';
+import Session from "../../components/Utils/Session"; /* PING INTEGRATION: */
+import FlowHandler from '../../components/Controller/FlowHandler';
 
 // Data
 import data from '../../data/shop/index.json';
- 
+import profileData from "../../data/dashboard/settings/profile.json"; /* PING INTEGRATION: */
+
 // Styles
 import "../../styles/pages/shop.scss";
 
@@ -30,12 +35,17 @@ class Shop extends React.Component {
       activeTab: '1',
       isOpenLoading: false,
       isOpenConfirmation: false,
+      isOpenCheckoutPrompt: false, /* PING INTEGRATION: */
       activeTabConfirmation: '1',
       selectedItem: {
         protection: {},
         mounting: {}
       }
     };
+    this.session = new Session(); /* PING INTEGRATION: */
+    this.isLoggedOut = true; /* PING INTEGRATION: */ //TODO does this really need to be a class variable???
+    this.flowHandler = new FlowHandler(); /* PING INTEGRATION: */
+    this.envVars = window._env_; /* PING INTEGRATION: */
   }
   onClosed() {
     this.setState({
@@ -51,7 +61,7 @@ class Shop extends React.Component {
     this.setState({
       isOpen: !this.state.isOpen,
       selectedItem: item
-    });
+    }, () => { this.session.setAuthenticatedUserItem("cart", JSON.stringify(this.state.selectedItem), "local");});
   }
   toggleLoading() {
     this.setState({
@@ -66,7 +76,9 @@ class Shop extends React.Component {
   toggleTab(tab) {
     this.setState({
       activeTab: tab
-    });
+    }, () => {
+      console.log("toggletab state", this.state);
+    }); 
   }
   toggleTabConfirmation(tab) {
     this.setState({
@@ -74,19 +86,88 @@ class Shop extends React.Component {
     });
   }
   onApproval() {
+    console.log("cart total", this.state.selectedItem.price);
     let self = this;
     this.toggle();
-    this.toggleLoading();
-    setTimeout(function() {
-      self.toggleLoading();
+    let cost = this.state.selectedItem.price;
+    cost = cost.replace(/\$|,/gi,"");
+    console.log("cost", cost);
+    if (parseFloat(cost) >= 1000.00 ) {
+      console.log("need approval");
+      this.toggleLoading();
+      setTimeout(function () {
+        self.toggleLoading();
+        self.toggleConfirmation();
+      }, 3000);
+    } else {
+      console.log("no approval");
       self.toggleConfirmation();
-    }, 3000);
+    }
   }
+
+  /* BEGIN PING INTEGRATION: */
+  toggleCheckoutPrompt() {
+    console.log("toggleCheckoutPrompt clicked");
+    this.setState({
+      isOpenCheckoutPrompt: !this.state.isOpenCheckoutPrompt
+    });
+  }
+
+  signInToCheckout() {
+    this.session.setAuthenticatedUserItem("authMode", "login", "session");
+    const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
+    this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
+  }
+
+  updateProfile() {
+    this.setState({ acctVerified: true }, () => {
+      //TODO call to flowHandler here. Depending on error handling, maybe call local function that wraps call to flowHandler.
+      this.toggleTab("2");
+    });
+  }
+
+  checkout() {
+    if (!this.isLoggedOut) {
+      console.log("we're logged in");
+      if (this.state.acctVerified) {
+        console.log("and acct verified");
+        this.onApproval();
+      } else {
+        //TODO Read user attributes and Display tab 3. User adds/updates profile.
+        console.log("but acct not verified");
+        this.toggleTab("3");
+      }
+      
+      // TODO Clicking save of tab 3 updates user.
+      // Toggle back to Order summary tab again.
+      // TODO check here for cart total. 
+      // If aboev threshold toggle the loading modal and do BXF CIBA call.
+      // this.toggleLoading();
+      //  TODO if approved, toggle loading and confirmation
+      // this.toggleLoading();
+      // this.toggleConfirmation();
+    } else {
+      console.log("we're not logged in");
+      this.toggle();
+      this.toggleCheckoutPrompt();
+    }
+  }
+  
+  componentDidMount() {
+    this.isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
+    const hasCartInStorage = (this.session.getAuthenticatedUserItem("cart", "local") === null || this.session.getAuthenticatedUserItem("cart", "local") === 'undefined') ? false : true;
+    if (hasCartInStorage) {
+      console.log("We have a cart");
+      this.addToCart(JSON.parse(this.session.getAuthenticatedUserItem("cart", "local")));
+    }
+  }
+  /* END PING INTEGRATION: */
+
   render() {
     const closeBtn = <div />;
-    return(
+    return (
       <div className="dashboard accounts accounts-overview shop">
-        <NavbarMain />
+        <NavbarMain toggleCart={this.toggleTab} />
         <WelcomeBar />
         <Container>
           <div className="inner">
@@ -96,7 +177,7 @@ class Shop extends React.Component {
                   return (
                     <AccountsSubnav key={data.subnav[key].title} subnav={data.subnav[key]} />
                   );
-                })      
+                })
               }
               <div className="text-center mt-4">
                 <p><strong>Shop at our Extraordinary Club Partners</strong></p>
@@ -115,18 +196,18 @@ class Shop extends React.Component {
               </div>
               <div className="module">
                 <Row>
-                {data.productsClickable.map((item, i) => {
+                  {data.productsClickable.map((item, i) => {
                     return (
                       <Col md={4} key={i}>
                         <div className="product">
                           {item.featured &&
                             <Badge color="primary">Best Value</Badge>
                           }
-                          <img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + item.img } className="img-fluid" />
+                          <img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + item.img} className="img-fluid" />
                           <h5>{item.title}</h5>
                           <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + item.stars + ".svg"} />
                           <p className="price">{item.price} <small>{item.tax}</small></p>
-                          <p dangerouslySetInnerHTML={{__html: item.content}}></p>
+                          <p dangerouslySetInnerHTML={{ __html: item.content }}></p>
                           <Button color="primary" onClick={() => this.addToCart(item)}><img alt='' src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} /> {item.button}</Button>
                         </div>
                       </Col>
@@ -139,11 +220,11 @@ class Shop extends React.Component {
                           {item.featured &&
                             <Badge color="primary">Best Value</Badge>
                           }
-                          <img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + item.img } className="img-fluid" />
+                          <img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + item.img} className="img-fluid" />
                           <h5>{item.title}</h5>
                           <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/stars-" + item.stars + ".svg"} />
                           <p className="price">{item.price} <small>{item.tax}</small></p>
-                          <p dangerouslySetInnerHTML={{__html: item.content}}></p>
+                          <p dangerouslySetInnerHTML={{ __html: item.content }}></p>
                           <Button color="primary"><img alt='' src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} /> {item.button}</Button>
                         </div>
                       </Col>
@@ -151,20 +232,20 @@ class Shop extends React.Component {
                   })}
                 </Row>
               </div>
-              <img alt='' src={window._env_.PUBLIC_URL + "/images/products/pagination.png" } className="img-fluid mb-3" />
+              <img alt='' src={window._env_.PUBLIC_URL + "/images/products/pagination.png"} className="img-fluid mb-3" />
             </div>
           </div>
         </Container>
         <FooterMain />
         {/* Cart */}
-        <Modal isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} onClosed={this.onClosed.bind(this)} className="modal-xl modal-shop" centered="true">
+        <Modal isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} onClosed={this.onClosed.bind(this)} className="modal-xl modal-shop" centered={true}>
           <ModalBody>
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId="1">
                 <Row>
                   <Col>
                     <h4>
-                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/check-blue-circle.svg" } className="mx-3" />
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/icons/check-blue-circle.svg"} className="mx-3" />
                       {data.modal.product.title}
                     </h4>
                   </Col>
@@ -174,7 +255,7 @@ class Shop extends React.Component {
                   </Col>
                 </Row>
                 <Row className="p-4 pt-md-0">
-                  <Col md={5} className="text-center"><img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + this.state.selectedItem.img } className="img-fluid img-product" /></Col>
+                  <Col md={5} className="text-center"><img alt='' src={window._env_.PUBLIC_URL + "/images/products/" + this.state.selectedItem.img} className="img-fluid img-product" /></Col>
                   <Col md={7} className="my-auto">
                     <div className="product">
                       <h5>{this.state.selectedItem.title}</h5>
@@ -190,15 +271,15 @@ class Shop extends React.Component {
                 <Row className="bg-light p-4">
                   <Col md={7}>
                     <h4>{this.state.selectedItem.protection.title}</h4>
-                    <p dangerouslySetInnerHTML={{__html: this.state.selectedItem.protection.content}}></p>
+                    <p dangerouslySetInnerHTML={{ __html: this.state.selectedItem.protection.content }}></p>
                   </Col>
                   <Col md={5} className="my-auto">
                     <FormGroup className="mt-3">
-                      <CustomInput type="radio" name="protection_options" checked={this.state.selectedItem.mounting == null} className= "mt-2" label={this.state.selectedItem.protection.option1} />
-                      <CustomInput type="radio" name="protection_options" className="mt-2" label={this.state.selectedItem.protection.option2} />
+                      <CustomInput id="protection_options" readOnly type="radio" name="protection_options" checked={this.state.selectedItem.mounting == null} className="mt-2" label={this.state.selectedItem.protection.option1} />
+                      <CustomInput id="protection_options" type="radio" name="protection_options" className="mt-2" label={this.state.selectedItem.protection.option2} />
                     </FormGroup>
                     {this.state.selectedItem.mounting == null && (
-                      <div className="text-right mt-4" style={{ paddingTop:"70px" }}>
+                      <div className="text-right mt-4" style={{ paddingTop: "70px" }}>
                         <Button type="button" color="link">{data.modal.product.buttons.skip}</Button>
                         <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTab('2'); }}>{this.state.selectedItem.servicesButton}</Button>
                       </div>
@@ -208,24 +289,24 @@ class Shop extends React.Component {
                 {/* Cart: Mounting Section Settings */}
                 {this.state.selectedItem.mounting != null && (
                   <Row className="p-4">
-                  <Col md={7}>
-                    <h4>{this.state.selectedItem.mounting.title}</h4>
-                    <p dangerouslySetInnerHTML={{__html: this.state.selectedItem.mounting.content}}></p>
-                    <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
-                  </Col>
-                  <Col md={5} className="my-auto">
-                    <FormGroup className="mt-3">
-                      <CustomInput type="radio" name="mounting_options" checked label={this.state.selectedItem.mounting.option1} />
-                      <a href="#" className="ml-4"><small>{this.state.selectedItem.mounting.included}</small></a>
-                      <CustomInput type="radio" name="mounting_options" className="mt-2" label={this.state.selectedItem.mounting.option2} />
-                      <a href="#" className="ml-4"><small>{this.state.selectedItem.mounting.included}</small></a>
-                    </FormGroup>
-                    <div className="text-right mt-4">
-                      <Button type="button" color="link">{data.modal.product.buttons.skip}</Button>
-                      <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTab('2'); }}>{this.state.selectedItem.servicesButton}</Button>
-                    </div>
-                  </Col>
-                </Row>
+                    <Col md={7}>
+                      <h4>{this.state.selectedItem.mounting.title}</h4>
+                      <p dangerouslySetInnerHTML={{ __html: this.state.selectedItem.mounting.content }}></p>
+                      <img alt='' src={window._env_.PUBLIC_URL + "/images/any-tv-partner-photo-services.jpg"} className="img-services" />
+                    </Col>
+                    <Col md={5} className="my-auto">
+                      <FormGroup className="mt-3">
+                        <CustomInput readOnly id="mounting_options" type="radio" name="mounting_options" checked label={this.state.selectedItem.mounting.option1} />
+                        <a href="#" className="ml-4"><small>{this.state.selectedItem.mounting.included}</small></a>
+                        <CustomInput id="mounting_options" type="radio" name="mounting_options" className="mt-2" label={this.state.selectedItem.mounting.option2} />
+                        <a href="#" className="ml-4"><small>{this.state.selectedItem.mounting.included}</small></a>
+                      </FormGroup>
+                      <div className="text-right mt-4">
+                        <Button type="button" color="link">{data.modal.product.buttons.skip}</Button>
+                        <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTab('2'); }}>{this.state.selectedItem.servicesButton}</Button>
+                      </div>
+                    </Col>
+                  </Row>
                 )}
               </TabPane>
               {/* Order Summary */}
@@ -254,7 +335,7 @@ class Shop extends React.Component {
                   </Col>
                   <Col md={1}>
                     <FormGroup>
-                      <Input type="number" value="1" />
+                      <Input readOnly type="number" value="1" />
                     </FormGroup>
                   </Col>
                   <Col md={1}>
@@ -279,7 +360,7 @@ class Shop extends React.Component {
                         <div><Button type="button" color="link">{this.state.selectedItem.protection.included}</Button></div>
                       </div>
                     </Col>
-                    ) : (
+                  ) : (
                     <Col md={5}>
                       <div className="product">
                         <h5>Delivery + Premium TV Mounting 56" and larger</h5>
@@ -290,7 +371,7 @@ class Shop extends React.Component {
                   )}
                   <Col md={1}>
                     <FormGroup>
-                      <Input type="number" value="1" />
+                      <Input readOnly type="number" value="1" />
                     </FormGroup>
                   </Col>
                   <Col md={1}>
@@ -327,23 +408,115 @@ class Shop extends React.Component {
                 {this.state.selectedItem.mounting != null ? (
                   <div className="text-right mt-2 mr-4 mb-4">
                     <Button type="button" color="link">{data.modal.cart.buttons.update}</Button>
-                    <Button type="button" color="primary" className="ml-3" onClick={() => { this.onApproval(); }}>{data.modal.cart.buttons.checkout}</Button>
+                    <Button type="button" color="primary" className="ml-3" onClick={() => { this.checkout(); }}>{data.modal.cart.buttons.checkout}</Button>
                   </div>
-                ): (
+                ) : (
                   <div className="text-right mt-2 mr-4 mb-4">
-                  <Button type="button" color="link">{data.modal.cart.buttons.update}</Button>
-                  <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggle(); this.toggleConfirmation(); }}>{data.modal.cart.buttons.checkout}</Button>
-                </div>
+                    <Button type="button" color="link">{data.modal.cart.buttons.update}</Button>
+                      <Button type="button" color="primary" className="ml-3" onClick={() => { this.checkout(); }}>{data.modal.cart.buttons.checkout}</Button>
+                  </div>
                 )}
               </TabPane>
+              {/* Profile data confirmation */}
+              {/* TODO form fields in this TabPane need to be controlled inputs updating state onChange */}
+              <TabPane tabId="3">
+                <div className="module">
+                  <h2>Confirm or update your account and shipping details</h2>
+                  <h3>Profile Details</h3>
+                  <Row form>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="firstname">{profileData.form.fields.firstname.label}</Label>
+                        <Input type="text" name="firstname" id="firstname" placeholder={profileData.form.fields.firstname.placeholder} value={profileData.form.fields.firstname.value} />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="lastname">{profileData.form.fields.lastname.label}</Label>
+                        <Input type="text" name="lastname" id="lastname" placeholder={profileData.form.fields.lastname.placeholder} value={profileData.form.fields.lastname.value} />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="fullname">{profileData.form.fields.fullname.label}</Label>
+                        <Input type="text" name="fullname" id="fullname" placeholder={profileData.form.fields.fullname.placeholder} value={profileData.form.fields.fullname.value} />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="email">{profileData.form.fields.email.label}</Label>
+                        <Input type="email" name="email" id="email" placeholder={profileData.form.fields.email.placeholder} value={profileData.form.fields.email.value} />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="phone">{profileData.form.fields.phone.label}</Label>
+                        <Input type="tel" name="phone" id="phone" placeholder={profileData.form.fields.phone.placeholder} value={profileData.form.fields.phone.value} />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="birthdate">{profileData.form.fields.birthdate.label}</Label>
+                        <Input type="text" name="birthdate" id="birthdate" placeholder={profileData.form.fields.birthdate.placeholder} value={profileData.form.fields.birthdate.value} />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="street">{profileData.form.fields.street.label}</Label>
+                        <Input type="text" name="street" id="street" placeholder={profileData.form.fields.street.placeholder} />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="city">{profileData.form.fields.city.label}</Label>
+                        <Input type="text" name="city" id="city" placeholder={profileData.form.fields.city.placeholder} />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="zipcode">{profileData.form.fields.zipcode.label}</Label>
+                        <Input type="text" name="zipcode" id="zipcode" placeholder={profileData.form.fields.zipcode.placeholder} />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
+                        <Label for="city">{profileData.form.fields.login.label}</Label>
+                        <Input type="select" name="login" id="login">
+                          <option value="mobile">{profileData.form.fields.login.options.mobile}</option>
+                          <option value="password">{profileData.form.fields.login.options.password}</option>
+                        </Input>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row form>
+                    <Col>
+                      <div className="text-right">
+                        <Button type="button" color="link" className="ml-3">{profileData.form.buttons.cancel}</Button>
+                        {/* <Button type="button" color="primary" onClick={this.props.onSubmit}>{profileData.form.buttons.submit}</Button> */}
+                        <Button type="button" color="primary" onClick={() => { this.updateProfile() }}>{profileData.form.buttons.submit}</Button>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </TabPane>
             </TabContent>
+          </ModalBody>
+        </Modal>
+        {/* PING INTEGRATION: "checkout as guest or sign in" prompt isOpenCheckoutPrompt toggleCheckoutPrompt */}
+        <Modal isOpen={this.state.isOpenCheckoutPrompt} toggle={this.toggleCheckoutPrompt.bind(this)} className="modal-login">
+          <ModalHeader toggle={this.toggleCheckoutPrompt.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
+          <ModalBody>
+            <h4>{data.modal.prompt.title}</h4>
+            <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+            <Button color="link" onClick={this.signInToCheckout.bind(this)}>{data.modal.prompt.buttons.signin}</Button>
+            <Button color="link" onClick={this.toggle.bind(this)}>{data.modal.prompt.buttons.checkout}</Button>
           </ModalBody>
         </Modal>
         {/* Loading */}
         <Modal isOpen={this.state.isOpenLoading} toggle={this.toggleLoading.bind(this)} className="modal-login">
           <ModalHeader toggle={this.toggleLoading.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
-            <div className="mobile-loading" style={{backgroundImage: `url(${window._env_.PUBLIC_URL}/images/login-device-outline.jpg)`}}>
+            <div className="mobile-loading" style={{ backgroundImage: `url(${window._env_.PUBLIC_URL}/images/login-device-outline.jpg)` }}>
               <div className="spinner">
                 <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
               </div>
@@ -355,7 +528,7 @@ class Shop extends React.Component {
           </ModalBody>
         </Modal>
         {/* Confirmation */}
-        <Modal isOpen={this.state.isOpenConfirmation} toggle={this.toggleConfirmation.bind(this)} onClosed={this.onClosed.bind(this)} className="modal-xl modal-shop" centered="true">
+        <Modal isOpen={this.state.isOpenConfirmation} toggle={this.toggleConfirmation.bind(this)} onClosed={this.onClosed.bind(this)} className="modal-xl modal-shop" centered={true}>
           <ModalBody>
             <TabContent activeTab={this.state.activeTabConfirmation}>
               <TabPane tabId="1">
@@ -408,7 +581,7 @@ class Shop extends React.Component {
                         <div><Button type="button" color="link">{this.state.selectedItem.mounting.included}</Button></div>
                       </div>
                     </Col>
-                    ) : (
+                  ) : (
                     <Col md={5}>
                       <div className="product">
                         <h5>Delivery + Premium TV Mounting 56" and larger</h5>
