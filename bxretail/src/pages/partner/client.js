@@ -12,10 +12,10 @@ import FooterMain from '../../components/FooterMain';
 // import AccountsSubnav from '../../components/AccountsSubnav';
 
 // Data
-import data from '../../data/advisor.json';
+import data from '../../data/partner.json';
 
 // Styles
-import '../../styles/pages/advisor.scss';
+import '../../styles/pages/partner.scss';
 
 // Autocomplete Suggestion List
 const SuggestionsList = props => {
@@ -91,8 +91,8 @@ const SearchAutocomplete = () => {
   );
 };
 
-// AdvisorClient Page
-class AdvisorClient extends React.Component {
+// PartnerClient Page
+class PartnerClient extends React.Component {
   render() {
     return (
       <div className="accounts advisor">
@@ -110,7 +110,7 @@ class AdvisorClient extends React.Component {
           <Container>
             <Row>
               <Col lg="4">
-                <h5>{data.profile.advisor.title}</h5>
+                <h5>{data.profile.partner.title}</h5>
                 <Card>
                   <CardBody>
                     <Media>
@@ -118,8 +118,8 @@ class AdvisorClient extends React.Component {
                         <Media object src={window._env_.PUBLIC_URL + "/images/anywealthadvisor-photo.png"} alt="Generic placeholder image" />
                       </Media>
                       <Media body>
-                        <p dangerouslySetInnerHTML={{__html: data.profile.advisor.content}}></p>
-                        <Button color="link">{data.profile.advisor.button}</Button>
+                        <p dangerouslySetInnerHTML={{__html: data.profile.partner.content}}></p>
+                        <Button color="link">{data.profile.partner.button}</Button>
                       </Media>
                     </Media>
                   </CardBody>
@@ -150,7 +150,7 @@ class AdvisorClient extends React.Component {
                   </Row>
                   <Row>
                     <Col>
-                      <img alt="Client" src={window._env_.PUBLIC_URL + "/images/advisor-client.png"} className="img-fluid mt-3 mb-5" />
+                      <img src={window._env_.PUBLIC_URL + "/images/advisor-client.png"} className="img-fluid mt-3 mb-5" />
                     </Col>
                   </Row>
                 </div>
@@ -164,4 +164,4 @@ class AdvisorClient extends React.Component {
   }
 }
 
-export default AdvisorClient;
+export default PartnerClient;

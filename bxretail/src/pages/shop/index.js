@@ -184,9 +184,9 @@ class Shop extends React.Component {
               </div>
               <Row className="sites align-items-center">
                 <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
-                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
-                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
-                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXHome" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXOffice" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXTech" /></Col>
               </Row>
             </div>
             <div className="content">
@@ -578,7 +578,7 @@ class Shop extends React.Component {
                       <div className="product">
                         <h5>BXRetail Protection Plan</h5>
                         <p>(2 Year)</p>
-                        <div><Button type="button" color="link">{this.state.selectedItem.mounting.included}</Button></div>
+                        <div><Button type="button" color="link">{this.state.selectedItem.protection.included}</Button></div>
                       </div>
                     </Col>
                   ) : (
@@ -586,7 +586,7 @@ class Shop extends React.Component {
                       <div className="product">
                         <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                         <p>(Mount, Connect, and Setup included)</p>
-                        <div><Button type="button" color="link">{this.state.selectedItem.mounting.included}</Button></div>
+                        <div><Button type="button" color="link">{this.state.selectedItem.protection.included}</Button></div>
                       </div>
                     </Col>
                   )}
