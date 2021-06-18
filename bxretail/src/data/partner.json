@@ -1,26 +1,26 @@
 {
-	"brand": "Advisor",
+	"brand": "Partner",
 	"menus": {
 		"primary": [
 			{
 				"title": "My Dashboard",
-				"url": "/advisor"
+				"url": "/partner"
 			},
 			{
 				"title": "Messages",
-				"url": "/advisor/client"
+				"url": "/partner/client"
 			},
 			{
 				"title": "Protocols Updates",
-				"url": "/advisor/updates"
+				"url": "/partner/updates"
 			},
 			{
 				"title": "Reporting",
-				"url": "/advisor/reporting"
+				"url": "/partner/reporting"
 			},
 			{
 				"title": "Other Services",
-				"url": "/advisor/other-services"
+				"url": "/partner/other-services"
 			}
 		]
 	},
@@ -58,7 +58,7 @@
 		}
 	],
 	"profile": {
-		"advisor": {
+		"partner": {
 			"title": "Your Profile",
 			"content": "<strong>Gail Tyson</strong> <br> AnyTVPartner Advisor <br> St. Louis, MO  63101 <br> Phone: 314.489.2213 <br> <br> gail.tyson@ATVP.com <br> atvp.com/gail.tyson",
 			"button": "Make Changes"
@@ -121,5 +121,5 @@
 			"modify": "Modify Record"
 		}
 	},
-	"copyright": "© AnyMarketing, 2020 <br /> Member FDIC, Member SIPC <br /> Equal Housing Lender"
+	"copyright": "© AnyMarketing, 2020"
 }

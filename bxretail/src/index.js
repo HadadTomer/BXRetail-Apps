@@ -8,8 +8,8 @@ import DashboardSettings from './pages/dashboard/settings/index'; //
 import DashboardSettingsProfile from './pages/dashboard/settings/profile'; //
 import DashboardSettingsCommunicationPrefernces from './pages/dashboard/settings/communications-preferences'; //
 import DashboardSettingsPrivacySecurity from './pages/dashboard/settings/privacy-security'; //
-import Advisor from './pages/advisor/index'; //
-import AdvisorClient from './pages/advisor/client'; //
+import Partner from './pages/partner/index'; //
+import PartnerClient from './pages/partner/client'; //
 import AnyTVPartner from './pages/any-tv-partner'; //
 import AnyMarketing from './pages/any-marketing'; //
 import * as serviceWorker from './serviceWorker';
@@ -32,11 +32,11 @@ const routing = (
       <Route path="/dashboard/settings">
         <DashboardSettings />
       </Route>
-      <Route path="/advisor/client">
-        <AdvisorClient />
+      <Route path="/partner/client">
+        <PartnerClient />
       </Route>
-      <Route path="/advisor">
-        <Advisor />
+      <Route path="/partner">
+        <Partner />
       </Route>
       <Route path="/any-tv-partner">
         <AnyTVPartner />

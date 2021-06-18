@@ -12,10 +12,10 @@ import NavbarMain from '../../components/NavbarMain';
 import FooterMain from '../../components/FooterMain';
 
 // Data
-import data from '../../data/advisor.json';
+import data from '../../data/partner.json';
 
 // Styles
-import '../../styles/pages/advisor.scss';
+import '../../styles/pages/partner.scss';
 
 // Autocomplete Suggestion List
 const SuggestionsList = props => {
@@ -75,7 +75,7 @@ const SearchAutocomplete = () => {
     setFilteredSuggestions([]);
     setDisplaySuggestions(false);
     // go to client
-    history.push("/advisor/client");
+    history.push("/partner/client");
   };
   return (
     <div>
@@ -94,8 +94,8 @@ const SearchAutocomplete = () => {
   );
 };
 
-// Advisor Page
-class Advisor extends React.Component {
+// Partner Page
+class Partner extends React.Component {
   render() {
     return (
       <div className="accounts advisor">
@@ -113,7 +113,7 @@ class Advisor extends React.Component {
           <Container>
             <Row>
               <Col lg="4">
-                <h5>{data.profile.advisor.title}</h5>
+                <h5>{data.profile.partner.title}</h5>
                 <Card>
                   <CardBody>
                     <Media>
@@ -121,8 +121,8 @@ class Advisor extends React.Component {
                         <Media object src={window._env_.PUBLIC_URL + "/images/anywealthadvisor-photo.png"} alt="Generic placeholder image" />
                       </Media>
                       <Media body>
-                        <p dangerouslySetInnerHTML={{__html: data.profile.advisor.content}}></p>
-                        <Button color="link">{data.profile.advisor.button}</Button>
+                        <p dangerouslySetInnerHTML={{__html: data.profile.partner.content}}></p>
+                        <Button color="link">{data.profile.partner.button}</Button>
                       </Media>
                     </Media>
                   </CardBody>
@@ -169,4 +169,4 @@ class Advisor extends React.Component {
   }
 }
 
-export default Advisor;
+export default Partner;

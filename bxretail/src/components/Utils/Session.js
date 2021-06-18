@@ -18,10 +18,10 @@ class Session {
 
     @param {boolean} loggedOut Whether the user is logged in or not.
     @param {string} path Where the user is trying to go.
-    @param {string} userType AnyWealthAdvisor, AnyMarketing, or customer.
+    @param {string} userType AnyTVPartner, AnyMarketing, or customer.
     */
     protectPage(loggedOut, path, userType) {
-        const advisorAllowedPaths = ["/app/advisor", "/app/advisor/client", "/app/advisor/updates", "/app/advisor/reporting","/app/advisor/other-services"];
+        const partnerAllowedPaths = ["/app/partner", "/app/partner/client", "/app/partner/updates", "/app/partner/reporting","/app/partner/other-services"];
         const marketingAllowedPaths = ["/app/any-marketing", "/app/any-marketing/dashboard", "/app/any-marketing/client-profiles", "/app/any-marketing/tracking", "/app/any-marketing/planning-tools"];
         const homePaths = ["/app/", "/app"];
         console.info("Session.js", "Checking access rules for user type " + userType + " at " + path);
@@ -33,9 +33,9 @@ class Session {
         } else {
             switch (userType) {
                 case "AnyTVPartner":
-                    if (!advisorAllowedPaths.includes(path)) {
+                    if (!partnerAllowedPaths.includes(path)) {
                         console.info("Access Rule", "Attempt to access disallowed resource for user type " + userType + ". Redirecting to default.");
-                        window.location.assign(advisorAllowedPaths[0]); //TODO this needs to be done SPA style. Not an HTTP redirect.
+                        window.location.assign(partnerAllowedPaths[0]); //TODO this needs to be done SPA style. Not an HTTP redirect.
                     }
                     break;
                 case "AnyMarketing":
@@ -45,13 +45,13 @@ class Session {
                     }
                     break;
                 case "customer":
-                    if (advisorAllowedPaths.includes(path) || marketingAllowedPaths.includes(path) || homePaths.includes(path)) {
+                    if (partnerAllowedPaths.includes(path) || marketingAllowedPaths.includes(path) || homePaths.includes(path)) {
                         console.info("Access Rule", "Attempt to access disallowed resource for user type " + userType + ". Redirecting to default.");
                         window.location.assign("/app/shop"); //Default for a logged in user //TODO this needs to be done SPA style. Not an HTTP redirect.
                     }
                     break;
                 default:
-                    console.warn("Unknown bxFinanceUserType", "Not authenticated yet.");
+                    console.warn("Unknown bxRetailUserType", "Not authenticated yet.");
             }
         }
     }

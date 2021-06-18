@@ -184,9 +184,9 @@ class Shop extends React.Component {
               </div>
               <Row className="sites align-items-center">
                 <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxclothes.svg"} alt="BXClothes" /></Col>
-                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXClothes" /></Col>
-                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXClothes" /></Col>
-                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXClothes" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxhome.svg"} alt="BXHome" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxoffice.svg"} alt="BXOffice" /></Col>
+                <Col><img src={window._env_.PUBLIC_URL + "/images/logo-bxtech.svg"} alt="BXTech" /></Col>
               </Row>
             </div>
             <div className="content">
@@ -387,15 +387,9 @@ class Shop extends React.Component {
                     <Row>
                       <Col md={6}>
                         <FormGroup>
-<<<<<<< HEAD
                           <CustomInput type="radio" name="cart_options" checked label={data.modal.cart.paymentOptions.option1} />
                           <CustomInput type="radio" name="cart_options" className="mt-2" label={data.modal.cart.paymentOptions.option2} />
                           <CustomInput type="radio" name="cart_options" className="mt-2" label={data.modal.cart.paymentOptions.option3} />
-=======
-                          <CustomInput readOnly id="cart_options" type="radio" name="cart_options" checked label="BXRetail Visa Card (...4899) " />
-                          <CustomInput id="cart_options" type="radio" name="cart_options" className="mt-2" label="PayPal" />
-                          <CustomInput id="cart_options" type="radio" name="cart_options" className="mt-2" label="Another Payment Method (Choose)" />
->>>>>>> 49cf74af09e58aac223056fd325a517e4cc774dd
                         </FormGroup>
                       </Col>
                       <Col md={3} className="text-right">
@@ -584,7 +578,7 @@ class Shop extends React.Component {
                       <div className="product">
                         <h5>BXRetail Protection Plan</h5>
                         <p>(2 Year)</p>
-                        <div><Button type="button" color="link">{this.state.selectedItem.mounting.included}</Button></div>
+                        <div><Button type="button" color="link">{this.state.selectedItem.protection.included}</Button></div>
                       </div>
                     </Col>
                   ) : (
@@ -592,7 +586,7 @@ class Shop extends React.Component {
                       <div className="product">
                         <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                         <p>(Mount, Connect, and Setup included)</p>
-                        <div><Button type="button" color="link">{this.state.selectedItem.mounting.included}</Button></div>
+                        <div><Button type="button" color="link">{this.state.selectedItem.protection.included}</Button></div>
                       </div>
                     </Col>
                   )}
@@ -663,7 +657,6 @@ class Shop extends React.Component {
                     </FormGroup>
                     */}
                     <FormGroup>
-<<<<<<< HEAD
                       <Label>{data.modal.confirmation.consents.phoneLabel}</Label>
                       <CustomInput type="radio" name="phone" label="Yes" />
                       <CustomInput type="radio" name="phone" checked label="No" />
@@ -672,16 +665,6 @@ class Shop extends React.Component {
                       <Label>{data.modal.confirmation.consents.emailLabel}</Label>
                       <CustomInput type="radio" name="email" label="Yes" />
                       <CustomInput type="radio" name="email" checked label="No" />
-=======
-                      <Label>My Phone Number</Label>
-                      <CustomInput id="phone" type="radio" name="phone" label="Yes" />
-                      <CustomInput id="phone" type="radio" name="phone" checked label="No" />
-                    </FormGroup>
-                    <FormGroup>
-                      <Label>My Email Address</Label>
-                      <CustomInput id="email" type="radio" name="email" label="Yes" />
-                      <CustomInput id="email" type="radio" name="email" checked label="No" />
->>>>>>> 49cf74af09e58aac223056fd325a517e4cc774dd
                     </FormGroup>
                   </Col>
                 </Row>
@@ -706,7 +689,6 @@ class Shop extends React.Component {
                   </FormGroup>
                   */}
                   <FormGroup>
-<<<<<<< HEAD
                     <Label>{data.modal.confirmation.consents.phoneLabel}</Label>
                     <CustomInput type="radio" name="phone2" label="Yes" />
                     <CustomInput type="radio" name="phone2" checked label="No" />
@@ -715,16 +697,6 @@ class Shop extends React.Component {
                     <Label>{data.modal.confirmation.consents.emailLabel}</Label>
                     <CustomInput type="radio" name="email2" label="Yes" />
                     <CustomInput type="radio" name="email2" checked label="No" />
-=======
-                    <Label>My Phone Number</Label>
-                    <CustomInput id="phone2" type="radio" name="phone2" label="Yes" />
-                    <CustomInput id="phone2" type="radio" name="phone2" checked label="No" />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label>My Email Address</Label>
-                    <CustomInput id="email2" type="radio" name="email2" label="Yes" />
-                    <CustomInput id="email2" type="radio" name="email2" checked label="No" />
->>>>>>> 49cf74af09e58aac223056fd325a517e4cc774dd
                   </FormGroup>
                   <div className="text-right mt-3">
                     <Button type="button" color="primary" onClick={() => { this.toggleTabConfirmation('2'); }}>{data.modal.confirmation.consentButtons.changeSettings}</Button>
