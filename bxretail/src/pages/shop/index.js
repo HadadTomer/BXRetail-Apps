@@ -276,7 +276,7 @@ class Shop extends React.Component {
                       <div className="product">
                         <h5>BXRetail Protection Plan</h5>
                         <p>(2 Year)</p>
-                        <div><Button type="button" color="link">What's Included?</Button></div>
+                        <div><Button type="button" color="link">{this.state.selectedItem.protection.included}</Button></div>
                       </div>
                     </Col>
                     ) : (
@@ -284,7 +284,7 @@ class Shop extends React.Component {
                       <div className="product">
                         <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                         <p>(Mount, Connect, and Setup included)</p>
-                        <div><Button type="button" color="link">What's Included?</Button></div>
+                        <div><Button type="button" color="link">{this.state.selectedItem.mounting.included}</Button></div>
                       </div>
                     </Col>
                   )}
@@ -302,19 +302,19 @@ class Shop extends React.Component {
                   </Col>
                   <Col md={8}>
                     <hr />
-                    <h5 className="mb-4">Pay With</h5>
+                    <h5 className="mb-4">{data.modal.cart.paymentOptions.title}</h5>
                     <Row>
                       <Col md={6}>
                         <FormGroup>
-                          <CustomInput type="radio" name="cart_options" checked label="BXRetail Visa Card (...4899) " />
-                          <CustomInput type="radio" name="cart_options" className="mt-2" label="PayPal" />
-                          <CustomInput type="radio" name="cart_options" className="mt-2" label="Another Payment Method (Choose)" />
+                          <CustomInput type="radio" name="cart_options" checked label={data.modal.cart.paymentOptions.option1} />
+                          <CustomInput type="radio" name="cart_options" className="mt-2" label={data.modal.cart.paymentOptions.option2} />
+                          <CustomInput type="radio" name="cart_options" className="mt-2" label={data.modal.cart.paymentOptions.option3} />
                         </FormGroup>
                       </Col>
                       <Col md={3} className="text-right">
-                        <p>Subtotal</p>
-                        <p className="mt-2">Sales Tax (MO)</p>
-                        <p className="mt-2"><strong>Final Total</strong></p>
+                        <p>{data.modal.cart.labels.subtotal}</p>
+                        <p className="mt-2">{data.modal.cart.labels.salesTax}</p>
+                        <p className="mt-2"><strong>{data.modal.cart.labels.finalTotal}</strong></p>
                       </Col>
                       <Col md={2}>
                         <p>{this.state.selectedItem.subtotal}</p>
@@ -347,10 +347,10 @@ class Shop extends React.Component {
               <div className="spinner">
                 <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
               </div>
-              <p>Please check your trusted mobile device to approve this transaction.</p>
+              <p>{data.modal.loading.title}</p>
             </div>
             <div className="mt-4 text-center">
-              <Button type="button" color="link" size="sm">What is this?</Button>
+              <Button type="button" color="link" size="sm">{data.modal.loading.help}</Button>
             </div>
           </ModalBody>
         </Modal>
@@ -405,7 +405,7 @@ class Shop extends React.Component {
                       <div className="product">
                         <h5>BXRetail Protection Plan</h5>
                         <p>(2 Year)</p>
-                        <div><Button type="button" color="link">What's Included?</Button></div>
+                        <div><Button type="button" color="link">{this.state.selectedItem.mounting.included}</Button></div>
                       </div>
                     </Col>
                     ) : (
@@ -413,7 +413,7 @@ class Shop extends React.Component {
                       <div className="product">
                         <h5>Delivery + Premium TV Mounting 56" and larger</h5>
                         <p>(Mount, Connect, and Setup included)</p>
-                        <div><Button type="button" color="link">What's Included?</Button></div>
+                        <div><Button type="button" color="link">{this.state.selectedItem.mounting.included}</Button></div>
                       </div>
                     </Col>
                   )}
@@ -432,9 +432,9 @@ class Shop extends React.Component {
                     <hr />
                     <Row>
                       <Col md={9} className="text-right">
-                        <p>Subtotal</p>
-                        <p className="mt-2">Sales Tax (MO)</p>
-                        <p className="mt-2"><strong>Final Total</strong> (Charged to BXRetail Visa ...4884)</p>
+                        <p>{data.modal.cart.labels.subtotal}</p>
+                        <p className="mt-2">{data.modal.cart.labels.salesTax}</p>
+                        <p className="mt-2"><strong>{data.modal.cart.labels.finalTotal}</strong> {data.modal.confirmation.paymentMethod}</p>
                       </Col>
                       <Col md={2}>
                         <p>{this.state.selectedItem.subtotal}</p>
@@ -471,11 +471,11 @@ class Shop extends React.Component {
                   </Col>
                   <Col md={8} className="radio-form">
                     <div className="product mb-4">
-                      <p>BXRetail partners with AnyTVPartner for Professional Services installations like yours.</p>
-                      <p>To begin scheduling your appointment, we need you to approve sharing of your contact info with AnyTVPartner, so they can work directly with you.</p>
-                      <p>Please review these settings below.</p>
+                      <p>{data.modal.confirmation.consents.description1}</p>
+                      <p>{data.modal.confirmation.consents.description2}</p>
+                      <p>{data.modal.confirmation.consents.description3}</p>
                     </div>
-                    <h5 className="mb-4">I consent to BXRetail sharing with AnyTVPartner:</h5>
+                    <h5 className="mb-4">{data.modal.confirmation.consents.iAgree}</h5>
                     {/* If you're getting delivery/installation, not sharing address doesn't make sense.
                     <FormGroup>
                       <Label>My Ship To/Installation Address</Label>
@@ -484,12 +484,12 @@ class Shop extends React.Component {
                     </FormGroup>
                     */}
                     <FormGroup>
-                      <Label>My Phone Number</Label>
+                      <Label>{data.modal.confirmation.consents.phoneLabel}</Label>
                       <CustomInput type="radio" name="phone" label="Yes" />
                       <CustomInput type="radio" name="phone" checked label="No" />
                     </FormGroup>
                     <FormGroup>
-                      <Label>My Email Address</Label>
+                      <Label>{data.modal.confirmation.consents.emailLabel}</Label>
                       <CustomInput type="radio" name="email" label="Yes" />
                       <CustomInput type="radio" name="email" checked label="No" />
                     </FormGroup>
@@ -506,7 +506,7 @@ class Shop extends React.Component {
                 </p>
                 <div className="radio-form p-5">
                   <div className="product mb-4">
-                    <p>BXRetail is now approved to share the following with our Professional Services partner AnyTVPartner:</p>
+                    <p>{data.modal.confirmation.consents.confirmation}</p>
                   </div>
                   {/*
                   <FormGroup>
@@ -516,17 +516,17 @@ class Shop extends React.Component {
                   </FormGroup>
                   */}
                   <FormGroup>
-                    <Label>My Phone Number</Label>
+                    <Label>{data.modal.confirmation.consents.phoneLabel}</Label>
                     <CustomInput type="radio" name="phone2" label="Yes" />
                     <CustomInput type="radio" name="phone2" checked label="No" />
                   </FormGroup>
                   <FormGroup>
-                    <Label>My Email Address</Label>
+                    <Label>{data.modal.confirmation.consents.emailLabel}</Label>
                     <CustomInput type="radio" name="email2" label="Yes" />
                     <CustomInput type="radio" name="email2" checked label="No" />
                   </FormGroup>
                   <div className="text-right mt-3">
-                    <Button type="button" color="primary" onClick={() => { this.toggleTabConfirmation('2'); }}>Change Settings</Button>
+                    <Button type="button" color="primary" onClick={() => { this.toggleTabConfirmation('2'); }}>{data.modal.confirmation.consentButtons.changeSettings}</Button>
                   </div>
                 </div>
                 <a alt='Confirmation Footer' href="/any-tv-partner"><img src={window._env_.PUBLIC_URL + "/images/shop-confirmation-footer-2.png"} className="confirmation-footer" /></a>
