@@ -1,5 +1,5 @@
 // Packages
-import React, { useState } from 'react';
+import React from 'react';
 import { FormGroup, Label, Input} from 'reactstrap';
 
 // Styles
@@ -7,16 +7,16 @@ import "./FormPassword.scss";
 
 class FormPassword extends React.Component {
 
-  constructor(props) {
+  /* constructor(props) {
     super(props);
-  }
+  } */
   componentDidMount () {
     const eye = document.querySelectorAll(".icon-eye");
     const inputEye = document.querySelectorAll(".form-password > input");
-    let idx;
 
     for(var i=0; i < eye.length; i++){
       eye[i].addEventListener('mousedown', function(e){
+        let idx;
         inputEye.forEach((currentValue, currentIndex) => {
           if (currentValue.id === e.target.name) {
             idx = currentIndex;
@@ -25,6 +25,7 @@ class FormPassword extends React.Component {
         inputEye[idx].type = "text";
       });  
       eye[i].addEventListener('mouseup', function(e){
+        let idx;
         inputEye.forEach((currentValue, currentIndex) => {
           if (currentValue.id === e.target.name) {
             idx = currentIndex;
