@@ -18,7 +18,7 @@ import AccountsSubnav from '../../components/AccountsSubnav';
 import AccountsDropdown from '../../components/AccountsDropdown';
 // import AccountsSectionNav from '../../components/AccountsSectionNav';
 import Session from "../../components/Utils/Session"; /* PING INTEGRATION: */
-import FlowHandler from '../../components/Controller/FlowHandler';
+import FlowHandler from "../../components/Controller/FlowHandler"; /* PING INTEGRATION: */
 
 // Data
 import data from '../../data/shop/index.json';
@@ -26,6 +26,7 @@ import profileData from "../../data/dashboard/settings/profile.json"; /* PING IN
 
 // Styles
 import "../../styles/pages/shop.scss";
+import { tsImportEqualsDeclaration } from '@babel/types';
 
 class Shop extends React.Component {
   constructor() {
@@ -36,6 +37,7 @@ class Shop extends React.Component {
       isOpenLoading: false,
       isOpenConfirmation: false,
       isOpenCheckoutPrompt: false, /* PING INTEGRATION: */
+      isOpenGuestEmailPrompt: false, /* PING INTEGRATION: */
       activeTabConfirmation: '1',
       selectedItem: {
         protection: {},
@@ -61,7 +63,7 @@ class Shop extends React.Component {
     this.setState({
       isOpen: !this.state.isOpen,
       selectedItem: item
-    }, () => { this.session.setAuthenticatedUserItem("cart", JSON.stringify(this.state.selectedItem), "local");});
+    }, () => { this.session.setAuthenticatedUserItem("cart", JSON.stringify(this.state.selectedItem), "local"); });
   }
   toggleLoading() {
     this.setState({
@@ -69,6 +71,7 @@ class Shop extends React.Component {
     });
   }
   toggleConfirmation() {
+    this.clearShoppingCart();
     this.setState({
       isOpenConfirmation: !this.state.isOpenConfirmation
     });
@@ -78,7 +81,7 @@ class Shop extends React.Component {
       activeTab: tab
     }, () => {
       console.log("toggletab state", this.state);
-    }); 
+    });
   }
   toggleTabConfirmation(tab) {
     this.setState({
@@ -90,9 +93,9 @@ class Shop extends React.Component {
     let self = this;
     this.toggle();
     let cost = this.state.selectedItem.price;
-    cost = cost.replace(/\$|,/gi,"");
+    cost = cost.replace(/\$|,/gi, "");
     console.log("cost", cost);
-    if (parseFloat(cost) >= 1000.00 ) {
+    if (parseFloat(cost) >= 1000.00) {
       console.log("need approval");
       this.toggleLoading();
       setTimeout(function () {
@@ -106,10 +109,27 @@ class Shop extends React.Component {
   }
 
   /* BEGIN PING INTEGRATION: */
+  clearShoppingCart() {
+    this.session.removeAuthenticatedUserItem("cart", "local");
+    this.setState({
+      selectedItem: {
+        protection: {},
+        mounting: {}
+      },
+      isOpen: !this.state.isOpen
+    });
+  }
+
   toggleCheckoutPrompt() {
     console.log("toggleCheckoutPrompt clicked");
     this.setState({
       isOpenCheckoutPrompt: !this.state.isOpenCheckoutPrompt
+    });
+  }
+  toggleGuestEmailPrompt() {
+    console.log("toggleGuestEmailPrompt clicked");
+    this.setState({
+      isOpenGuestEmailPrompt: !this.state.isOpenGuestEmailPrompt
     });
   }
 
@@ -117,6 +137,10 @@ class Shop extends React.Component {
     this.session.setAuthenticatedUserItem("authMode", "login", "session");
     const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
     this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
+  }
+
+  guestCheckout() {
+    this.toggleGuestEmailPrompt()
   }
 
   updateProfile() {
@@ -137,7 +161,7 @@ class Shop extends React.Component {
         console.log("but acct not verified");
         this.toggleTab("3");
       }
-      
+
       // TODO Clicking save of tab 3 updates user.
       // Toggle back to Order summary tab again.
       // TODO check here for cart total. 
@@ -152,7 +176,7 @@ class Shop extends React.Component {
       this.toggleCheckoutPrompt();
     }
   }
-  
+
   componentDidMount() {
     this.isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
     const hasCartInStorage = (this.session.getAuthenticatedUserItem("cart", "local") === null || this.session.getAuthenticatedUserItem("cart", "local") === 'undefined') ? false : true;
@@ -252,6 +276,7 @@ class Shop extends React.Component {
                   <Col className="text-right">
                     <div><Button type="button" color="link">{data.modal.product.buttons.cart}</Button></div>
                     <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.buttons.continue}</Button></div>
+                    <div><Button type="button" color="link" onClick={this.clearShoppingCart.bind(this)}>{data.modal.product.buttons.clearCart}</Button></div>
                   </Col>
                 </Row>
                 <Row className="p-4 pt-md-0">
@@ -319,6 +344,7 @@ class Shop extends React.Component {
                   </Col>
                   <Col className="text-right">
                     <div><Button type="button" color="link" onClick={this.toggle.bind(this)}>{data.modal.product.buttons.continue}</Button></div>
+                    <div><Button type="button" color="link" onClick={this.clearShoppingCart.bind(this)}>{data.modal.product.buttons.clearCart}</Button></div>
                   </Col>
                 </Row>
                 <Row className="p-3">
@@ -413,7 +439,7 @@ class Shop extends React.Component {
                 ) : (
                   <div className="text-right mt-2 mr-4 mb-4">
                     <Button type="button" color="link">{data.modal.cart.buttons.update}</Button>
-                      <Button type="button" color="primary" className="ml-3" onClick={() => { this.checkout(); }}>{data.modal.cart.buttons.checkout}</Button>
+                    <Button type="button" color="primary" className="ml-3" onClick={() => { this.checkout(); }}>{data.modal.cart.buttons.checkout}</Button>
                   </div>
                 )}
               </TabPane>
@@ -509,7 +535,21 @@ class Shop extends React.Component {
             <h4>{data.modal.prompt.title}</h4>
             <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
             <Button color="link" onClick={this.signInToCheckout.bind(this)}>{data.modal.prompt.buttons.signin}</Button>
-            <Button color="link" onClick={this.toggle.bind(this)}>{data.modal.prompt.buttons.checkout}</Button>
+            <Button color="link" onClick={this.guestCheckout.bind(this)}>{data.modal.prompt.buttons.checkout}</Button>
+          </ModalBody>
+        </Modal>
+        {/* PING INTEGRATION: collect email for guest checkout */}
+        <Modal isOpen={this.state.isOpenGuestEmailPrompt} toggle={this.toggleGuestEmailPrompt.bind(this)} className="modal-login">
+          <ModalHeader toggle={this.toggleGuestEmailPrompt.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
+          <ModalBody>
+            <h4>{data.modal.emailPrompt.title}</h4>
+            <FormGroup className="form-group-light">
+              <Label for="email">{profileData.form.fields.email.label}</Label>
+              <Input type="text" name="email" id="email" placeholder={profileData.form.fields.email.placeholder} />
+              <div>
+                <Button type="button" color="link" size="sm" className="pl-0" onClick={() => { console.log("need to do lookup for existing account") }}>{profileData.form.buttons.submit}</Button>
+              </div>
+            </FormGroup>
           </ModalBody>
         </Modal>
         {/* Loading */}
@@ -623,10 +663,10 @@ class Shop extends React.Component {
                   <Row className="bg-light p-4">
                     <Col md={7}>
                       <h4>{data.modal.confirmation.subtitle}</h4>
-                      <p dangerouslySetInnerHTML={{__html: data.modal.confirmation.scheduleDescription}}></p>
+                      <p dangerouslySetInnerHTML={{ __html: data.modal.confirmation.scheduleDescription }}></p>
                     </Col>
                     <Col md={5}>
-                      <div className="text-right mt-4" style={{ paddingTop:"70px" }}>
+                      <div className="text-right mt-4" style={{ paddingTop: "70px" }}>
                         <Button type="button" color="link">{data.modal.confirmation.scheduleButtons.call}</Button>
                         <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTabConfirmation('2'); }}>{data.modal.confirmation.scheduleButtons.online}</Button>
                       </div>
