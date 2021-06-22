@@ -75,7 +75,7 @@
       "white": false,
       "curved": false,
       "button_text": "Modify",
-      "button_href": "/communication-preferences"
+      "button_href": "/dashboard/settings/communication-preferences"
     },
     {
       "title": "Privacy & Security Settings",
@@ -83,7 +83,7 @@
       "white": true,
       "curved": false,
       "button_text": "Review",
-      "button_href": "/privacy-security"
+      "button_href": "/dashboard/settings/privacy-security"
     },
     {
       "title": "Sign In & Password",
