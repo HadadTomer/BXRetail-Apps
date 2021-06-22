@@ -2,8 +2,9 @@
 PING INTEGRATION:
 This entire component is Ping-developed.
 Implements functions to integrate with the browser
-session storage API to maintain user state during
-an authenticated session.
+session and local storage API to maintain user state during
+an authenticated app session. Also includes a method for 
+access rules.
 
 @author Michael Sanchez
 @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage}
@@ -15,6 +16,8 @@ class Session {
     Protect Page:
     Ensures a user doesn't access pages when unauthenticated or 
     when not the right user type. We are not using Ping Access for a SaaS-first demo.
+    This would ideally be done with PA's new SPA support features, but BXR is intended 
+    to be an all-SaaS demo. Reality bytes.
 
     @param {boolean} loggedOut Whether the user is logged in or not.
     @param {string} path Where the user is trying to go.
@@ -149,6 +152,7 @@ class Session {
     We set a cookie when users check "Remember Me" when logging in.
     We need to check for this cookie in a couple different places to set state.
     
+    @deprecated Using browser storage going forward for demo apps.
     @param {string} cookieName The name of the cookie we want the value of.
     @return {string} Cookie value, or an empty string if not found.
     */
