@@ -7,7 +7,6 @@ import {
   Label,
   CustomInput,
 } from 'reactstrap';
-import classNames from "classnames";
 
 // Components
 import NavbarMain from '../../../components/NavbarMain';
@@ -15,20 +14,37 @@ import WelcomeBar from '../../../components/WelcomeBar';
 import FooterMain from '../../../components/FooterMain';
 import AccountsSubnav from '../../../components/AccountsSubnav';
 import AccountsDropdown from '../../../components/AccountsDropdown';
-// import AccountsSectionNav from '../../../components/AccountsSectionNav';
 
 // Data
 import data from '../../../data/dashboard/settings/communication-preferences.json';
  
 // Styles
 import "../../../styles/pages/dashboard/settings/communication-preferences.scss";
+import classNames from 'classnames';
 
 class CommunicationPreferences extends React.Component {
   
   constructor(props) {
     super(props);
     this.state = {
-      step: 1
+      step: 1,
+      radioButtons: [
+        {
+          name: "sms",
+          label: "SMS/Text Messages",
+          checkedId: "sms_no"
+        },
+        {
+          name: "email",
+          label: "Email",
+          checkedId: "email_no"
+        },
+        {
+          name: "mail",
+          label: "Mail",
+          checkedId: "mail_no"
+        }
+      ]
     };
 
     this.showStep2 = this.showStep2.bind(this);
@@ -43,7 +59,22 @@ class CommunicationPreferences extends React.Component {
     this.setState({step: 1});
   }
 
+  toggleConsent(event) {
+    const id = event.target.id;
+
+    const delimiterPos = id.indexOf("_");
+    const name = id.substring(0, delimiterPos);
+    const index = this.state.radioButtons.map(e => e.name).indexOf(name);
+    const newButtons = this.state.radioButtons;
+    newButtons[index].checkedId = id;
+
+    this.setState({
+      radioButtons: newButtons
+    })
+  }
+
   render() {
+    {/* TODO more variables here? */}
     return(
       <div className="accounts communication-preferences">
         <NavbarMain />
@@ -72,12 +103,15 @@ class CommunicationPreferences extends React.Component {
                   <Form>
                     {
                       Object.keys(data.steps[0].communication_types).map(index => {
+                        {/* TODO Need more inputs here */}
                         return (
                           <>
                             <FormGroup className={classNames({ "gray": (index % 2) })}>
-                              <Label for={data.steps[0].communication_types[index].name}>{data.steps[0].communication_types[index].label}</Label>
-                              <CustomInput type="radio" id={`${data.steps[0].communication_types[index].name}_yes`} name={data.steps[0].communication_types[index].name} label="Yes" />
-                              <CustomInput type="radio" id={`${data.steps[0].communication_types[index].name}_no`} name={data.steps[0].communication_types[index].name} checked label="No" />
+                              {/* PING INTEGRATION: modified label to display user data and added onClicks to CustomInput */}
+                              {/* TODO need to update label? */}
+                              <Label for={this.state.radioButtons[index].name}>{this.state.radioButtons[index].label}</Label>
+                              <CustomInput onChange={(event) => this.toggleConsent(event)} type="radio" id={`${this.state.radioButtons[index].name}_yes`} name={this.state.radioButtons[index].name} label="Yes" checked={this.state.radioButtons[index].checkedId == this.state.radioButtons[index].name + "_yes"}/>
+                              <CustomInput onChange={(event) => this.toggleConsent(event)} type="radio" id={`${this.state.radioButtons[index].name}_no`} name={this.state.radioButtons[index].name} label="No" checked={this.state.radioButtons[index].checkedId == this.state.radioButtons[index].name + "_no"}/>
                             </FormGroup>
                           </>
                         );
@@ -85,7 +119,7 @@ class CommunicationPreferences extends React.Component {
                     }
                     <FormGroup className="buttons submit-buttons">
                       <Button color="primary" onClick={ this.showStep2 }>Save</Button>
-                      <a href="/dashboard/settings" className="cancel">Cancel</a>                        
+                      <a href={window._env_.PUBLIC_URL + "/dashboard/settings"} className="cancel">Cancel</a>                        
                     </FormGroup>
                   </Form>
                 </div>
@@ -94,16 +128,16 @@ class CommunicationPreferences extends React.Component {
                 <div className="module module-step2">
                   <h2 className="confirmation">{data.steps[1].title}</h2>
                   <p>{data.steps[1].description}</p>  
-                  <h3>{data.steps[0].table_title}</h3>
                   <Form>
                     {
                       Object.keys(data.steps[1].communication_types).map(index => {
+                        {/* TODO How do we preserve the consents in here? */}
                         return (
                           <>
                             <FormGroup className={classNames({ "gray": (index % 2) })}>
-                              <Label for={data.steps[0].communication_types[index].name}>{data.steps[0].communication_types[index].label}</Label>
-                              <CustomInput type="radio" disabled id={`${data.steps[0].communication_types[index].name}_yes`} name={data.steps[0].communication_types[index].name} label="Yes" />
-                              <CustomInput type="radio" disabled id={`${data.steps[0].communication_types[index].name}_no`} name={data.steps[0].communication_types[index].name} checked label="No" />
+                              <Label for={this.state.radioButtons[index].name}>{this.state.radioButtons[index].label}</Label>
+                              <CustomInput type="radio" id={`${this.state.radioButtons[index].name}_yes`} name={this.state.radioButtons[index].name} label="Yes" checked={this.state.radioButtons[index].checkedId == this.state.radioButtons[index].name + "_yes"}/>
+                              <CustomInput type="radio" id={`${this.state.radioButtons[index].name}_no`} name={this.state.radioButtons[index].name} label="No" checked={this.state.radioButtons[index].checkedId == this.state.radioButtons[index].name + "_no"}/>
                             </FormGroup>
                           </>
                         );
@@ -111,7 +145,7 @@ class CommunicationPreferences extends React.Component {
                     }
                     <div dangerouslySetInnerHTML={{__html: data.steps[1].other_things}} />                    
                     <FormGroup className="buttons submit-buttons">
-                      <Button color="primary" onClick={ this.showStep1 }>{data.steps[1].btn_back}</Button>
+                      <Button color="primary" onClick={ this.close }>{data.steps[1].btn_back}</Button>
                     </FormGroup>
                   </Form>
                 </div>

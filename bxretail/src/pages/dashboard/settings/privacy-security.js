@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Container,
+  Button,
   Form,
   FormGroup,
   Label,
@@ -25,16 +26,23 @@ class PrivacySecurity extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 1
+      step: 1,
+      radioButtons: [
+        {
+          name: "phone",
+          label: "My Phone Number",
+          checkedId: "phone_no"
+        },
+        {
+          name: "email",
+          label: "My Email Address",
+          checkedId: "email_no"
+        }
+      ]
     };
 
-    this.showStep1 = this.showStep1.bind(this);
     this.showStep2 = this.showStep2.bind(this);
     this.close = this.close.bind(this);
-  }
-
-  showStep1() {
-    this.setState({step: 1});
   }
 
   showStep2() {
@@ -45,7 +53,22 @@ class PrivacySecurity extends React.Component {
     this.setState({step: 1});
   }
 
+  toggleConsent(event) {
+    const id = event.target.id;
+
+    const delimiterPos = id.indexOf("_");
+    const name = id.substring(0, delimiterPos);
+    const index = this.state.radioButtons.map(e => e.name).indexOf(name);
+    const newButtons = this.state.radioButtons;
+    newButtons[index].checkedId = id;
+
+    this.setState({
+      radioButtons: newButtons
+    })
+  }
+
   render() {
+    {/* TODO more variables here? */}
     return(
       <div className="accounts privacy-security">
         <NavbarMain />
@@ -66,29 +89,62 @@ class PrivacySecurity extends React.Component {
                 <h1>{data.title}</h1>
                 <AccountsDropdown text={data.dropdown} />
               </div>
-              <div className="module">
-                <div className="edit">
-                  <h2>{data.form.title}</h2>
-                  <p>{data.form.description}</p>
+              { this.state.step === 1 && 
+                <div className="module module-step1">
+                  <h2>{data.form[0].title}</h2>
+                  <p>{data.form[0].description}</p>
+                  <h3>{data.form[0].table_title}</h3>
                   <Form>
                     {
-                      Object.keys(data.form.communication_types).map(index => {
+                      Object.keys(data.form[0].communication_types).map(index => {
+                        {/* TODO Need more inputs here */}
                         return (
                           <div>
                             <FormGroup>
-                              <Label for={data.form.communication_types[index].name}>{data.form.communication_types[index].label}</Label>
-                              <CustomInput type="radio" id={`${data.form.communication_types[index].name}_yes`} name={data.form.communication_types[index].name} label="Yes" />
-                              <CustomInput type="radio" id={`${data.form.communication_types[index].name}_no`} name={data.form.communication_types[index].name} checked label="No" />
+                              {/* PING INTEGRATION: modified label to display user data and added onClicks to CustomInput */}
+                              {/* TODO need to update label? */}
+                              <Label for={this.state.radioButtons[index].name}>{this.state.radioButtons[index].label}</Label>
+                              <CustomInput onChange={(event) => this.toggleConsent(event)} type="radio" id={`${this.state.radioButtons[index].name}_yes`} name={this.state.radioButtons[index].name} label="Yes" checked={this.state.radioButtons[index].checkedId == this.state.radioButtons[index].name + "_yes"}/>
+                              <CustomInput onChange={(event) => this.toggleConsent(event)} type="radio" id={`${this.state.radioButtons[index].name}_no`} name={this.state.radioButtons[index].name} label="No" checked={this.state.radioButtons[index].checkedId == this.state.radioButtons[index].name + "_no"}/>
                             </FormGroup>
                           </div>
                         );
                       })      
                     }
+                    <FormGroup className="buttons submit-buttons">
+                      <Button color="primary" onClick={ this.showStep2 }>Save</Button>
+                      <a href={window._env_.PUBLIC_URL + "/dashboard/settings"} className="cancel">Cancel</a>
+                    </FormGroup>
                   </Form>
-                  <p><a href="#" className="btn btn-link">{data.form.button_edit}</a></p>
-                  <p><a href="#" className="btn btn-link">{data.form.button_partners}</a></p>
                 </div>
-              </div>
+              }
+              { this.state.step === 2 && 
+                <div className="module module-step2">
+                  <h2 className="confirmation">{data.form[1].title}</h2>
+                  <p>{data.form[1].description}</p>
+                  <h3>{data.form[0].table_title}</h3>
+                  <Form>
+                    {
+                      Object.keys(data.form[1].communication_types).map(index => {
+                        {/* TODO How do we preserve the consents in here? */}
+                        return (
+                          <>
+                            <FormGroup>
+                              <Label for={this.state.radioButtons[index].name}>{this.state.radioButtons[index].label}</Label>
+                              <CustomInput type="radio" id={`${this.state.radioButtons[index].name}_yes`} name={this.state.radioButtons[index].name} label="Yes" checked={this.state.radioButtons[index].checkedId == this.state.radioButtons[index].name + "_yes"}/>
+                              <CustomInput type="radio" id={`${this.state.radioButtons[index].name}_no`} name={this.state.radioButtons[index].name} label="No" checked={this.state.radioButtons[index].checkedId == this.state.radioButtons[index].name + "_no"}/>
+                            </FormGroup>
+                          </>
+                        );
+                      })
+                    }
+                    <div dangerouslySetInnerHTML={{__html:data.form[1].other_things}} />
+                    <FormGroup className="buttons submit-buttons">
+                      <Button color="primary" onClick={ this.close }>{data.form[1].btn_back}</Button>
+                    </FormGroup>
+                  </Form>
+                </div>
+              }
             </div>
           </div>
         </Container>
