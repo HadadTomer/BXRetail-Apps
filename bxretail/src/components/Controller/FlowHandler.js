@@ -14,6 +14,8 @@ import PingOneRegistration from "../Integration/PingOneRegistration"; /* PING IN
 import PingOneAuthN from "../Integration/PingOneAuthN"; /* PING INTEGRATION: */
 import PingOneUsers from "../Integration/PingOneUsers"; /* PING INTEGRATION: */
 import JSONSearch from "../Utils/JSONSearch"; /* PING INTEGRATION: */
+import PingOneConsents from "../Integration/PingOneConsents"; /* PING INTEGRATION */
+import Session from "../Utils/Session"; /* PING INTEGRATION */
 
 class FlowHandler {
 
@@ -24,6 +26,8 @@ class FlowHandler {
         this.ping1AuthN = new PingOneAuthN(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
         this.ping1Users = new PingOneUsers(this.envVars.REACT_APP_PROXYAPIPATH, this.envVars.REACT_APP_ENVID);
         this.jsonSearch = new JSONSearch(); /* PING INTEGRATION: */
+        this.ping1Consents = new PingOneConsents(this.envVars.REACT_APP_PROXYAPIPATH, this.envVars.REACT_APP_ENVID);
+        this.session = new Session();
     }
 
     /**
@@ -190,6 +194,85 @@ class FlowHandler {
     lookupUser({ userName }) {
         //TODO implement
         // https://api.pingone.com/v1/environments/{{envId}}/users?filter=username eq "user.0" <-- urlEncode
+    }
+
+    /**
+     * Get consents for a user.
+     * @param {string} userId User Id from PingOne. 
+     * @returns {object} Entire user data response object.
+     */
+    async userGetConsent() {
+        console.info("Flowhandler.js", "Getting user consents.")
+
+        const token = this.session.getAuthenticatedUserItem("AT", "session");
+        const response = await this.ping1Consents.userGetConsent({token: token});
+        return response; 
+    }
+
+    /** 
+     * Set consents for a user.
+     * @param {object} consentData consists of username, AnyTVPartner delivery preferences, and communication preferences.
+     * @returns {} something here.
+     */
+    async userUpdateConsent({ consentData }) {
+        console.info("Flowhandler.js", "Updating user consents.")
+
+        consentData = {
+            subject: "davidwebb@mailinator.com",
+            deliveryEmail: JSON.stringify(consentData.deliveryEmailChecked),
+            deliveryPhone: JSON.stringify(consentData.deliveryPhoneChecked),
+            commEmail: JSON.stringify(consentData.commEmailChecked), 
+            commSms: JSON.stringify(consentData.commSmsChecked),
+            commMail: JSON.stringify(consentData.commMailChecked)
+          };
+
+        let rawPayload = JSON.stringify({
+            "consent": [
+                {
+                    "status": "active",
+                    "subject": consentData.subject,
+                    "actor": consentData.subject,
+                    "audience": "BXRApp",
+                    "definition": {
+                        "id": "tv-delivery-preferences",
+                        "version": "1.0",
+                        "locale": "en-us"
+                    },
+                    "titleText": "Share User Delivery Info",
+                    "dataText": "Share User Delivery Info",
+                    "purposeText": "Share User Delivery Info",
+                    "data": {
+                        "email": consentData.deliveryEmail,
+                        "mobile": consentData.deliveryPhone
+                    },
+                    "consentContext": {}
+                },
+                {
+                    "status": "active",
+                    "subject": consentData.subject,
+                    "actor": consentData.subject,
+                    "audience": "BXRApp",
+                    "definition": {
+                        "id": "communication-preferences",
+                        "version": "1.0",
+                        "locale": "en-us"
+                    },
+                    "titleText": "Marketing Communication",
+                    "dataText": "Marketing Communication",
+                    "purposeText": "Marketing Communication",
+                    "data": {
+                        "email": consentData.commEmail,
+                        "sms": consentData.commSms,
+                        "mail": consentData.commMail
+                    },
+                    "consentContext": {}
+                }
+            ]
+        });
+        const token = this.session.getAuthenticatedUserItem("AT", "session");
+        const response = await this.ping1Consents.userUpdateConsent({ consentPayload: rawPayload, token: token });
+        const status = await response.status;
+        return status; 
     }
 }
 export default FlowHandler;
