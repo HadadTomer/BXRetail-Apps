@@ -34,7 +34,7 @@
         {
           "title": "Communications Preferences",
           "active": false,
-          "href": "/dashboard/settings/communication-preferences"
+          "href": "#"
         },
         {
           "title": "Privacy & Security",

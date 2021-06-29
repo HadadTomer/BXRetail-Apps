@@ -34,7 +34,7 @@
         {
           "title": "Communications Preferences",
           "active": false,
-          "href": "/dashboard/settings/communication-preferences"
+          "href": "#"
         },
         {
           "title": "Privacy & Security",
@@ -60,7 +60,7 @@
     }
   ],
   "dropdown": "Things I Can Do",
-  "form": [
+  "steps": [
     {
       "title": "Partner Data Sharing",
       "description": "Review your settings for how BXRetail partner AnyTVPartner can access information about you for your Professional Services installation:",
@@ -91,7 +91,7 @@
           "label": "My Email Address"
         }
       ],
-      "other_things": "<p>Other things you can do:</p><ul><li>Review <a href=\"/dashboard/settings/communication-preferences\">Communication Preferences</a></li><li>Review other <a href=\"#\">Partner Settings</a></li></ul>",
+      "other_things": "<p>Other things you can do:</p><ul><li>Review <a href=\"#\">Communication Preferences</a></li><li>Review other <a href=\"#\">Partner Settings</a></li></ul>",
       "btn_back": "Close"
     }
   ]

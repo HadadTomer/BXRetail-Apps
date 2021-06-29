@@ -34,7 +34,7 @@
         {
           "title": "Communications Preferences",
           "active": true,
-          "href": "/dashboard/settings/communication-preferences"
+          "href": "#"
         },
         {
           "title": "Privacy & Security",
@@ -68,15 +68,15 @@
       "communication_types": [
         {
           "name": "sms",
-          "label": "SMS/Text Messages (314.787.2278)"
+          "label": "SMS/Text Messages"
         },
         {
           "name": "email",
-          "label": "Email (janelakesmith@gmail.com)"
+          "label": "Email"
         },
         {
           "name": "mail",
-          "label": "Mail (4700 Red River St. Monroe City, MO 63456)"
+          "label": "Mail"
         }
       ],
       "btn_cancel": "Cancel",
@@ -88,15 +88,15 @@
       "communication_types": [            
         {
           "name": "sms",
-          "label": "SMS/Text Messages (314.787.2278)"
+          "label": "SMS/Text Messages"
         },
         {
           "name": "email",
-          "label": "Email (janelakesmith@gmail.com)"
+          "label": "Email"
         },
         {
           "name": "mail",
-          "label": "Mail (4700 Red River St. Monroe City, MO 63456)"
+          "label": "Mail"
         }
       ],
       "other_things": "<p>Other things you can do:</p><ul><li>Review other <a href=\"/dashboard/settings/privacy-security\">Privacy &amp; Security</a> settings</li></ul>",
