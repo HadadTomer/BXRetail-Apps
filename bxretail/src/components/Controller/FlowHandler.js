@@ -1,28 +1,29 @@
 /**
 Class representing the apps controller methods, marshaling input and events between
-the UI and the integration with Ping products and services.
+the UI and the integration of Ping products and services.
 
 This demo-specifc class is developed and maintained by PingIdentity Technical Enablement.
-Implements methods to integrate with PingOne authentication-related API endpoints.
+Implements methods to interact with integration/model components.
 
 @author Michael Sanchez
-@see https://apidocs.pingidentity.com/pingone/platform/v1/api/#authentication-apis
 */
 
 // Components
 import PingOneAuthZ from "../Integration/PingOneAuthZ"; /* PING INTEGRATION: */
 import PingOneRegistration from "../Integration/PingOneRegistration"; /* PING INTEGRATION: */
 import PingOneAuthN from "../Integration/PingOneAuthN"; /* PING INTEGRATION: */
-// import JSONSearch from "../Utils/JSONSearch"; /* PING INTEGRATION: */
+import PingOneUsers from "../Integration/PingOneUsers"; /* PING INTEGRATION: */
+import JSONSearch from "../Utils/JSONSearch"; /* PING INTEGRATION: */
 
 class FlowHandler {
 
     constructor() {
         this.envVars = window._env_;
-        this.ping1AuthZ = new PingOneAuthZ(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
+        this.ping1AuthZ = new PingOneAuthZ(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID, this.envVars.REACT_APP_PROXYAPIPATH);
         this.ping1Reg = new PingOneRegistration(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
         this.ping1AuthN = new PingOneAuthN(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
-        // this.jsonSearch = new JSONSearch();
+        this.ping1Users = new PingOneUsers(this.envVars.REACT_APP_PROXYAPIPATH, this.envVars.REACT_APP_ENVID);
+        this.jsonSearch = new JSONSearch(); /* PING INTEGRATION: */
     }
 
     /**
@@ -116,9 +117,9 @@ class FlowHandler {
     async getRequestedSocialProvider({IdP, flowId}) {
 
         const response = await this.ping1AuthN.readAuthNFlowData({flowId: flowId});
-        console.log("response", response);
+        console.log("response", JSON.stringify(response));
         const resultsArr = await response._embedded.socialProviders;
-        console.log("resultsArr", resultsArr);
+        console.log("resultsArr", JSON.stringify(resultsArr));
         const result = resultsArr.find(provider => provider["name"] === IdP);
         console.log("results", result);
         return result._links.authenticate.href;
@@ -137,8 +138,60 @@ class FlowHandler {
         const swaprods = btoa(bauth);
         const response = await this.ping1AuthZ.getToken({code:code, redirectURI:redirectURI, swaprods:swaprods});
         return response;
-        // const access_token = await response.access_token;
-        // const id_token = await response.id_token;
+    }
+
+    /**
+     * Gets a lower privileged token for DG calls that proxy the management APIs.
+     * @param {string} code authorization code from AS.
+     * @param {string} redirectURI App URL user should be redirected to after swap for token.
+     * @returns {object} something here.
+     */
+    async requestLowPrivToken() {
+        console.info("FlowHandler.js", "Requesting a low-privileged access token.");
+
+        const clientCreds = this.envVars.REACT_APP_LOWPRIVCLIENT + ":" + this.envVars.REACT_APP_LOWPRIVRECSET;
+        const encodedCreds = btoa(clientCreds);
+        const lowPrivToken = await this.ping1AuthZ.getLowPrivilegedToken({ elasticNerd: encodedCreds});
+        console.log("lowPrivToken", lowPrivToken);
+        return lowPrivToken;
+    }
+
+    /**
+     * Get a user's profile data.
+     * @param {String} IdT OIDC ID JWT token
+     * @return {object} JSON object from response.
+     */
+    getUserProfile({IdT}) {
+        console.log("IdT", IdT);
+        const sub = this.getTokenValue({token: IdT, key: "sub"});
+        console.log("sub", sub);
+        const lowPrivToken = this.requestLowPrivToken();
+        this.ping1Users.readUser({ userId: sub, lowPrivToken: lowPrivToken})
+    }
+
+    /**
+     * Decode and parse a token for a value.
+     * @param {String} token OAuth JWT token.
+     * @param {String} key the claim needed from within the token, or "all" to get entire payload.
+     * @return {String} value for key requested or JSON web token.
+     */
+    getTokenValue({token, key}) {
+        console.log("TOKEN", token);
+        // Extracting the payload portion of the JWT.
+        const base64Fragment = token.split('.')[1];
+        const decodedFragment = JSON.parse(atob(base64Fragment));
+        console.log("decodedFragment", decodedFragment);
+        const jwtValue = this.jsonSearch.findValues(decodedFragment, key);
+        console.log("jwtValue", jwtValue[0]);
+        return jwtValue[0];
+    }
+
+    /**
+     * 
+     */
+    lookupUser({userName}) {
+        //TODO implement
+        // https://api.pingone.com/v1/environments/{{envId}}/users?filter=username eq "user.0"
     }
 }
 export default FlowHandler;

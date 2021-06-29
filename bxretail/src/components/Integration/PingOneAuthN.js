@@ -50,6 +50,16 @@ class PingOneAuthN {
     }
 
     /**
+     * Read a user's password state.
+     * @see // https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-read-password-state
+     * @param {*} param0 
+     * @returns 
+     */
+    readPasswordState({}) {
+        return true;
+    }
+
+    /**
      * Read the user's current authN API flow data.
      * @see https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-read-flow
      * @param {string} flowId Id for the current authN transaction.

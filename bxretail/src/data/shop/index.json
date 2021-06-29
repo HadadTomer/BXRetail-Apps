@@ -162,7 +162,8 @@
         "details": "See Product Details",
         "calculate": "Calculate Shipping to 63456",
         "skip": "Skip This",
-        "add": "Add to Cart"
+        "add": "Add to Cart",
+        "clearCart": "Empty Cart"
       }
     },
     "cart": {
@@ -217,11 +218,18 @@
         "checkout": "Checkout as guest"
       }
     },
-    "prompt": {
-      "title": "Checkout as Guest or Sign In?",
+    "emailPrompt": {
+      "title": "Enter your email address to continue",
       "buttons" : {
         "signin": "Sign in",
         "checkout": "Checkout as guest"
+      }
+    },
+    "acctPrompt": {
+      "title": "Would you like to create an account to manage your delivery preferences",
+      "buttons" : {
+        "createAcct": "Create my account",
+        "continueGuest": "Continue as guest"
       }
     }
   }
