@@ -44,7 +44,7 @@ class PingOneUsers {
         const url = this.proxyApiPath + "/users/" + userId;
         fetch(url, requestOptions)
             .then(response => response.text())
-            .then(result => console.log(result))
+            .then(result => console.log("Read user result",result))
             .catch(error => console.log('error', error));
     }
 }

@@ -165,8 +165,10 @@ class FlowHandler {
         console.log("IdT", IdT);
         const sub = this.getTokenValue({token: IdT, key: "sub"});
         console.log("sub", sub);
-        const lowPrivToken = this.requestLowPrivToken();
-        this.ping1Users.readUser({ userId: sub, lowPrivToken: lowPrivToken})
+        this.requestLowPrivToken()
+            .then(lowPrivToken => {
+            this.ping1Users.readUser({ userId: sub, lowPrivToken: lowPrivToken})
+        });
     }
 
     /**
@@ -176,7 +178,8 @@ class FlowHandler {
      * @return {String} value for key requested or JSON web token.
      */
     getTokenValue({token, key}) {
-        console.log("TOKEN", token);
+        console.log("TOKEN to search", token);
+        console.log("CLAIM to get", key);
         // Extracting the payload portion of the JWT.
         const base64Fragment = token.split('.')[1];
         const decodedFragment = JSON.parse(atob(base64Fragment));
