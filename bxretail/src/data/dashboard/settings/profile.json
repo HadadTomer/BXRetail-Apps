@@ -76,18 +76,18 @@
       },
       "firstname": {
         "label": "First Name",
-        "placeholder": "First Name",
+        "placeholder": "Jane",
         "value": "Jane"
       },
       "lastname": {
         "label": "Last Name",
-        "placeholder": "Last Name",
-        "value": "Smith"
+        "placeholder": "Doh",
+        "value": "Doh"
       },
       "fullname": {
         "label": "Full Name",
-        "placeholder": "Full Name",
-        "value": "Jane Smith"
+        "placeholder": "Jane Doh",
+        "value": "Jane Doh"
       },
       "birthdate": {
         "label": "Birth Date",
@@ -96,7 +96,7 @@
       },
       "email": {
         "label": "Email Address",
-        "placeholder": "Email",
+        "placeholder": "eat@joes.com",
         "value": "janesmith1994@gmail.com"
       },
       "phone": {

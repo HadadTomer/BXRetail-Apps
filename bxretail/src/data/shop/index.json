@@ -224,6 +224,13 @@
         "signin": "Sign in",
         "checkout": "Checkout as guest"
       }
+    },
+    "acctPrompt": {
+      "title": "Would you like to create an account to manage your delivery preferences",
+      "buttons" : {
+        "createAcct": "Create my account",
+        "continueGuest": "Continue as guest"
+      }
     }
   }
 }

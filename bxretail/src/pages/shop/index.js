@@ -26,7 +26,7 @@ import profileData from "../../data/dashboard/settings/profile.json"; /* PING IN
 
 // Styles
 import "../../styles/pages/shop.scss";
-import { tsImportEqualsDeclaration } from '@babel/types';
+// import { tsImportEqualsDeclaration } from '@babel/types';
 
 class Shop extends React.Component {
   constructor() {
@@ -36,9 +36,9 @@ class Shop extends React.Component {
       activeTab: '1',
       isOpenLoading: false,
       isOpenConfirmation: false,
-      isOpenCheckoutPrompt: false, /* PING INTEGRATION: */
-      isOpenGuestEmailPrompt: false, /* PING INTEGRATION: */
       activeTabConfirmation: '1',
+      isOpenCheckout: false, /* PING INTEGRATION: */
+      activeTabCheckout: "1", /* PING INTEGRATION: */
       selectedItem: {
         protection: {},
         mounting: {}
@@ -79,8 +79,6 @@ class Shop extends React.Component {
   toggleTab(tab) {
     this.setState({
       activeTab: tab
-    }, () => {
-      console.log("toggletab state", this.state);
     });
   }
   toggleTabConfirmation(tab) {
@@ -109,6 +107,12 @@ class Shop extends React.Component {
   }
 
   /* BEGIN PING INTEGRATION: */
+  handleUserInput(e) {
+    let formData = {};
+    formData[e.target.id] = e.target.value;
+    this.setState(formData, () => {console.log("formData", formData)});
+  }
+
   clearShoppingCart() {
     this.session.removeAuthenticatedUserItem("cart", "local");
     this.setState({
@@ -120,16 +124,20 @@ class Shop extends React.Component {
     });
   }
 
-  toggleCheckoutPrompt() {
-    console.log("toggleCheckoutPrompt clicked");
+  toggleCheckout() {
+    console.log("toggleCheckout clicked");
     this.setState({
-      isOpenCheckoutPrompt: !this.state.isOpenCheckoutPrompt
+      isOpenCheckout: !this.state.isOpenCheckout
     });
   }
-  toggleGuestEmailPrompt() {
-    console.log("toggleGuestEmailPrompt clicked");
+
+  toggleTabCheckout(tab) {
+    //first check if we are showing the user's profile tab for update, so we can fetch it.
+    if (tab === "3") {
+      this.getProfile();
+    }
     this.setState({
-      isOpenGuestEmailPrompt: !this.state.isOpenGuestEmailPrompt
+      activeTabCheckout: tab
     });
   }
 
@@ -139,18 +147,43 @@ class Shop extends React.Component {
     this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
   }
 
-  guestCheckout() {
-    this.toggleGuestEmailPrompt()
+  guestLookup(email) {
+    //TODO need to lookup user record for email and password
+    console.log("email", email);
+    //this.flowHandler({});
+    this.toggleTabCheckout("3");
+  }
+
+  getProfile() {
+    this.flowHandler.getUserProfile({IdT: this.session.getAuthenticatedUserItem("IdT", "session")});
+    //TODO and update state.
   }
 
   updateProfile() {
     this.setState({ acctVerified: true }, () => {
-      //TODO call to flowHandler here. Depending on error handling, maybe call local function that wraps call to flowHandler.
-      this.toggleTab("2");
+      //TODO call to flowHandler here to update user profile. Depending on error handling, maybe call local function that wraps call to flowHandler.
+      console.info("Shop/index.js", "Profile updated or confirmed: " + this.state.acctVerified);
     });
+    // TODO update profile here.
+    this.toggleTabCheckout("4");
+    // this.toggleCheckout();
+    // this.toggle();
+    // this.toggleTab("2");
   }
 
+  //FIXME this is horribly written.
   checkout() {
+    if (this.isLoggedOut) {
+      if (this.state.acctVerified) {
+        console.log("and acct verified");
+        this.onApproval();
+      } else {
+        console.log("we're not logged in");
+        this.toggle();
+        this.toggleCheckout();
+      }
+    }
+
     if (!this.isLoggedOut) {
       console.log("we're logged in");
       if (this.state.acctVerified) {
@@ -159,21 +192,11 @@ class Shop extends React.Component {
       } else {
         //TODO Read user attributes and Display tab 3. User adds/updates profile.
         console.log("but acct not verified");
-        this.toggleTab("3");
+        this.getProfile();
+        this.toggle();
+        this.toggleCheckout();
+        this.toggleTabCheckout("3");
       }
-
-      // TODO Clicking save of tab 3 updates user.
-      // Toggle back to Order summary tab again.
-      // TODO check here for cart total. 
-      // If aboev threshold toggle the loading modal and do BXF CIBA call.
-      // this.toggleLoading();
-      //  TODO if approved, toggle loading and confirmation
-      // this.toggleLoading();
-      // this.toggleConfirmation();
-    } else {
-      console.log("we're not logged in");
-      this.toggle();
-      this.toggleCheckoutPrompt();
     }
   }
 
@@ -261,11 +284,11 @@ class Shop extends React.Component {
           </div>
         </Container>
         <FooterMain />
-        {/* Cart */}
+        {/* Shopping Cart */}
         <Modal isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} onClosed={this.onClosed.bind(this)} className="modal-xl modal-shop" centered={true}>
           <ModalBody>
             <TabContent activeTab={this.state.activeTab}>
-              <TabPane tabId="1">
+              <TabPane tabId="1"> {/* Cart details */}
                 <Row>
                   <Col>
                     <h4>
@@ -413,7 +436,7 @@ class Shop extends React.Component {
                     <Row>
                       <Col md={6}>
                         <FormGroup>
-                          <CustomInput type="radio" name="cart_options" checked label={data.modal.cart.paymentOptions.option1} />
+                          <CustomInput readOnly type="radio" name="cart_options" checked label={data.modal.cart.paymentOptions.option1} />
                           <CustomInput type="radio" name="cart_options" className="mt-2" label={data.modal.cart.paymentOptions.option2} />
                           <CustomInput type="radio" name="cart_options" className="mt-2" label={data.modal.cart.paymentOptions.option3} />
                         </FormGroup>
@@ -443,67 +466,95 @@ class Shop extends React.Component {
                   </div>
                 )}
               </TabPane>
-              {/* Profile data confirmation */}
-              {/* TODO form fields in this TabPane need to be controlled inputs updating state onChange */}
-              <TabPane tabId="3">
-                <div className="module">
-                  <h2>Confirm or update your account and shipping details</h2>
-                  <h3>Profile Details</h3>
-                  <Row form>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="firstname">{profileData.form.fields.firstname.label}</Label>
-                        <Input type="text" name="firstname" id="firstname" placeholder={profileData.form.fields.firstname.placeholder} value={profileData.form.fields.firstname.value} />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="lastname">{profileData.form.fields.lastname.label}</Label>
-                        <Input type="text" name="lastname" id="lastname" placeholder={profileData.form.fields.lastname.placeholder} value={profileData.form.fields.lastname.value} />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="fullname">{profileData.form.fields.fullname.label}</Label>
-                        <Input type="text" name="fullname" id="fullname" placeholder={profileData.form.fields.fullname.placeholder} value={profileData.form.fields.fullname.value} />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="email">{profileData.form.fields.email.label}</Label>
-                        <Input type="email" name="email" id="email" placeholder={profileData.form.fields.email.placeholder} value={profileData.form.fields.email.value} />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="phone">{profileData.form.fields.phone.label}</Label>
-                        <Input type="tel" name="phone" id="phone" placeholder={profileData.form.fields.phone.placeholder} value={profileData.form.fields.phone.value} />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="birthdate">{profileData.form.fields.birthdate.label}</Label>
-                        <Input type="text" name="birthdate" id="birthdate" placeholder={profileData.form.fields.birthdate.placeholder} value={profileData.form.fields.birthdate.value} />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="street">{profileData.form.fields.street.label}</Label>
-                        <Input type="text" name="street" id="street" placeholder={profileData.form.fields.street.placeholder} />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="city">{profileData.form.fields.city.label}</Label>
-                        <Input type="text" name="city" id="city" placeholder={profileData.form.fields.city.placeholder} />
-                      </FormGroup>
-                    </Col>
-                    <Col md={4}>
-                      <FormGroup>
-                        <Label for="zipcode">{profileData.form.fields.zipcode.label}</Label>
-                        <Input type="text" name="zipcode" id="zipcode" placeholder={profileData.form.fields.zipcode.placeholder} />
-                      </FormGroup>
-                    </Col>
+            </TabContent>
+          </ModalBody>
+        </Modal>
+        {/* PING INTEGRATION: New Checkout modal */}
+        <Modal isOpen={this.state.isOpenCheckout} toggle={this.toggleCheckout.bind(this)} className="modal-login">
+          <ModalHeader toggle={this.toggleCheckout.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
+          <ModalBody>
+            <TabContent activeTab={this.state.activeTabCheckout}>
+              <TabPane tabId="1"> {/* Guest or sign in prompt */}
+                <h4>{data.modal.prompt.title}</h4>
+                <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
+                <Button color="link" onClick={this.signInToCheckout.bind(this)}>{data.modal.prompt.buttons.signin}</Button>
+                <Button color="link" onClick={() => { this.toggleTabCheckout("2") }}>{data.modal.prompt.buttons.checkout}</Button>
+              </TabPane>
+              <TabPane tabId="2"> {/* Guest email lookup */}
+                <h4>{data.modal.emailPrompt.title}</h4>
+                <FormGroup className="form-group-light">
+                  <Label for="email">{profileData.form.fields.email.label}</Label>
+                  <Input onChange={this.handleUserInput.bind(this)} type="text" name="email" id="email" placeholder={profileData.form.fields.email.placeholder} />
+                  <div>
+                    <Button type="button" color="primary" size="sm" className="pl-0" onClick={() => { this.guestLookup(this.state.email) }}>{profileData.form.buttons.submit}</Button>
+                  </div>
+                </FormGroup>
+              </TabPane>
+              <TabPane tabId="3"> {/* Checkout profile collection */}
+                {/* HACK Inline style overrides... because CSS. */}
+                <h4 style={{ maxWidth: "100%" }}>Confirm or update your account and shipping details</h4>
+                <h4 style={{ maxWidth: "100%" }}>Profile Details</h4>
+                <Row form>
+                  <Col md={4}>
+                    <FormGroup>
+                      <Label for="firstname">{profileData.form.fields.firstname.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" name="firstname" id="firstname" placeholder={profileData.form.fields.firstname.placeholder} value={this.state.firstname} />
+                    </FormGroup>
+                  </Col>
+                  <Col md={4}>
+                    <FormGroup>
+                      <Label for="lastname">{profileData.form.fields.lastname.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" name="lastname" id="lastname" placeholder={profileData.form.fields.lastname.placeholder} value={this.state.lastname} />
+                    </FormGroup>
+                  </Col>
+                  <Col md={4}>
+                    <FormGroup>
+                      <Label for="fullname">{profileData.form.fields.fullname.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" name="fullname" id="fullname" placeholder={profileData.form.fields.fullname.placeholder} value={this.state.fullname} />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row form>
+                  <Col md={4}>
+                    <FormGroup>
+                      <Label for="email">{profileData.form.fields.email.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="email" name="email" id="email" placeholder={profileData.form.fields.email.placeholder} value={this.state.email} />
+                    </FormGroup>
+                  </Col>
+                  <Col md={4}>
+                    <FormGroup>
+                      <Label for="phone">{profileData.form.fields.phone.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="tel" name="phone" id="phone" placeholder={profileData.form.fields.phone.placeholder} value={this.state.phone} />
+                    </FormGroup>
+                  </Col>
+                  <Col md={4}>
+                    <FormGroup>
+                      <Label for="birthdate">{profileData.form.fields.birthdate.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" name="birthdate" id="birthdate" placeholder={profileData.form.fields.birthdate.placeholder} value={this.state.birthdate} />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row form>
+                  <Col md={4}>
+                    <FormGroup>
+                      <Label for="street">{profileData.form.fields.street.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" name="street" id="street" placeholder={profileData.form.fields.street.placeholder} value={this.state.street} />
+                    </FormGroup>
+                  </Col>
+                  <Col md={4}>
+                    <FormGroup>
+                      <Label for="city">{profileData.form.fields.city.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" name="city" id="city" placeholder={profileData.form.fields.city.placeholder} value={this.state.city} />
+                    </FormGroup>
+                  </Col>
+                  <Col md={4}>
+                    <FormGroup>
+                      <Label for="zipcode">{profileData.form.fields.zipcode.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" name="zipcode" id="zipcode" placeholder={profileData.form.fields.zipcode.placeholder} value={this.state.zipcode} />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                {/* <Row form> Not doing passwordless in v1.
                     <Col md={4}>
                       <FormGroup>
                         <Label for="city">{profileData.form.fields.login.label}</Label>
@@ -513,46 +564,33 @@ class Shop extends React.Component {
                         </Input>
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row form>
-                    <Col>
-                      <div className="text-right">
-                        <Button type="button" color="link" className="ml-3">{profileData.form.buttons.cancel}</Button>
-                        {/* <Button type="button" color="primary" onClick={this.props.onSubmit}>{profileData.form.buttons.submit}</Button> */}
-                        <Button type="button" color="primary" onClick={() => { this.updateProfile() }}>{profileData.form.buttons.submit}</Button>
-                      </div>
-                    </Col>
-                  </Row>
-                </div>
+                  </Row> */}
+                <Row form>
+                  <Col>
+                    <div className="text-right">
+                      <Button type="button" color="link" className="ml-3">{profileData.form.buttons.cancel}</Button>
+                      {/* <Button type="button" color="primary" onClick={this.props.onSubmit}>{profileData.form.buttons.submit}</Button> */}
+                      <Button type="button" color="primary" onClick={() => { this.updateProfile() }}>{profileData.form.buttons.submit}</Button>
+                    </div>
+                  </Col>
+                </Row>
+              </TabPane>
+              <TabPane tabId="4"> {/* Create an account prompt */}
+                {/* HACK Inline style overrides... because CSS. */}
+                <h4 style={{ maxWidth: "100%" }}>{data.modal.acctPrompt.title}</h4>
+                <FormGroup className="form-group-light">
+                  <div><Button type="button" color="primary" size="sm" className="pl-0" onClick={() => { console.log("chose continue as guest.") }}>{data.modal.acctPrompt.buttons.continueGuest}</Button></div>
+                  <Label for="email">{profileData.form.fields.password.label}</Label>
+                  <Input onChange={this.handleUserInput.bind(this)} type="password" name="password" id="password" placeholder={profileData.form.fields.password.placeholder} />
+                  <div>
+                    <Button type="button" color="primary" size="sm" className="pl-0" onClick={this.checkout}>{data.modal.acctPrompt.buttons.createAcct}</Button>
+                  </div>
+                </FormGroup>
               </TabPane>
             </TabContent>
           </ModalBody>
         </Modal>
-        {/* PING INTEGRATION: "checkout as guest or sign in" prompt isOpenCheckoutPrompt toggleCheckoutPrompt */}
-        <Modal isOpen={this.state.isOpenCheckoutPrompt} toggle={this.toggleCheckoutPrompt.bind(this)} className="modal-login">
-          <ModalHeader toggle={this.toggleCheckoutPrompt.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
-          <ModalBody>
-            <h4>{data.modal.prompt.title}</h4>
-            <div dangerouslySetInnerHTML={{ __html: data.content }}></div>
-            <Button color="link" onClick={this.signInToCheckout.bind(this)}>{data.modal.prompt.buttons.signin}</Button>
-            <Button color="link" onClick={this.guestCheckout.bind(this)}>{data.modal.prompt.buttons.checkout}</Button>
-          </ModalBody>
-        </Modal>
-        {/* PING INTEGRATION: collect email for guest checkout */}
-        <Modal isOpen={this.state.isOpenGuestEmailPrompt} toggle={this.toggleGuestEmailPrompt.bind(this)} className="modal-login">
-          <ModalHeader toggle={this.toggleGuestEmailPrompt.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
-          <ModalBody>
-            <h4>{data.modal.emailPrompt.title}</h4>
-            <FormGroup className="form-group-light">
-              <Label for="email">{profileData.form.fields.email.label}</Label>
-              <Input type="text" name="email" id="email" placeholder={profileData.form.fields.email.placeholder} />
-              <div>
-                <Button type="button" color="link" size="sm" className="pl-0" onClick={() => { console.log("need to do lookup for existing account") }}>{profileData.form.buttons.submit}</Button>
-              </div>
-            </FormGroup>
-          </ModalBody>
-        </Modal>
-        {/* Loading */}
+        {/* Loading - awaiting transaction approval */}
         <Modal isOpen={this.state.isOpenLoading} toggle={this.toggleLoading.bind(this)} className="modal-login">
           <ModalHeader toggle={this.toggleLoading.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
@@ -567,11 +605,11 @@ class Shop extends React.Component {
             </div>
           </ModalBody>
         </Modal>
-        {/* Confirmation */}
+        {/* Order Confirmation */}
         <Modal isOpen={this.state.isOpenConfirmation} toggle={this.toggleConfirmation.bind(this)} onClosed={this.onClosed.bind(this)} className="modal-xl modal-shop" centered={true}>
           <ModalBody>
             <TabContent activeTab={this.state.activeTabConfirmation}>
-              <TabPane tabId="1">
+              <TabPane tabId="1"> {/* Order Details */}
                 <Row>
                   <Col md={10}>
                     <h4 className="pl-4">
@@ -674,7 +712,7 @@ class Shop extends React.Component {
                   </Row>
                 )}
               </TabPane>
-              <TabPane tabId="2">
+              <TabPane tabId="2"> {/* Consent mgmt. */}
                 <p className="text-center mt-4">
                   <img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" />
                 </p>
@@ -713,7 +751,7 @@ class Shop extends React.Component {
                   <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTabConfirmation('3'); }}>{data.modal.confirmation.consentButtons.save}</Button>
                 </div>
               </TabPane>
-              <TabPane tabId="3">
+              <TabPane tabId="3"> {/* Consent mgmt. confirmation */}
                 <p className="text-center mt-4">
                   <img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" />
                 </p>

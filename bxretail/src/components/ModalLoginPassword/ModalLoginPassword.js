@@ -101,6 +101,7 @@ class ModalLoginPassword extends React.Component {
     switch (authMode) {
       case "registration":
         console.log("made it to reg");
+        // FIXME just like the fix me comment on tabId 7. This soooo doesn't belong in this component. KMN.
         this.flowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
           .then(response => {
             console.log("UI response", response);
@@ -124,9 +125,7 @@ class ModalLoginPassword extends React.Component {
             }
           });
           break;
-      case "EClogin":
-        console.log("authMode", authMode);
-        break;
+      case "Extraordinary Club":
       case "Google":
           console.log("authMode", authMode);
           this.flowHandler.getRequestedSocialProvider({IdP: authMode, flowId: this.props.flowId})
@@ -170,7 +169,7 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="link" size="sm" className="text-info pl-0" onClick={() => { this.toggleTab('5'); }}>{data.form.buttons.reset_password}</Button>
                   </div>
                   <div className="text-center">
-                    <img onClick={() => { this.handleUserAction("EClogin") }} src={window._env_.PUBLIC_URL + "/images/SignInEOC-500x109.png"} alt="Facebook" className="social-signup" />
+                    <img onClick={() => { this.handleUserAction("Extraordinary Club") }} src={window._env_.PUBLIC_URL + "/images/SignInEOC-500x109.png"} alt="Facebook" className="social-signup" />
                   </div>
                   <div className="text-center">
                     <img onClick={() => {this.handleUserAction("Google")}} src={window._env_.PUBLIC_URL + "/images/social-signin-google.png"} alt="Google" className="social-signup" />
@@ -229,6 +228,7 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('1'); }}>{data.form.buttons.login}</Button>
                   </div>
                 </TabPane> */}
+                {/* FIXME this should NOT be in this modal. Belongs with reg. Principle of single responsibility. KMN! */}
                 <TabPane tabId="7"> {/* Registration email verification code UI. */}
                   <h4>{data.form.buttons.reg_verification}</h4>
                   <FormGroup className="form-group-light">

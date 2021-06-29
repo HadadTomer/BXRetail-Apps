@@ -17,7 +17,7 @@ import ModalRegisterConfirm from '../ModalRegisterConfirm';
 // import ModalLogin from '../ModalLogin';
 import ModalLoginPassword from '../ModalLoginPassword';
 import Session from '../Utils/Session'; /* PING INTEGRATION: */
-import FlowHandler from '../Controller/FlowHandler';
+import FlowHandler from '../Controller/FlowHandler'; /* PING INTEGRATION: */
 
 // Styles
 import './NavbarMain.scss';
@@ -101,10 +101,9 @@ class NavbarMain extends React.Component {
   }
   componentDidMount() {
     const isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
-    //TODO this is commented out until we have login working.
-    // this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxFinanceUserType"));
+    //TODO this is commented out until we have federated login working.
+    // this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
 
-    console.log("path", this.props.location.pathname);
     if (window.location.search) {
       const queryParams = new URLSearchParams(window.location.search);
       const flowId = queryParams.get("flowId");
@@ -112,21 +111,19 @@ class NavbarMain extends React.Component {
       this.setState({ flowId: flowId }, () => {
       });
       if (flowId) {
-        // TODO I think we probably need to clear localStorage after using it here. Validate that.
         if (this.session.getAuthenticatedUserItem("authMode", "session") === "login") {
           this.modalLoginPassword.current.toggle();
         } else {
           this.modalRegister.current.toggle();
         }
       } else if (authCode) {
-        // TODO need to process the authCode call and get a token first.
-        // This is just being displayed prematurely so we can wrap up happy path reg flow.
-        // Or maybe we show modalRegisterConfirm and then make code/token calls??????
         const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
         this.flowHandler.swapCodeForToken({ code: authCode, redirectURI: redirectURI})
         .then(response => {
           this.session.setAuthenticatedUserItem("AT", response.access_token, "session");
           this.session.setAuthenticatedUserItem("IdT", response.id_token, "session");
+          //TODO take the access token from session and set a var based on the result of calling this.flowHandler.getTokenValue(token, key) 
+          // stuff that ^ return value into a new session variable called bxRetailUserType. this.setAuthenticatedUserItem("bxRetailUserType", value-to-save, "session")
           this.props.history.push("shop");
         });
       }
