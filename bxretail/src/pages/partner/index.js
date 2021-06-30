@@ -5,7 +5,7 @@ import {
   Container,
   Media
 } from 'reactstrap';
-import { NavLink as RRNavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 // Components
 import NavbarMain from '../../components/NavbarMain';
