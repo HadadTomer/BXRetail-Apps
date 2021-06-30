@@ -110,7 +110,7 @@ class Shop extends React.Component {
   handleUserInput(e) {
     let formData = {};
     formData[e.target.id] = e.target.value;
-    this.setState(formData, () => {console.log("formData", formData)});
+    this.setState(formData, () => { console.log("formData", formData) });
   }
 
   clearShoppingCart() {
@@ -155,15 +155,31 @@ class Shop extends React.Component {
   }
 
   getProfile() {
-    this.flowHandler.getUserProfile({IdT: this.session.getAuthenticatedUserItem("IdT", "session")});
-    //TODO and update state.
+    const response = this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") });
+
+    response.then(userProfile => {
+      console.log("userProfile", userProfile)
+      this.setState({
+        firstname: userProfile.name.given,
+        lastname: userProfile.name.family,
+        fullname: userProfile.name.given + " " + userProfile.name.family,
+        email: userProfile.email,
+        phone: userProfile.mobilePhone,
+        birthdate: userProfile.BXRetailCustomAttr1,
+        street: userProfile.address.streetAddress,
+        city: userProfile.address.locality,
+        zipcode: userProfile.address.postalCode
+      });
+    });
   }
 
   updateProfile() {
     this.setState({ acctVerified: true }, () => {
       //TODO call to flowHandler here to update user profile. Depending on error handling, maybe call local function that wraps call to flowHandler.
       console.info("Shop/index.js", "Profile updated or confirmed: " + this.state.acctVerified);
+      console.log("form data:", JSON.stringify(this.state.formData))
     });
+
     // TODO update profile here.
     this.toggleTabCheckout("4");
     // this.toggleCheckout();

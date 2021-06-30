@@ -37,31 +37,31 @@ class FlowHandler {
     initAuthNFlow({ grantType, clientId, redirectURI, scopes }) {
         console.info("FlowHandler.js", "Initializing an authorization flow with PingOne.");
 
-        if (grantType !== "implicit" && grantType !== "authCode") { throw "Invalid grant type provided. Controller.FlowHandler.";}
+        if (grantType !== "implicit" && grantType !== "authCode") { throw "Invalid grant type provided. Controller.FlowHandler."; }
 
         const responseType = (grantType === "implicit" ? "token" : "code");
 
-        this.ping1AuthZ.authorize({responseType:responseType, clientId:clientId, redirectURI:redirectURI, scopes:scopes});
-   }
+        this.ping1AuthZ.authorize({ responseType: responseType, clientId: clientId, redirectURI: redirectURI, scopes: scopes });
+    }
 
-   /**
-    * Parse and prepare a user registration.
-    * @param {object} regData state object from user input.
-    * @returns {string} the flow status.
-    */
-   async registerUser({regData}) {
-       console.info("FlowHandler.js", "Parsing and preparing user registation data.");
-       console.log("regData", regData);
-       const rawPayload = JSON.stringify({
-           "username": regData.email,
-           "email": regData.email,
-           "password": regData.password
-       });
+    /**
+     * Parse and prepare a user registration.
+     * @param {object} regData state object from user input.
+     * @returns {string} the flow status.
+     */
+    async registerUser({ regData }) {
+        console.info("FlowHandler.js", "Parsing and preparing user registation data.");
+        console.log("regData", regData);
+        const rawPayload = JSON.stringify({
+            "username": regData.email,
+            "email": regData.email,
+            "password": regData.password
+        });
 
-       const response = await this.ping1Reg.userRegister({regPayLoad:rawPayload, flowId:regData.flowId});
-       const status = await response.status;
-       return status; 
-   }
+        const response = await this.ping1Reg.userRegister({ regPayLoad: rawPayload, flowId: regData.flowId });
+        const status = await response.status;
+        return status;
+    }
 
     /**
      * Verify the user's registration email code.
@@ -71,7 +71,7 @@ class FlowHandler {
      */
     async verifyRegEmailCode({ regEmailCode, flowId }) {
         console.info("FlowHandler.js", "Parsing and preparing user registration verification code.");
-        
+
         const rawPayload = JSON.stringify({
             "verificationCode": regEmailCode
         });
@@ -80,7 +80,7 @@ class FlowHandler {
         //TODO do we want to keep this pattern? return status and resumeUrl if "completed", otherwise entire response? Or just error data?
         const status = await response.status;
         if (status === "COMPLETED") {
-            return {status:status, resumeUrl:response.resumeUrl};
+            return { status: status, resumeUrl: response.resumeUrl };
         } else {
             return response;
         }
@@ -92,14 +92,14 @@ class FlowHandler {
      * @param {string} flowId Id for the current authN transaction.
      * @returns {*} Response status, or response object if there's an issue.
      */
-    async loginUser({loginData, flowId}) {
+    async loginUser({ loginData, flowId }) {
         console.info("FlowHandler.js", "Parsing and preparing username and password for login.");
 
         let rawPayload = JSON.stringify({
             "username": loginData.username,
             "password": loginData.password
         });
-        const response = await this.ping1AuthN.usernamePasswordCheck({ loginPayload: rawPayload, flowId: flowId});
+        const response = await this.ping1AuthN.usernamePasswordCheck({ loginPayload: rawPayload, flowId: flowId });
         const status = await response.status;
         if (status === "COMPLETED") {
             return { status: status, resumeUrl: response.resumeUrl };
@@ -114,9 +114,9 @@ class FlowHandler {
      * @param {string} flowId Id for the current authN transaction.
      * @returns {object} Portion of the response object for a given social provider.
      */
-    async getRequestedSocialProvider({IdP, flowId}) {
+    async getRequestedSocialProvider({ IdP, flowId }) {
 
-        const response = await this.ping1AuthN.readAuthNFlowData({flowId: flowId});
+        const response = await this.ping1AuthN.readAuthNFlowData({ flowId: flowId });
         console.log("response", JSON.stringify(response));
         const resultsArr = await response._embedded.socialProviders;
         console.log("resultsArr", JSON.stringify(resultsArr));
@@ -131,12 +131,12 @@ class FlowHandler {
      * @param {string} redirectURI App URL user should be redirected to after swap for token.
      * @returns {object} something here.
      */
-    async swapCodeForToken({code, redirectURI}) {
+    async swapCodeForToken({ code, redirectURI }) {
         console.info("FlowHandler.js", "Swapping an auth code for an access token.");
 
         const bauth = this.envVars.REACT_APP_CLIENT + ":" + this.envVars.REACT_APP_RECSET;
         const swaprods = btoa(bauth);
-        const response = await this.ping1AuthZ.getToken({code:code, redirectURI:redirectURI, swaprods:swaprods});
+        const response = await this.ping1AuthZ.getToken({ code: code, redirectURI: redirectURI, swaprods: swaprods });
         return response;
     }
 
@@ -151,7 +151,7 @@ class FlowHandler {
 
         const clientCreds = this.envVars.REACT_APP_LOWPRIVCLIENT + ":" + this.envVars.REACT_APP_LOWPRIVRECSET;
         const encodedCreds = btoa(clientCreds);
-        const lowPrivToken = await this.ping1AuthZ.getLowPrivilegedToken({ elasticNerd: encodedCreds});
+        const lowPrivToken = await this.ping1AuthZ.getLowPrivilegedToken({ elasticNerd: encodedCreds });
         console.log("lowPrivToken", lowPrivToken);
         return lowPrivToken;
     }
@@ -161,14 +161,13 @@ class FlowHandler {
      * @param {String} IdT OIDC ID JWT token
      * @return {object} JSON object from response.
      */
-    getUserProfile({IdT}) {
-        console.log("IdT", IdT);
-        const sub = this.getTokenValue({token: IdT, key: "sub"});
-        console.log("sub", sub);
-        this.requestLowPrivToken()
-            .then(lowPrivToken => {
-            this.ping1Users.readUser({ userId: sub, lowPrivToken: lowPrivToken})
-        });
+    async getUserProfile({ IdT }) {
+        const sub = this.getTokenValue({ token: IdT, key: "sub" });
+        
+        const lowPrivToken = await this.requestLowPrivToken();
+        const response = await this.ping1Users.readUser({ userId: sub, lowPrivToken: lowPrivToken });
+        
+        return response;
     }
 
     /**
@@ -177,24 +176,20 @@ class FlowHandler {
      * @param {String} key the claim needed from within the token, or "all" to get entire payload.
      * @return {String} value for key requested or JSON web token.
      */
-    getTokenValue({token, key}) {
-        console.log("TOKEN to search", token);
-        console.log("CLAIM to get", key);
+    getTokenValue({ token, key }) {
         // Extracting the payload portion of the JWT.
         const base64Fragment = token.split('.')[1];
         const decodedFragment = JSON.parse(atob(base64Fragment));
-        console.log("decodedFragment", decodedFragment);
-        const jwtValue = this.jsonSearch.findValues(decodedFragment, key);
-        console.log("jwtValue", jwtValue[0]);
+        const jwtValue = this.jsonSearch.findValues(decodedFragment, key); //FIXME this can be converted to Javascripts intrinsic .find() function.
         return jwtValue[0];
     }
 
     /**
      * 
      */
-    lookupUser({userName}) {
+    lookupUser({ userName }) {
         //TODO implement
-        // https://api.pingone.com/v1/environments/{{envId}}/users?filter=username eq "user.0"
+        // https://api.pingone.com/v1/environments/{{envId}}/users?filter=username eq "user.0" <-- urlEncode
     }
 }
 export default FlowHandler;

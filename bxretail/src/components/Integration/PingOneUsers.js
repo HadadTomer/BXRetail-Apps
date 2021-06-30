@@ -32,7 +32,7 @@ class PingOneUsers {
      * @param {type} paramName - Short description.
      * @return {type} What's being returned.
     */
-    readUser({ userId, lowPrivToken }) {
+    async readUser({ userId, lowPrivToken }) {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + lowPrivToken);
 
@@ -42,10 +42,10 @@ class PingOneUsers {
             redirect: 'manual'
         };
         const url = this.proxyApiPath + "/users/" + userId;
-        fetch(url, requestOptions)
-            .then(response => response.text())
-            .then(result => console.log("Read user result",result))
-            .catch(error => console.log('error', error));
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+
+        return jsonResponse;
     }
 }
 export default PingOneUsers;
