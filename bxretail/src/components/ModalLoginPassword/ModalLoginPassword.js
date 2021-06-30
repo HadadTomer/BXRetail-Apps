@@ -58,8 +58,8 @@ class ModalLoginPassword extends React.Component {
     // toggle() is only about show/hide modal UIs. Added tab arg
     // and call to toggleTab() because 
     // some uses cases require us to show a different default tabPane.
-    if (tab) { 
-      this.toggleTab(tab); 
+    if (tab) {
+      this.toggleTab(tab);
     }
   }
   toggleTab(tab) {
@@ -67,9 +67,9 @@ class ModalLoginPassword extends React.Component {
       activeTab: tab
     });
     // HACK for getting focus on subsequent tab fields.... because reactstrap. :-(
-    if (tab === "5"){document.getElementById("email").focus();} // TODO This is not working and I can't figure out why.
-    if (tab === "7"){document.getElementById("regCode").focus();} 
-    
+    if (tab === "5") { document.getElementById("email").focus(); } // TODO This is not working and I can't figure out why.
+    if (tab === "7") { document.getElementById("regCode").focus(); }
+
     console.log("made it here with tab", tab);
     // Tab 3 is the progress spinner. so we either in process of logging in or registering.
     if (tab === "3") {
@@ -85,13 +85,20 @@ class ModalLoginPassword extends React.Component {
   }
   /* BEGIN PING INTEGRATION: */
   handleFormInput(e) {
+    console.log("checked", e.target.checked);
     //Update state based on the input's Id and value.
     let formData = {};
     //If rememberme checkbox, just flip its value.
     if (e.target.id === "rememberme") {
-      this.setState(previousState => ({
-        rememberme: !previousState.rememberme
-      }))
+      if (e.target.checked) {
+        this.session.setAuthenticatedUserItem("rememberMe", this.state.username, "local")
+      } else {
+        this.session.removeAuthenticatedUserItem("rememberMe", "local");
+      }
+      
+      this.setState({
+        rememberme: e.target.checked
+      });
     } else {
       formData[e.target.id] = e.target.value;
       this.setState(formData);
@@ -111,7 +118,7 @@ class ModalLoginPassword extends React.Component {
               console.log("UNEXPECTED STATUS", response);
             }
           });
-          break;
+        break;
       case "login":
         console.log("made it to login");
         this.flowHandler.loginUser({ loginData: this.state, flowId: this.props.flowId })
@@ -124,19 +131,27 @@ class ModalLoginPassword extends React.Component {
               // TODO had a status of VERIFICATION_CODE_REQUIRED here to handle. incomplete registration???
             }
           });
-          break;
+        break;
       case "Extraordinary Club":
       case "Google":
-          console.log("authMode", authMode);
-          this.flowHandler.getRequestedSocialProvider({IdP: authMode, flowId: this.props.flowId})
-            .then(idpURL => {
-              console.log("authNURL", idpURL);
-              window.location.assign(idpURL)
-            });
-        
-          break;
+        console.log("authMode", authMode);
+        this.flowHandler.getRequestedSocialProvider({ IdP: authMode, flowId: this.props.flowId })
+          .then(idpURL => {
+            console.log("authNURL", idpURL);
+            window.location.assign(idpURL)
+          });
+
+        break;
       default:
         throw new Error("Unexpected authMode for FowHandler.handleUserAction.");
+    }
+  }
+  componentDidMount() {
+    if (this.session.getAuthenticatedUserItem("rememberMe", "local")) {
+      this.setState({
+        rememberme: true,
+        username: this.session.getAuthenticatedUserItem("rememberMe", "local")
+      }, () => { console.log("STATE", this.state) });
     }
   }
   /* END PING INTEGRATION: */
@@ -153,11 +168,11 @@ class ModalLoginPassword extends React.Component {
                   <h4>{data.titles.welcome}</h4>
                   <FormGroup className="form-group-light">
                     <Label for="username">{data.form.fields.username.label}</Label>
-                    <Input autoFocus={true} autoComplete="off" onChange={this.handleFormInput.bind(this)} type="text" name="username" id="username" placeholder={data.form.fields.username.placeholder} />
+                    <Input autoFocus={true} autoComplete="off" onChange={this.handleFormInput.bind(this)} type="text" name="username" id="username" value={this.state.username} />
                   </FormGroup>
                   <FormPassword autoComplete="off" handleFormInput={this.handleFormInput.bind(this)} name="password" label={data.form.fields.password.label} placeholder={data.form.fields.password.placeholder} />
                   <FormGroup className="form-group-light">
-                    <CustomInput onChange={this.handleFormInput.bind(this)} type="checkbox" id="rememberme" label={data.form.fields.rememberme.label} />
+                    <CustomInput onChange={this.handleFormInput.bind(this)} type="checkbox" id="rememberme" label={data.form.fields.rememberme.label} checked={this.state.rememberme} />
                   </FormGroup>
                   <div className="mb-3">
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('3'); }}>{data.form.buttons.next}</Button>
@@ -172,7 +187,7 @@ class ModalLoginPassword extends React.Component {
                     <img onClick={() => { this.handleUserAction("Extraordinary Club") }} src={window._env_.PUBLIC_URL + "/images/SignInEOC-500x109.png"} alt="Facebook" className="social-signup" />
                   </div>
                   <div className="text-center">
-                    <img onClick={() => {this.handleUserAction("Google")}} src={window._env_.PUBLIC_URL + "/images/social-signin-google.png"} alt="Google" className="social-signup" />
+                    <img onClick={() => { this.handleUserAction("Google") }} src={window._env_.PUBLIC_URL + "/images/social-signin-google.png"} alt="Google" className="social-signup" />
                   </div>
                 </TabPane>
                 {/* <TabPane tabId="2"> PASSWORDLESS UI. NOT SUPPORTED IN BXR USE CASES.
