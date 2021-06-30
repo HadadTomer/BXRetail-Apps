@@ -151,7 +151,7 @@ class ModalLoginPassword extends React.Component {
       this.setState({
         rememberme: true,
         username: this.session.getAuthenticatedUserItem("rememberMe", "local")
-      }, () => { console.log("STATE", this.state) });
+      });
     }
   }
   /* END PING INTEGRATION: */
