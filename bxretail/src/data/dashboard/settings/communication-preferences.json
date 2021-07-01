@@ -67,15 +67,15 @@
       "table_title": "Marketing Communications",
       "communication_types": [
         {
-          "name": "sms",
+          "name": "commSms",
           "label": "SMS/Text Messages"
         },
         {
-          "name": "email",
+          "name": "commEmail",
           "label": "Email"
         },
         {
-          "name": "mail",
+          "name": "commMail",
           "label": "Mail"
         }
       ],
@@ -87,15 +87,15 @@
       "description": "Your marketing communications preferences now are as follows:",
       "communication_types": [            
         {
-          "name": "sms",
+          "name": "commSms",
           "label": "SMS/Text Messages"
         },
         {
-          "name": "email",
+          "name": "commEmail",
           "label": "Email"
         },
         {
-          "name": "mail",
+          "name": "commMail",
           "label": "Mail"
         }
       ],

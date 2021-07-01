@@ -15,6 +15,7 @@ import FooterMain from '../../../components/FooterMain';
 import AccountsSubnav from '../../../components/AccountsSubnav';
 import AccountsDropdown from '../../../components/AccountsDropdown';
 import FlowHandler from '../../../components/Controller/FlowHandler'; /* PING INTEGRATION: */
+import Session from '../../../components/Utils/Session'; /* PING INTEGRATION: */
 
 // Data
 import data from '../../../data/dashboard/settings/privacy-security.json';
@@ -41,11 +42,12 @@ class PrivacySecurity extends React.Component {
     this.close = this.close.bind(this);
     this.toggleConsent = this.toggleConsent.bind(this);
     this.flowHandler = new FlowHandler();
+    this.session = new Session();
   }
 
   showStep2() {
     // Sends the user's consent selections to state to be sent to FlowHandler.
-    // this.flowHandler.userUpdateConsent({ consentData: this.state });
+    this.flowHandler.userUpdateConsent({ consentData: this.state, IdT: this.session.getAuthenticatedUserItem("IdT", "session") });
     this.setState({step: 2});
   }
 
@@ -64,21 +66,22 @@ class PrivacySecurity extends React.Component {
   }
 
   componentDidMount() {
-    const response = this.flowHandler.userGetConsent();
-    console.log("User Consent Data", response); 
-    if (response.consent) {
-      const deliveryConsent = response.consent.find(consent => consent["definition"]["id"] === "tv-delivery-preferences");
-      if (deliveryConsent) {
-        this.state.deliveryEmailChecked = deliveryConsent.email;
-        this.state.deliveryPhoneChecked = deliveryConsent.phone;
-      } 
-      const commConsent = response.consent.find(consent => consent["definition"]["id"] === "communication-preferences");
-      if (commConsent) {
-        this.state.commSmsChecked = commConsent.sms;
-        this.state.commEmailChecked = commConsent.email;
-        this.state.commMailChecked = commConsent.mail;
-      }
-    }
+    this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") })
+      .then(response => {
+        if (response.consent) {
+          const deliveryConsent = response.consent.find(consent => consent["definition"]["id"] === "tv-delivery-preferences");
+          if (deliveryConsent) {
+            this.setState({deliveryEmailChecked: deliveryConsent.data.email === "true"});
+            this.setState({deliveryPhoneChecked: deliveryConsent.data.mobile === "true"});
+          } 
+          const commConsent = response.consent.find(consent => consent["definition"]["id"] === "communication-preferences");
+          if (commConsent) {
+            this.setState({commSmsChecked: commConsent.data.sms === "true"});
+            this.setState({commEmailChecked: commConsent.data.email === "true"});
+            this.setState({commMailChecked: commConsent.data.mail === "true"});
+          }
+        }
+      });
   }
 
   render() {
@@ -113,7 +116,7 @@ class PrivacySecurity extends React.Component {
                       Object.keys(data.steps[0].communication_types).map(index => {
                         {/* TODO implement when we have session data:
                         commDetails = data.steps[0].communication_types[index].name === "phone" ? this.Session.getAuthenticatedUserItem("mobile") && data.steps[0].communication_types[index].name === "email"; */}
-                        commDetails = data.steps[0].communication_types[index].name === "phone" ? "314.787.2278" : data.steps[0].communication_types[index].name === "email" ? "janelakesmith@gmail.com": "";
+                        commDetails = data.steps[0].communication_types[index].name === "deliveryPhone" ? "314.787.2278" : data.steps[0].communication_types[index].name === "deliveryEmail" ? "janelakesmith@gmail.com": "";
                         commType = data.steps[0].communication_types[index].name;
                         return (
                           <div>
@@ -145,7 +148,7 @@ class PrivacySecurity extends React.Component {
                       Object.keys(data.steps[1].communication_types).map(index => {
                         {/* TODO implement when we have session data:
                         commDetails = data.steps[0].communication_types[index].name === "phone" ? this.Session.getAuthenticatedUserItem("mobile") : data.steps[0].communication_types[index].name === "email" ? this.Session.getAuthenticatedUserItem("email") : this.Session.getAuthenticatedUserItem("fullAddress"); */}
-                        commDetails = data.steps[0].communication_types[index].name === "phone" ? "314.787.2278" : data.steps[0].communication_types[index].name === "email" ?  "janelakesmith@gmail.com" : "";
+                        commDetails = data.steps[0].communication_types[index].name === "deliveryPhone" ? "314.787.2278" : data.steps[0].communication_types[index].name === "deliveryEmail" ?  "janelakesmith@gmail.com" : "";
                         commType = data.steps[0].communication_types[index].name;
                         return (
                           <>
@@ -174,3 +177,4 @@ class PrivacySecurity extends React.Component {
   }
 }
 export default PrivacySecurity;
+

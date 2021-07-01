@@ -38,7 +38,7 @@
         },
         {
           "title": "Privacy & Security",
-          "active": true,
+          "active": false,
           "href": "/dashboard/settings/privacy-security"
         },
         {
@@ -67,11 +67,11 @@
       "table_title": "AnyTVPartner Data Sharing",
       "communication_types": [
         {
-          "name": "phone",
+          "name": "deliveryPhone",
           "label": "My Phone Number"
         },
         {
-          "name": "email",
+          "name": "deliveryEmail",
           "label": "My Email Address"
         }
       ],
@@ -83,11 +83,11 @@
       "description": "Your sharing settings for AnyTVPartner now are as follows:",
       "communication_types": [
         {
-          "name": "phone",
+          "name": "deliveryPhone",
           "label": "My Phone Number"
         },
         {
-          "name": "email",
+          "name": "deliveryEmail",
           "label": "My Email Address"
         }
       ],

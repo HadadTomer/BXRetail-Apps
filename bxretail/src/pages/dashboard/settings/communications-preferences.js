@@ -66,21 +66,22 @@ class CommunicationPreferences extends React.Component {
   }
 
   componentDidMount() {
-    const response = this.flowHandler.userGetConsent();
-    console.log("User Consent Data", response); 
-    if (response.consent) {
-      const deliveryConsent = response.consent.find(consent => consent["definition"]["id"] === "tv-delivery-preferences");
-      if (deliveryConsent) {
-        this.state.deliveryEmailChecked = deliveryConsent.email;
-        this.state.deliveryPhoneChecked = deliveryConsent.phone;
-      } 
-      const commConsent = response.consent.find(consent => consent["definition"]["id"] === "communication-preferences");
-      if (commConsent) {
-        this.state.commSmsChecked = commConsent.sms;
-        this.state.commEmailChecked = commConsent.email;
-        this.state.commMailChecked = commConsent.mail;
-      }
-    }
+    this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") })
+      .then(response => {
+        if (response.consent) {
+          const deliveryConsent = response.consent.find(consent => consent["definition"]["id"] === "tv-delivery-preferences");
+          if (deliveryConsent) {
+            this.setState({deliveryEmailChecked: deliveryConsent.data.email === "true"});
+            this.setState({deliveryPhoneChecked: deliveryConsent.data.mobile === "true"});
+          } 
+          const commConsent = response.consent.find(consent => consent["definition"]["id"] === "communication-preferences");
+          if (commConsent) {
+            this.setState({commSmsChecked: commConsent.data.sms === "true"});
+            this.setState({commEmailChecked: commConsent.data.email === "true"});
+            this.setState({commMailChecked: commConsent.data.mail === "true"});
+          }
+        }
+      });
   }
 
   render() {
@@ -115,7 +116,7 @@ class CommunicationPreferences extends React.Component {
                       Object.keys(data.steps[0].communication_types).map(index => {
                         {/* TODO implement when we have session data:
                         commDetails = data.steps[0].communication_types[index].name === "sms" ? this.Session.getAuthenticatedUserItem("mobile") : data.steps[0].communication_types[index].name === "email" ? this.Session.getAuthenticatedUserItem("email") : this.Session.getAuthenticatedUserItem("fullAddress"); */}
-                        commDetails = data.steps[0].communication_types[index].name === "sms" ? "314.787.2278" : data.steps[0].communication_types[index].name === "email" ?  "janelakesmith@gmail.com" : "4700 Red River St. Monroe City, MO 63456";
+                        commDetails = data.steps[0].communication_types[index].name === "commSms" ? "314.787.2278" : data.steps[0].communication_types[index].name === "commEmail" ?  "janelakesmith@gmail.com" : "4700 Red River St. Monroe City, MO 63456";
                         commType = data.steps[0].communication_types[index].name;
                         return (
                           <>
@@ -146,7 +147,7 @@ class CommunicationPreferences extends React.Component {
                       Object.keys(data.steps[1].communication_types).map(index => {
                         {/* TODO implement when we have session data:
                         commDetails = data.steps[0].communication_types[index].name === "sms" ? this.Session.getAuthenticatedUserItem("mobile") : data.steps[0].communication_types[index].name === "email" ? this.Session.getAuthenticatedUserItem("email") : this.Session.getAuthenticatedUserItem("fullAddress"); */}
-                        commDetails = data.steps[0].communication_types[index].name === "sms" ? "314.787.2278" : data.steps[0].communication_types[index].name === "email" ?  "janelakesmith@gmail.com" : "4700 Red River St. Monroe City, MO 63456";
+                        commDetails = data.steps[0].communication_types[index].name === "commSms" ? "314.787.2278" : data.steps[0].communication_types[index].name === "commEmail" ?  "janelakesmith@gmail.com" : "4700 Red River St. Monroe City, MO 63456";
                         commType = data.steps[0].communication_types[index].name;
                         return (
                           <>

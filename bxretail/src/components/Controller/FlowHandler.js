@@ -196,29 +196,18 @@ class FlowHandler {
         // https://api.pingone.com/v1/environments/{{envId}}/users?filter=username eq "user.0" <-- urlEncode
     }
 
-    /**
-     * Get consents for a user.
-     * @param {string} userId User Id from PingOne. 
-     * @returns {object} Entire user data response object.
-     */
-    async userGetConsent() {
-        console.info("Flowhandler.js", "Getting user consents.")
-
-        const token = this.session.getAuthenticatedUserItem("AT", "session");
-        const response = await this.ping1Consents.userGetConsent({token: token});
-        return response; 
-    }
-
     /** 
      * Set consents for a user.
      * @param {object} consentData consists of username, AnyTVPartner delivery preferences, and communication preferences.
      * @returns {} something here.
      */
-    async userUpdateConsent({ consentData }) {
+    async userUpdateConsent({ consentData, IdT }) {
         console.info("Flowhandler.js", "Updating user consents.")
+        const user = await this.getUserProfile({ IdT: IdT })
+        const userId = this.getTokenValue({ token: IdT, key: "sub" });
 
         consentData = {
-            subject: "davidwebb@mailinator.com",
+            subject: user.email,
             deliveryEmail: JSON.stringify(consentData.deliveryEmailChecked),
             deliveryPhone: JSON.stringify(consentData.deliveryPhoneChecked),
             commEmail: JSON.stringify(consentData.commEmailChecked), 
@@ -269,10 +258,11 @@ class FlowHandler {
                 }
             ]
         });
-        const token = this.session.getAuthenticatedUserItem("AT", "session");
-        const response = await this.ping1Consents.userUpdateConsent({ consentPayload: rawPayload, token: token });
+        const lowPrivToken = await this.requestLowPrivToken();
+        const response = await this.ping1Consents.userUpdateConsent({ consentPayload: rawPayload, token: lowPrivToken, userId : userId });
         const status = await response.status;
         return status; 
     }
 }
+
 export default FlowHandler;

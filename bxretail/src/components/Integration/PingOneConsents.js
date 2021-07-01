@@ -15,40 +15,16 @@ class PingOneConsents {
         this.proxyApiPath = proxyApiPath;
         this.envId = envId;
     }
-
-    /**
-     * Get user consents.
-     * @param {string} token Authorization token. 
-     * @returns {object} Entire user data response object. 
-     */
-
-    async userGetConsent({ token }) {
-        console.info("PingOneConsents.js", "Getting the user consents in PingOne, if any.")
-        
-        let myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer " + token);
-
-        const requestOptions = {
-            method: "GET",
-            headers: myHeaders
-        };
-
-        const url = this.proxyApiPath + "/users/" + "ad163b7d-d433-495e-973b-c5b239e27080"
-        const response = await fetch(url, requestOptions);
-        const jsonResponse = await response.json();
-        console.log("get consents response", jsonResponse);
-        return jsonResponse;
-    }
-    
     
     /**
      * Update user consent.
      * @param {object} consentPayload Consists of username, AnyTVPartner delivery preferences, and communication preferences.
-     * @param {string} token Authorization token.
+     * @param {string} token Authorization token (lowerpriv token?)
+     * @param {string} userId User Id GUID of which to update consents on.
      * @return {type} something here.
      */
 
-    async userUpdateConsent({ consentPayload, token }) {
+    async userUpdateConsent({ consentPayload, token, userId }) {
         console.info("PingOneConsents.js", "Setting the user consents in PingOne.");
 
         let myHeaders = new Headers();
@@ -62,7 +38,7 @@ class PingOneConsents {
             redirect: "manual"
         };
 
-        const url = this.proxyApiPath + "/users/" + "ad163b7d-d433-495e-973b-c5b239e27080" 
+        const url = this.proxyApiPath + "/users/" + userId
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
         console.log("update consents response", jsonResponse);
