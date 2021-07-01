@@ -18,7 +18,7 @@ class PingOneUsers {
 
     /**
      * What constructor does [optional if nothing done special for instantiation].
-     * @param {String} apiPath management API host.
+     * @param {String} proxyApiPath management API host.
      * @param {String} envId PingOne tenant environment ID.
      */
     constructor(proxyApiPath, envId) {
@@ -27,10 +27,11 @@ class PingOneUsers {
     }
 
     /**
-     * What method does.
+     * Read user Data
      * 
-     * @param {type} paramName - Short description.
-     * @return {type} What's being returned.
+     * @param {string} userId - user ID GUID that you would like to read.
+     * @param {string} lowPrivToken - Lower privileged token for Management API.
+     * @return {object} jsonResponse - json object of user data.
     */
     async readUser({ userId, lowPrivToken }) {
         var myHeaders = new Headers();

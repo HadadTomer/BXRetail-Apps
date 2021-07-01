@@ -150,7 +150,7 @@ class PartnerClient extends React.Component {
                   </Row>
                   <Row>
                     <Col>
-                      <img src={window._env_.PUBLIC_URL + "/images/advisor-client.png"} className="img-fluid mt-3 mb-5" />
+                      <img src={window._env_.PUBLIC_URL + "/images/advisor-client.png"} className="img-fluid mt-3 mb-5" alt=''/>
                     </Col>
                   </Row>
                 </div>

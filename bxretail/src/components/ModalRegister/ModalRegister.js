@@ -11,16 +11,9 @@ import {
   FormGroup,
   Label,
   Input,
-  CustomInput,
   Row,
   Col,
-  Popover,
-  PopoverHeader,
-  PopoverBody,
-  FormText
 } from 'reactstrap';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
 // Styles
 import "./ModalRegister.scss";

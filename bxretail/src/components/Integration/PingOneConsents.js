@@ -11,57 +11,38 @@
 
 class PingOneConsents {
 
-    constructor() {
-
+    constructor(proxyApiPath, envId) {
+        this.proxyApiPath = proxyApiPath;
+        this.envId = envId;
     }
-
+    
     /**
      * Update user consent.
-     * 
-     * @param {type} name Description
-     * @return {type} name Description
+     * @param {object} consentPayload Consists of username, AnyTVPartner delivery preferences, and communication preferences.
+     * @param {string} token Authorization token (lowerpriv token?)
+     * @param {string} userId User Id GUID of which to update consents on.
+     * @return {type} something here.
      */
 
-    userUpdateConsent({}) {
+    async userUpdateConsent({ consentPayload, token, userId }) {
+        console.info("PingOneConsents.js", "Setting the user consents in PingOne.");
+
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/vnd.pingidentity.user.update+json");
-        myHeaders.append("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImRlZmF1bHQifQ.eyJjbGllbnRfaWQiOiI5MTYxMTFjMC00MGI0LTRlMjQtYTkwMi05YWYwN2VjOTQxMzgiLCJpc3MiOiJodHRwczovL2F1dGgucGluZ29uZS5jb20vNDBmNzQ1ZjYtM2Y5MS00Zjg4LWEzMDUtOTNjMGE0MzY5MjkzL2FzIiwiaWF0IjoxNjE5NDc0NTk1LCJleHAiOjE2MTk0NzgxOTUsImF1ZCI6WyJodHRwczovL2FwaS5waW5nb25lLmNvbSJdLCJlbnYiOiI0MGY3NDVmNi0zZjkxLTRmODgtYTMwNS05M2MwYTQzNjkyOTMiLCJvcmciOiI0ZWFkYTU1MC05NmViLTQ0MjUtYTU0MS0wNDZhYjhhZTcxMGMifQ.NAufwTUNwhHFwMj-y5fNeTvxg-tM8EaE_u8FSiYVsLyJNIzuXjeIlTxT1Ak-65QJPEYVVIfH2sXnbtALb7cfiwy_VGEzgXWFz28T4v7ajERBg6npSz98bKYK88YVwZ1gz9RCD5xJrouuE5sJopoFKNluk6KyFU4a4RIgmGOySsdOk4bVlF55cZAyGCrzPFN-uPSpgd5G4jvWiBfuGKbOTuBY0WgoNFoad5YAm1hl9k6JEkPS_KnyUQKkzR7gQNprQ6A-cUVMIg4Gm5aws778ZLpCYCWUXr00hOctZ6P4QhuZ7BAWXHrFsvEFz5U3zNJ9Pj-gc-8yOl2yYXgs-N594Q");
+        myHeaders.append("Authorization", "Bearer " + token );
 
-        let raw = JSON.stringify({
-            "consent": [
-                {
-                    "status": "active",
-                    "subject": "testUser1",
-                    "actor": "testUser1",
-                    "audience": "BXRApp",
-                    "definition": {
-                        "id": "tv-delivery-preferences",
-                        "version": "1.0",
-                        "locale": "en-us"
-                    },
-                    "titleText": "Share User Delivery Info",
-                    "dataText": "Share User Delivery Info",
-                    "purposeText": "Share User Delivery Info",
-                    "data": {
-                        "email": "true",
-                        "mobile": "true"
-                    },
-                    "consentContext": {}
-                }
-            ]
-        });
-
-        let requestOptions = {
-            method: 'PATCH',
+        const requestOptions = {
+            method: "PATCH",
             headers: myHeaders,
-            body: raw,
+            body: consentPayload,
             redirect: "manual"
         };
 
-        fetch("https://pingdatagovernance-bxretail-temp-remz.ping-devops.com/apiPath/users/be6feb3b-b708-4a10-b449-7660ee52ed44", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
+        const url = this.proxyApiPath + "/users/" + userId
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        console.log("update consents response", jsonResponse);
+        return jsonResponse;
     }
 
     /**

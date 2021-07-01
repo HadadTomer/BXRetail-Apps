@@ -8,14 +8,8 @@ import {
   ModalHeader,
   ModalBody,
   FormGroup,
-  Label,
   Input,
-  CustomInput,
-  TabContent, TabPane
 } from 'reactstrap';
-import { Redirect } from 'react-router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 // Styles
 import "./ModalBirthday.scss";

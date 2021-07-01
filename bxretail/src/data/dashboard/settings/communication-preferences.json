@@ -34,7 +34,7 @@
         {
           "title": "Communications Preferences",
           "active": true,
-          "href": "/dashboard/settings/communication-preferences"
+          "href": "#"
         },
         {
           "title": "Privacy & Security",
@@ -63,20 +63,20 @@
   "steps": [
     {
       "title": "How should we communicate with you?",
-      "description": "Review your notification settings for how you want to receive exclusive membership deals and marketing materials..",
+      "description": "Review your notification settings for how you want to receive exclusive membership deals and marketing materials:",
       "table_title": "Marketing Communications",
       "communication_types": [
         {
-          "name": "sms",
-          "label": "SMS/Text Messages (314.787.2278)"
+          "name": "commSms",
+          "label": "SMS/Text Messages"
         },
         {
-          "name": "email",
-          "label": "Email (janelakesmith@gmail.com)"
+          "name": "commEmail",
+          "label": "Email"
         },
         {
-          "name": "mail",
-          "label": "Mail (4700 Red River St. Monroe City, MO 63456)"
+          "name": "commMail",
+          "label": "Mail"
         }
       ],
       "btn_cancel": "Cancel",
@@ -84,25 +84,22 @@
     },
     {
       "title": "Changes Confirmed",
-      "description": "Your communications preferences now are as follows:",
+      "description": "Your marketing communications preferences now are as follows:",
       "communication_types": [            
         {
-          "checked": true,
-          "name": "sms",
-          "label": "SMS/Text Messages (314.787.2278)"
+          "name": "commSms",
+          "label": "SMS/Text Messages"
         },
         {
-          "checked": true,
-          "name": "email",
-          "label": "Email (janelakesmith@gmail.com)"
+          "name": "commEmail",
+          "label": "Email"
         },
         {
-          "checked": false,
-          "name": "mail",
-          "label": "Mail (4700 Red River St. Monroe City, MO 63456)"
+          "name": "commMail",
+          "label": "Mail"
         }
       ],
-      "other_things": "<p>Other things you can do</p><ul><li>Review other <a href=\"/dashboard/settings/privacy-security\">Privacy &amp; Security</a></li></ul>",
+      "other_things": "<p>Other things you can do:</p><ul><li>Review other <a href=\"/dashboard/settings/privacy-security\">Privacy &amp; Security</a> settings</li></ul>",
       "btn_back": "Close"
     }
   ]

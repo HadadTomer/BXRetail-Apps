@@ -34,11 +34,11 @@
         {
           "title": "Communications Preferences",
           "active": false,
-          "href": "/dashboard/settings/communication-preferences"
+          "href": "#"
         },
         {
           "title": "Privacy & Security",
-          "active": true,
+          "active": false,
           "href": "/dashboard/settings/privacy-security"
         },
         {
@@ -60,21 +60,39 @@
     }
   ],
   "dropdown": "Things I Can Do",
-  "form": {
-    "title": "Partner Data Sharing",
-    "description": "Here are your settings for how BXRetail partner AnyTVPartner can access information about you for your Professional Services installation:",
-    "table_title": "Which partners should be able to view your information?",
-    "communication_types": [
-      {
-        "name": "phone",
-        "label": "My Phone Number"
-      },
-      {
-        "name": "email",
-        "label": "My Email Address"
-      }
-    ],
-    "button_edit": "Modify These Settings",
-    "button_partners": "Review Other Partner Settings"
-  }
+  "steps": [
+    {
+      "title": "Partner Data Sharing",
+      "description": "Review your settings for how BXRetail partner AnyTVPartner can access information about you for your Professional Services installation:",
+      "table_title": "AnyTVPartner Data Sharing",
+      "communication_types": [
+        {
+          "name": "deliveryPhone",
+          "label": "My Phone Number"
+        },
+        {
+          "name": "deliveryEmail",
+          "label": "My Email Address"
+        }
+      ],
+      "btn_cancel": "Cancel",
+      "btn_save": "Save"
+    },
+    {
+      "title": "Changes Confirmed",
+      "description": "Your sharing settings for AnyTVPartner now are as follows:",
+      "communication_types": [
+        {
+          "name": "deliveryPhone",
+          "label": "My Phone Number"
+        },
+        {
+          "name": "deliveryEmail",
+          "label": "My Email Address"
+        }
+      ],
+      "other_things": "<p>Other things you can do:</p><ul><li>Review <a href=\"#\">Communication Preferences</a></li><li>Review other <a href=\"#\">Partner Settings</a></li></ul>",
+      "btn_back": "Close"
+    }
+  ]
 }
