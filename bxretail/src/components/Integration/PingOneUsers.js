@@ -34,10 +34,10 @@ class PingOneUsers {
      * @return {object} jsonResponse - json object of user data.
     */
     async readUser({ userId, lowPrivToken }) {
-        var myHeaders = new Headers();
+        let myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + lowPrivToken);
 
-        var requestOptions = {
+        let requestOptions = {
             method: 'GET',
             headers: myHeaders,
             redirect: 'manual'
@@ -46,6 +46,29 @@ class PingOneUsers {
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
 
+        return jsonResponse;
+    }
+
+    /**
+     * Update a user's record.
+     * @param {String} userPayload JSON literal of updated user attributes.
+     * @return {object} something?
+     */
+    async updateUser({ userId, lowPrivToken, userPayload }) {
+        let myHeaders = new Headers();
+        myHeaders.append("content-type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + lowPrivToken);
+
+        let requestOptions = {
+            method: 'PATCH',
+            headers: myHeaders,
+            body: userPayload,
+            redirect: 'manual'
+        };
+
+        const url = this.proxyApiPath + "/users/" + userId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
         return jsonResponse;
     }
 }
