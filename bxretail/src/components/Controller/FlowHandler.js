@@ -170,8 +170,44 @@ class FlowHandler {
         
         const lowPrivToken = await this.requestLowPrivToken();
         const response = await this.ping1Users.readUser({ userId: sub, lowPrivToken: lowPrivToken });
-        
+
         return response;
+    }
+
+    /**
+     * Update a user's profile.
+     * @param {object} userState state object from UI.
+     * @return {*} something? 
+     */
+    async updateUserProfile({IdT, userState}) {
+        
+        const rawPayload = JSON.stringify({
+            "name": {
+                "given": userState.firstname,
+                "family": userState.lastname,
+                "formated": userState.fullname
+            },
+            "address": {
+                "streetAddress": userState.street,
+                "locality": userState.city,
+                "region": userState.city,
+                "postalCode": userState.zipcode
+            },
+            "email": userState.email,
+            "mobilePhone": userState.phone,
+            "BXRetailCustomAttr1": userState.birthdate
+        });console.log("rawPayload", rawPayload);
+
+        const sub = this.getTokenValue({ token: IdT, key: "sub" });
+        const lowPrivToken = await this.requestLowPrivToken();
+        const jsonResponse = await this.ping1Users.updateUser({ userId: sub, lowPrivToken: lowPrivToken, userPayload: rawPayload });
+
+        //We got a problem
+        if (jsonResponse.code) {
+            return jsonResponse;
+        } else {
+            return {success: true};
+        }
     }
 
     /**
