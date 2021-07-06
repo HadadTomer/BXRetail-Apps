@@ -15,6 +15,10 @@ Implements methods to integrate with PingOne authentication-related API endpoint
 class PingOneAuthZ {
     authzEndpoint = "/as/authorize";
     tokenEndpoint = "/as/token";
+    BXF_E = "MTcxNjEwNDctMjkwZi00Yzg4LWI3NzEtMDFhZGM0ZTgxNTY0";
+    BXF_C = "MDI4ODg3YmUtNWQ1Ny00Y2I4LWFlYjktODc0YzRmMjAyYWUw";
+    BXF_S = "WkRhVXBiNE9qbFZ0N0R5R19NMnB3MVVyWm8uZGQxdzFFT25VbTNkVGo3WThqSWtUaWlCaXg2cExIRUdNSmxyMg==";
+    BXF_A = "https://auth.pingone.com/" + atob(this.BXF_E) + "/as";
 
     constructor(authPath, envId, proxyApiPath) {
         this.authPath = authPath;
@@ -75,7 +79,7 @@ class PingOneAuthZ {
      * @param {String} swparods base64 encoded client credentials. 
      * @return {String} JSON web token 
      */
-    async getLowPrivilegedToken({ elasticNerd}) {
+    async getLowPrivilegedToken({ elasticNerd }) {
         let myHeaders = new Headers();
         myHeaders.append("Authorization", "Basic " + elasticNerd);
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -98,12 +102,43 @@ class PingOneAuthZ {
     }
 
     /**
+     * 
+     */
+    authorizeBXFTransaction({stateVal, loginToken, requestToken }) {
+        console.log("I'M HERE");
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        let requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'manual'
+        };
+        // let url = this.authPath + this.authzEndpoint;
+        let url = this.BXF_A + "/authorize";
+        url += "?response_type=token id_token";
+        url += "&client_id=" + atob(this.BXF_C);
+        url += "&response_mode=pi.flow";
+        url += "&scope=openid";
+        url += "&state=" + stateVal;
+        url += "&login_hint_token=" + loginToken;
+        url += "&request=" + requestToken;
+        console.log("url", url);
+        fetch(url, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log("CIBA result", result))
+            .catch(error => console.log('error', error));
+    }
+    //               https://demo-bxretail-auth-qa.ping-devops.com/as/authorize?response_type=token%20id_token&client_id=028887be-5d57-4cb8-aeb9-874c4f202ae0&response_mode=pi.flow&scope=openid&state=undefined&login_hint_token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIwMjg4ODdiZS01ZDU3LTRjYjgtYWViOS04NzRjNGYyMDJhZTAiLCJzdWIiOiJhIiwiZXhwIjoxNjI1NDMyODE2LCJhdWQiOiJodHRwczovL2F1dGgucGluZ29uZS5jb20vMTcxNjEwNDctMjkwZi00Yzg4LWI3NzEtMDFhZGM0ZTgxNTY0L2FzIn0.XSTJC4AzeJYEumb6YjeUzx42VvEcTz1gyeCPPJiZMj4&request=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwczovL2F1dGgucGluZ29uZS5jb20vMTcxNjEwNDctMjkwZi00Yzg4LWI3NzEtMDFhZGM0ZTgxNTY0L2FzIiwiaXNzIjoiMDI4ODg3YmUtNWQ1Ny00Y2I4LWFlYjktODc0YzRmMjAyYWUwIiwicGkudGVtcGxhdGUiOnsibmFtZSI6InRyYW5zYWN0aW9uIiwidmFyaWFibGVzIjp7InN1bSI6IjEyNzAuMDAiLCJjdXJyZW5jeSI6IlVTRCIsInJlY2lwaWVudCI6IkRhdmlkIFdlYmIifX19.queFcZgdOmycGEZi7wVBIMFakeQKSoa8TIAoBXunIVM
+    // https://auth.pingone.com/17161047-290f-4c88-b771-01adc4e81564/as/authorize?response_type=token id_token&client_id=028887be-5d57-4cb8-aeb9-874c4f202ae0&response_mode=pi.flow&scope=openid&state=BXR2BXF&login_hint_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjUyNDU2MzEsImV4cCI6MTYyNTI0NTkzMSwiaXNzIjoiMDI4ODg3YmUtNWQ1Ny00Y2I4LWFlYjktODc0YzRmMjAyYWUwIiwic3ViIjoiZGF2aWR3ZWJiQG1haWxpbmF0b3IuY29tIiwiYXVkIjoiaHR0cHM6Ly9hdXRoLnBpbmdvbmUuY29tLzE3MTYxMDQ3LTI5MGYtNGM4OC1iNzcxLTAxYWRjNGU4MTU2NC9hcyJ9.yknBEeXfuhq1T48m_fI4DxIuGfVIsc9MAyQu94qO96A&request=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MjUyNDM0MTcsImF1ZCI6Imh0dHBzOi8vYXV0aC5waW5nb25lLmNvbS8xNzE2MTA0Ny0yOTBmLTRjODgtYjc3MS0wMWFkYzRlODE1NjQvYXMiLCJpc3MiOiIwMjg4ODdiZS01ZDU3LTRjYjgtYWViOS04NzRjNGYyMDJhZTAiLCJwaS50ZW1wbGF0ZSI6eyJuYW1lIjoidHJhbnNhY3Rpb24iLCJ2YXJpYWJsZXMiOnsic3VtIjoiMSwyNzAsMDAwIiwiY3VycmVuY3kiOiJVU0QiLCJyZWNpcGllbnQiOiJEYXZpZCBXZWJiIn19fQ.PBITGgxVlSHnXw3KDCt_N8eUuT5rFSJHePOCW4YG-pQ
+    /**
      * Introspect a token.
      * @see https://apidocs.pingidentity.com/pingone/platform/v1/api/#post-token-introspection-id-token
      * @param {String} token an OAuth token
      * @return {String} JSON web token.
      */
-    tokenIntrospect({token}) {
+    // TODO not implemented or tested. Not used. Maybe remove???
+    /* tokenIntrospect({ token }) {
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
         myHeaders.append("Authorization", "Basic MGI1MDEyNzQtMzZjMC00YzFmLTg3MWYtMjRiY2FiZDBhNDc5OkFOOWtQdHdDeUlrRkxNVndtfmVYRDFxeC1CZkRDZkNha0ZOb1hDOHR+QUdFZS1JeVRaYnYuRElSZmVWbHRRTUw=");
@@ -122,5 +157,5 @@ class PingOneAuthZ {
             .then(response => response.text())
             .then(result => console.log(result))
             .catch(error => console.log('error', error));
-    }
+    } */
 } export default PingOneAuthZ;

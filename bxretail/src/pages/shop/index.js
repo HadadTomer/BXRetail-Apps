@@ -39,6 +39,8 @@ class Shop extends React.Component {
       activeTabConfirmation: '1',
       isOpenCheckout: false, /* PING INTEGRATION: */
       activeTabCheckout: "1", /* PING INTEGRATION: */
+      profilePending: true, /* PING INTEGRATION: */
+      orderProcessingMsg: data.modal.loading.title, /* PING INTEGRATION: */
       selectedItem: {
         protection: {},
         mounting: {}
@@ -69,9 +71,13 @@ class Shop extends React.Component {
     this.setState({
       isOpenLoading: !this.state.isOpenLoading
     });
+    setTimeout(function () {
+      this.setState({
+        orderProcessingMsg: data.modal.loading.finalizeOrder
+      });
+    }.bind(this), 3000);
   }
   toggleConfirmation() {
-    this.clearShoppingCart();
     this.setState({
       isOpenConfirmation: !this.state.isOpenConfirmation
     });
@@ -88,44 +94,44 @@ class Shop extends React.Component {
   }
   onApproval() {
     console.log("cart total", this.state.selectedItem.price);
+
     let self = this;
     this.toggle();
+
     let cost = this.state.selectedItem.price;
     cost = cost.replace(/\$|,/gi, "");
     console.log("cost", cost);
+
+    // Need transaction approval.
     if (parseFloat(cost) >= 1000.00) {
       console.log("need approval");
       this.toggleLoading();
+      // TODO once P1 can accomodate, or we can use BXF as a proxy, we can add this back. :-(
+      // this.flowHandler.getTransactionApproval({ IdT: this.session.getAuthenticatedUserItem("IdT", "session"), amount: cost });
+
       setTimeout(function () {
         self.toggleLoading();
         self.toggleConfirmation();
-      }, 3000);
+      }, 6000);
     } else {
       console.log("no approval");
       self.toggleConfirmation();
     }
+    this.clearShoppingCart();
   }
 
   /* BEGIN PING INTEGRATION: */
   handleUserInput(e) {
     let formData = {};
     formData[e.target.id] = e.target.value;
-    this.setState(formData, () => { console.log("formData", formData) });
+    this.setState(formData);
   }
 
   clearShoppingCart() {
     this.session.removeAuthenticatedUserItem("cart", "local");
-    this.setState({
-      selectedItem: {
-        protection: {},
-        mounting: {}
-      },
-      isOpen: !this.state.isOpen
-    });
   }
 
   toggleCheckout() {
-    console.log("toggleCheckout clicked");
     this.setState({
       isOpenCheckout: !this.state.isOpenCheckout
     });
@@ -158,7 +164,6 @@ class Shop extends React.Component {
     const response = this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") });
 
     response.then(userProfile => {
-      console.log("userProfile", userProfile)
       this.setState({
         firstname: userProfile.name.given,
         lastname: userProfile.name.family,
@@ -168,26 +173,35 @@ class Shop extends React.Component {
         birthdate: userProfile.BXRetailCustomAttr1,
         street: userProfile.address.streetAddress,
         city: userProfile.address.locality,
-        zipcode: userProfile.address.postalCode
+        zipcode: userProfile.address.postalCode,
+        profilePending: false
       });
     });
   }
 
-  updateProfile() {
-    this.setState({ acctVerified: true }, () => {
-      //TODO call to flowHandler here to update user profile. Depending on error handling, maybe call local function that wraps call to flowHandler.
-      console.info("Shop/index.js", "Profile updated or confirmed: " + this.state.acctVerified);
-      console.log("form data:", JSON.stringify(this.state.formData))
+  updateProfile(stateData) {
+    this.setState({
+      acctVerified: true,
+      profilePending: true
     });
+    //If the user is logged in, just move on to payment.
+    if (this.session.getAuthenticatedUserItem("AT", "session")) {
+      // const result = this.flowHandler.updateUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session"), userState: stateData });
+      this.flowHandler.updateUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session"), userState: stateData })
+        .then(response => {
+          console.log("result", response);
+          if (response.code) { console.log("PROFILE UPDATE ERROR", response.message); }
+          if (response.success) { console.log("AWESOME", response.success); }
 
-    // TODO update profile here.
-    this.toggleTabCheckout("4");
-    // this.toggleCheckout();
-    // this.toggle();
-    // this.toggleTab("2");
+          this.toggleCheckout();
+          this.checkout();
+        });
+    } else {
+      console.log("Not logged in sooo.....");
+    }
   }
 
-  //FIXME this is horribly written.
+  //FIXME this is horribly written. It's better than before but still seems like it can be impoved.
   checkout() {
     if (this.isLoggedOut) {
       if (this.state.acctVerified) {
@@ -223,6 +237,7 @@ class Shop extends React.Component {
       console.log("We have a cart");
       this.addToCart(JSON.parse(this.session.getAuthenticatedUserItem("cart", "local")));
     }
+    this.flowHandler.generateJWT();
   }
   /* END PING INTEGRATION: */
 
@@ -486,7 +501,7 @@ class Shop extends React.Component {
           </ModalBody>
         </Modal>
         {/* PING INTEGRATION: New Checkout modal */}
-        <Modal isOpen={this.state.isOpenCheckout} toggle={this.toggleCheckout.bind(this)} className="modal-login">
+        <Modal isOpen={this.state.isOpenCheckout} toggle={this.toggleCheckout.bind(this)} className="modal-login modal-checkout">
           <ModalHeader toggle={this.toggleCheckout.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
             <TabContent activeTab={this.state.activeTabCheckout}>
@@ -506,64 +521,68 @@ class Shop extends React.Component {
                   </div>
                 </FormGroup>
               </TabPane>
-              <TabPane tabId="3"> {/* Checkout profile collection */}
-                {/* HACK Inline style overrides... because CSS. */}
+              <TabPane tabId="3"> {/* Checkout profile verify/update */}
                 <h4 style={{ maxWidth: "100%" }}>Confirm or update your account and shipping details</h4>
-                <h4 style={{ maxWidth: "100%" }}>Profile Details</h4>
+                {this.state.profilePending &&
+                  <div className="spinner" style={{ textAlign: "center" }}>
+                    <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
+                  </div>}
                 <Row form>
-                  <Col md={4}>
+                  <Col md={6}>
                     <FormGroup>
                       <Label for="firstname">{profileData.form.fields.firstname.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="text" name="firstname" id="firstname" placeholder={profileData.form.fields.firstname.placeholder} value={this.state.firstname} />
                     </FormGroup>
                   </Col>
-                  <Col md={4}>
+                  <Col md={6}>
                     <FormGroup>
                       <Label for="lastname">{profileData.form.fields.lastname.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="text" name="lastname" id="lastname" placeholder={profileData.form.fields.lastname.placeholder} value={this.state.lastname} />
                     </FormGroup>
                   </Col>
-                  <Col md={4}>
+                  {/* <Col md={5}>
                     <FormGroup>
                       <Label for="fullname">{profileData.form.fields.fullname.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="text" name="fullname" id="fullname" placeholder={profileData.form.fields.fullname.placeholder} value={this.state.fullname} />
                     </FormGroup>
-                  </Col>
+                  </Col> */}
                 </Row>
                 <Row form>
-                  <Col md={4}>
+                  <Col md={6}>
                     <FormGroup>
                       <Label for="email">{profileData.form.fields.email.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="email" name="email" id="email" placeholder={profileData.form.fields.email.placeholder} value={this.state.email} />
                     </FormGroup>
                   </Col>
-                  <Col md={4}>
+                  <Col md={6}>
                     <FormGroup>
                       <Label for="phone">{profileData.form.fields.phone.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="tel" name="phone" id="phone" placeholder={profileData.form.fields.phone.placeholder} value={this.state.phone} />
                     </FormGroup>
                   </Col>
-                  <Col md={4}>
+                  {/* <Col md={6}>
                     <FormGroup>
                       <Label for="birthdate">{profileData.form.fields.birthdate.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="text" name="birthdate" id="birthdate" placeholder={profileData.form.fields.birthdate.placeholder} value={this.state.birthdate} />
                     </FormGroup>
-                  </Col>
+                  </Col> */}
                 </Row>
                 <Row form>
-                  <Col md={4}>
+                  <Col md={12}>
                     <FormGroup>
                       <Label for="street">{profileData.form.fields.street.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="text" name="street" id="street" placeholder={profileData.form.fields.street.placeholder} value={this.state.street} />
                     </FormGroup>
                   </Col>
-                  <Col md={4}>
+                </Row>
+                <Row form>
+                  <Col md={6}>
                     <FormGroup>
                       <Label for="city">{profileData.form.fields.city.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="text" name="city" id="city" placeholder={profileData.form.fields.city.placeholder} value={this.state.city} />
                     </FormGroup>
                   </Col>
-                  <Col md={4}>
+                  <Col md={6}>
                     <FormGroup>
                       <Label for="zipcode">{profileData.form.fields.zipcode.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="text" name="zipcode" id="zipcode" placeholder={profileData.form.fields.zipcode.placeholder} value={this.state.zipcode} />
@@ -571,7 +590,7 @@ class Shop extends React.Component {
                   </Col>
                 </Row>
                 {/* <Row form> Not doing passwordless in v1.
-                    <Col md={4}>
+                    <Col md={5}>
                       <FormGroup>
                         <Label for="city">{profileData.form.fields.login.label}</Label>
                         <Input type="select" name="login" id="login">
@@ -584,9 +603,9 @@ class Shop extends React.Component {
                 <Row form>
                   <Col>
                     <div className="text-right">
-                      <Button type="button" color="link" className="ml-3">{profileData.form.buttons.cancel}</Button>
+                      <Button onClick={this.toggleCheckout} type="button" color="link" className="ml-3">{profileData.form.buttons.cancel}</Button>
                       {/* <Button type="button" color="primary" onClick={this.props.onSubmit}>{profileData.form.buttons.submit}</Button> */}
-                      <Button type="button" color="primary" onClick={() => { this.updateProfile() }}>{profileData.form.buttons.submit}</Button>
+                      <Button type="button" color="primary" onClick={() => { this.updateProfile(this.state) }}>{profileData.form.buttons.submit}</Button>
                     </div>
                   </Col>
                 </Row>
@@ -610,11 +629,12 @@ class Shop extends React.Component {
         <Modal isOpen={this.state.isOpenLoading} toggle={this.toggleLoading.bind(this)} className="modal-login">
           <ModalHeader toggle={this.toggleLoading.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
-            <div className="mobile-loading" style={{ backgroundImage: `url(${window._env_.PUBLIC_URL}/images/login-device-outline.jpg)` }}>
+            {/* <div className="mobile-loading" style={{ backgroundImage: `url(${window._env_.PUBLIC_URL}/images/login-device-outline.jpg)` }}> */}
+            <div className="mobile-loading">
               <div className="spinner">
                 <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
               </div>
-              <p>{data.modal.loading.title}</p>
+              <h4>{this.state.orderProcessingMsg}</h4>
             </div>
             <div className="mt-4 text-center">
               <Button type="button" color="link" size="sm">{data.modal.loading.help}</Button>

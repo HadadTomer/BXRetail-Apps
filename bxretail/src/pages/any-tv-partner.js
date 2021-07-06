@@ -36,6 +36,7 @@ class AnyTVPartner extends React.Component {
     };
     this.showStep2 = this.showStep2.bind(this);
     this.changeAppointment = this.changeAppointment.bind(this);
+    this.envVars = window._env_;
   }
   toggle() {
     this.setState({
@@ -92,9 +93,10 @@ class AnyTVPartner extends React.Component {
             <Container>
               <Nav className="mr-auto navbar-nav-main" navbar>
                 {data.menus.primary.map((item, i) => {
+                  console.log(this.envVars.PUBLIC_URL + item.url);
                   return (
                     <NavItem key={i}>
-                      <NavLink to={item.url} activeClassName="active" exact tag={RRNavLink}>{item.title}</NavLink>
+                      <NavLink to={this.envVars.PUBLIC_URL + item.url} activeClassName="active" exact tag={RRNavLink}>{item.title}</NavLink>
                     </NavItem>
                   );
                 })}

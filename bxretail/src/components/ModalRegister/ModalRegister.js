@@ -50,17 +50,21 @@ class ModalRegister extends React.Component {
   render() {
     return (
       <div>
-        <Modal autoFocus={false} isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} className="modal-xl modal-register">
+        <Modal autoFocus={false} isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} className="modal-md modal-register">
           <ModalHeader toggle={this.toggle.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
             <h2>{data.title}</h2>
             <Form>
               <Row form className="form-row-light">
-                <Col md={6}>
+                <Col md={12}>
                   <FormGroup>
                     <Label for="email">{data.form.fields.email.label}</Label>
                     <Input onChange={this.props.handleFormInput} autoFocus={true} autoComplete="off" type="email" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
                   </FormGroup>
+                </Col>
+              </Row>
+              <Row form className="form-row-light">
+                <Col md={12}>
                   <FormPassword handleFormInput={this.props.handleFormInput} autoComplete="off" name="password" label={data.form.fields.password.label} placeholder={data.form.fields.password.placeholder} />
                   {/* <FormGroup>
                     <Label for="password">{data.form.fields.password.label}</Label>
@@ -76,7 +80,9 @@ class ModalRegister extends React.Component {
                     <FormText>{data.form.fields.phone.requirements}</FormText>
                   </FormGroup> */}
                 </Col>
-                <Col md={6}>
+              </Row>
+              <Row form className="form-row-light">
+                <Col md={12}>
                   <FormPassword handleFormInput={this.props.handleFormInput} autoComplete="off" name="password_confirm" label={data.form.fields.password_confirm.label} placeholder={data.form.fields.password_confirm.placeholder} />
                   {/* <FormGroup>
                     <Label for="password_confirm">{data.form.fields.password_confirm.label}</Label>
@@ -110,23 +116,29 @@ class ModalRegister extends React.Component {
                   <FormGroup className="form-group-light ml-3 mb-4">
                     <CustomInput type="checkbox" id="rewards" label={data.form.fields.rewards.label} />
                   </FormGroup>*/}
+                </Col>
+              </Row>
+              <Row form className="form-row-light">
+                <Col md={12}>
                   <div className="text-center">
                     <Button type="button" color="primary" onClick={this.props.onSubmit}>{data.form.buttons.submit}</Button>
                     <Button type="button" color="link" className="ml-3" onClick={this.toggle.bind(this)}>{data.form.buttons.cancel}</Button>
                   </div>
                 </Col>
               </Row>
-              <Row>
+              <Row form className="form-row-light">
                 <Col className="text-center">
                   <img src={window._env_.PUBLIC_URL + "/images/home-login-or.png"} alt="or" className="or" />
                 </Col>
               </Row>
               <Row form className="form-row-light">
-                <Col className="text-right">
+                <Col className="text-center">
                   <img src={window._env_.PUBLIC_URL + "/images/SignUpEOC-500x109.png"} alt="Facebook" className="social-signup mr-1" />
                 </Col>
-                <Col>
-                  <img src={window._env_.PUBLIC_URL + "/images/social-signup-google.png"} alt="Google" className="social-signup ml-1" />
+              </Row>
+              <Row form className="form-row-light">
+                <Col className="text-center">
+                  <img src={window._env_.PUBLIC_URL + "/images/social-signup-google.png"} alt="Google" className="social-signup mr-1" />
                 </Col>
               </Row>
             </Form>
