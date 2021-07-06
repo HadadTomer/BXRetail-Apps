@@ -35,7 +35,9 @@ class PrivacySecurity extends React.Component {
       deliveryEmailChecked: false,   /* PING INTEGRATION */
       commSmsChecked: false,  /* PING INTEGRATION */
       commEmailChecked: false,  /* PING INTEGRATION */
-      commMailChecked: false  /* PING INTEGRATION */
+      commMailChecked: false,  /* PING INTEGRATION */
+      userPhone: "",
+      userEmail: ""
     };
 
     this.showStep2 = this.showStep2.bind(this);
@@ -68,6 +70,10 @@ class PrivacySecurity extends React.Component {
   componentDidMount() {
     this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") })
       .then(response => {
+        this.setState({
+          userPhone: response.mobilePhone,
+          userEmail: response.email
+        })
         if (response.consent) {
           const deliveryConsent = response.consent.find(consent => consent["definition"]["id"] === "tv-delivery-preferences");
           if (deliveryConsent) {
@@ -114,16 +120,14 @@ class PrivacySecurity extends React.Component {
                   <Form>
                     {
                       Object.keys(data.steps[0].communication_types).map(index => {
-                        {/* TODO implement when we have session data:
-                        commDetails = data.steps[0].communication_types[index].name === "phone" ? this.Session.getAuthenticatedUserItem("mobile") && data.steps[0].communication_types[index].name === "email"; */}
-                        commDetails = data.steps[0].communication_types[index].name === "deliveryPhone" ? "314.787.2278" : data.steps[0].communication_types[index].name === "deliveryEmail" ? "janelakesmith@gmail.com": "";
+                        commDetails = data.steps[0].communication_types[index].name === "deliveryPhone" ? this.state.userPhone : data.steps[0].communication_types[index].name === "deliveryEmail" ? this.state.userEmail : null;
                         commType = data.steps[0].communication_types[index].name;
                         return (
                           <div>
                             <FormGroup>
                               {/* PING INTEGRATION: modified label to display user data and added onClicks to CustomInput */}
                               {/* TODO need to update label? */}
-                              <Label for={data.steps[0].communication_types[index].name}>{data.steps[0].communication_types[index].label + ' (' + commDetails + ')'}</Label>
+                              <Label for={data.steps[0].communication_types[index].name}>{commDetails === null ? "" : data.steps[0].communication_types[index].label + ' (' + commDetails + ')'}</Label>
                               <CustomInput onChange={(event) => this.toggleConsent(event)} type="radio" id={`${data.steps[0].communication_types[index].name}_yes`} name={data.steps[0].communication_types[index].name} label="Yes" checked={this.state[commType + "Checked"]}/>
                               <CustomInput onChange={(event) => this.toggleConsent(event)} type="radio" id={`${data.steps[0].communication_types[index].name}_no`} name={data.steps[0].communication_types[index].name} label="No" checked={!this.state[commType + "Checked"]}/>
                             </FormGroup>

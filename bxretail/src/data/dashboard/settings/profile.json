@@ -70,39 +70,29 @@
           "corporate": "Corporate"
         }
       },
-      "username": {
-        "label": "Username",
-        "placeholder": "Username"
-      },
       "firstname": {
         "label": "First Name",
-        "placeholder": "Jane",
-        "value": "Jane"
+        "placeholder": ""
       },
       "lastname": {
         "label": "Last Name",
-        "placeholder": "Doh",
-        "value": "Doh"
+        "placeholder": ""
       },
       "fullname": {
         "label": "Full Name",
-        "placeholder": "Jane Doh",
-        "value": "Jane Doh"
+        "placeholder": ""
       },
       "birthdate": {
         "label": "Birth Date",
-        "placeholder": "MM/DD/YYYY",
-        "value": "02/25/1987"
+        "placeholder": "MM/DD/YYYY"
       },
       "email": {
         "label": "Email Address",
-        "placeholder": "eat@joes.com",
-        "value": "janesmith1994@gmail.com"
+        "placeholder": ""
       },
       "phone": {
         "label": "Phone Number",
-        "placeholder": "(555) 555-5555",
-        "value": "(555) 555-5555"
+        "placeholder": ""
       },
       "street": {
         "label": "Street",
@@ -126,10 +116,11 @@
       },
       "login": {
         "label": "Authentication Preferences",
+        "description": "Would you like to opt into two-factor authentication to make your account more secure? We will send a one-time passcode via email on login.",
         "options": {
-          "default": "Choose your Method",
-          "mobile": "Device/One-Time Passcode",
-          "password": "With my Password"
+          "default": "",
+          "yes": "Yes",
+          "no": "No"
         }
       },
       "transactions": {

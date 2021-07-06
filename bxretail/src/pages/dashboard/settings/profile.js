@@ -8,7 +8,6 @@ import {
   Row,
   Col
 } from 'reactstrap';
-// import classNames from "classnames";
 
 // Components
 import NavbarMain from '../../../components/NavbarMain';
@@ -16,33 +15,83 @@ import WelcomeBar from '../../../components/WelcomeBar';
 import FooterMain from '../../../components/FooterMain';
 import AccountsSubnav from '../../../components/AccountsSubnav';
 import AccountsDropdown from '../../../components/AccountsDropdown';
-// import AccountsSectionNav from '../../../components/AccountsSectionNav';
+import FlowHandler from '../../../components/Controller/FlowHandler'; /* PING INTEGRATION: */
+import Session from '../../../components/Utils/Session'; /* PING INTEGRATION: */
 
 // Data
 import data from '../../../data/dashboard/settings/profile.json';
  
 // Styles
 import "../../../styles/pages/dashboard/settings/profile.scss";
+import { faSmileBeam, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
 class CommunicationPreferences extends React.Component {
   
   constructor(props) {
     super(props);
     this.state = {
-      step: 1
+      step: 1,
+      firstname: "",
+      lastname: "",
+      fullname: "",
+      email: "",
+      phone: "",
+      birthdate: "",
+      street: "",
+      city: "",
+      zipcode: "",
+      success: false,
+      mfaEnabled: false,
     };
 
     this.showStep2 = this.showStep2.bind(this);
     this.close = this.close.bind(this);
+    this.flowHandler = new FlowHandler();
+    this.session = new Session();
   }
 
   showStep2() {
-    this.setState({step: 2});
+    const success = this.flowHandler.updateUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session"), userState: this.state })
+    this.setState({
+      step: 2, 
+      success: success
+    }); 
+    setTimeout( () => { this.setState({ success: false }) } , 2500);
   }
 
   close() {
     this.setState({step: 1});
   }
+
+  handleUserInput(e) {
+    let formData = {};
+    formData[e.target.id] = e.target.value;
+    this.setState(formData, () => { console.log("formData", formData) });
+  }
+
+  handleCheckbox() {
+    const enabled = !this.state.mfaEnabled;
+    this.flowHandler.toggleMFA({ IdT: this.session.getAuthenticatedUserItem("IdT", "session"), toggleState: enabled });
+    this.setState({mfaEnabled: enabled});
+  }
+
+  componentDidMount() {
+    this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") })
+      .then(userProfile => {
+        console.log("userProfile", userProfile)
+        this.setState({
+          firstname: userProfile.name.given,
+          lastname: userProfile.name.family,
+          fullname: userProfile.name.given + " " + userProfile.name.family,
+          email: userProfile.email,
+          phone: userProfile.mobilePhone,
+          birthdate: userProfile.BXRetailCustomAttr1,
+          street: userProfile.address.streetAddress,
+          city: userProfile.address.locality,
+          zipcode: userProfile.address.postalCode
+        });
+      });
+  };
 
   render() {
     return(
@@ -71,64 +120,55 @@ class CommunicationPreferences extends React.Component {
                   <Col md={4}>
                     <FormGroup>
                       <Label for="firstname">{data.form.fields.firstname.label}</Label>
-                      <Input type="text" autoComplete="new-firstname" name="firstname" id="firstname" placeholder={data.form.fields.firstname.placeholder} value={data.form.fields.firstname.value} />
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" autoComplete="new-firstname" name="firstname" id="firstname" placeholder={data.form.fields.firstname.placeholder} value={this.state.firstname} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="lastname">{data.form.fields.lastname.label}</Label>
-                      <Input type="text" autoComplete="new-lastname" name="lastname" id="lastname" placeholder={data.form.fields.lastname.placeholder} value={data.form.fields.lastname.value} />
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" autoComplete="new-lastname" name="lastname" id="lastname" placeholder={data.form.fields.lastname.placeholder} value={this.state.lastname} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="fullname">{data.form.fields.fullname.label}</Label>
-                      <Input type="text" autoComplete="new-fullname" name="fullname" id="fullname" placeholder={data.form.fields.fullname.placeholder} value={data.form.fields.fullname.value} />
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" autoComplete="new-fullname" name="fullname" id="fullname" placeholder={data.form.fields.fullname.placeholder} value={this.state.fullname} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="email">{data.form.fields.email.label}</Label>
-                      <Input type="email" autoComplete="new-email" name="email" id="email" placeholder={data.form.fields.email.placeholder} value={data.form.fields.email.value} />
+                      <Input onChange={this.handleUserInput.bind(this)} type="email" autoComplete="new-email" name="email" id="email" placeholder={data.form.fields.email.placeholder} value={this.state.email} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="phone">{data.form.fields.phone.label}</Label>
-                      <Input type="tel" autoComplete="new-phone" name="phone" id="phone" placeholder={data.form.fields.phone.placeholder} value={data.form.fields.phone.value} />
+                      <Input onChange={this.handleUserInput.bind(this)} type="tel" autoComplete="new-phone" name="phone" id="phone" placeholder={data.form.fields.phone.placeholder} value={this.state.phone} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="birthdate">{data.form.fields.birthdate.label}</Label>
-                      <Input type="text" autoComplete="new-birthdate" name="birthdate" id="birthdate" placeholder={data.form.fields.birthdate.placeholder} value={data.form.fields.birthdate.value} />
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" autoComplete="new-birthdate" name="birthdate" id="birthdate" placeholder={data.form.fields.birthdate.placeholder} value={this.state.birthdate} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="street">{data.form.fields.street.label}</Label>
-                      <Input type="text" autoComplete="new-street" name="street" id="street" placeholder={data.form.fields.street.placeholder} />
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" autoComplete="new-street" name="street" id="street" placeholder={data.form.fields.street.placeholder} value={this.state.street}/>
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
                       <Label for="city">{data.form.fields.city.label}</Label>
-                      <Input type="text" autoComplete="new-city" name="city" id="city" placeholder={data.form.fields.city.placeholder} />
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" autoComplete="new-city" name="city" id="city" placeholder={data.form.fields.city.placeholder} value={this.state.city} />
                     </FormGroup>
                   </Col>
                   <Col md={4}>
                     <FormGroup>
-                      <Label for="zipcode">{data.form.fields.zipcode.label}</Label>
-                      <Input type="text" autoComplete="new-zipcode" name="zipcode" id="zipcode" placeholder={data.form.fields.zipcode.placeholder} />
-                    </FormGroup>
-                  </Col>
-                  <Col md={4}>
-                    <FormGroup>
-                      <Label for="city">{data.form.fields.login.label}</Label>
-                      <Input type="select" name="login" id="login">
-                        <option value="mobile">{data.form.fields.login.options.mobile}</option>
-                        <option value="password">{data.form.fields.login.options.password}</option>
-                      </Input>
+                      <Label for="zipCode">{data.form.fields.zipcode.label}</Label>
+                      <Input onChange={this.handleUserInput.bind(this)} type="text" autoComplete="new-zipcode" name="zipcode" id="zipcode" placeholder={data.form.fields.zipcode.placeholder} value={this.state.zipcode}/>
                     </FormGroup>
                   </Col>
                 </Row>
@@ -150,12 +190,29 @@ class CommunicationPreferences extends React.Component {
                 <Row form>
                   <Col>
                     <div className="text-right">
+                    { this.state.success && <p>Updated!</p> }
                       <Button type="button" color="link" className="ml-3">{data.form.buttons.cancel}</Button>
-                      <Button type="button" color="primary" onClick={this.props.onSubmit}>{data.form.buttons.submit}</Button>
+                      <Button type="button" color="primary" onClick={ this.showStep2 }>{data.form.buttons.submit}</Button>
                     </div>
                   </Col>
                 </Row>
               </div>
+{/*               <div className="module">
+                <h3>Authentication Preferences</h3>
+                <Col>
+                  <Row>
+                    <p>{data.form.fields.login.description}</p>
+                  </Row>
+                </Col>
+                <Col md={{ span: 1, offset: 1 }}>
+                  <Row form>
+                    <FormGroup>
+                    <Input type="checkbox" value={this.state.mfaEnabled ? "on" : "off" } onChange={this.handleCheckbox.bind(this)}> </Input>
+                    <Label>{this.state.mfaEnabled ? "Turn off two-factor authentication." : "Turn on two-factor authentication."}</Label>
+                    </FormGroup>
+                  </Row>
+                </Col>
+              </div> */}
             </div>
           </div>
         </Container>

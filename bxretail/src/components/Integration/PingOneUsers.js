@@ -71,5 +71,33 @@ class PingOneUsers {
         const jsonResponse = await response.json();
         return jsonResponse;
     }
+
+    /**
+     * Update a user's MFA preferences.
+     * @param {}
+     * @return
+     */
+
+    async toggleMFA({lowPrivToken, userPayload, userId}) {
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + lowPrivToken);
+
+        let requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: userPayload,
+            redirect: "manual"
+        };
+        console.log("toggle MFA request Options", requestOptions);
+
+        const url = this.proxyApiPath + "/users/" + userId + "/mfaEnabled";
+        console.log("toggle MFA url", url);
+        
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        console.log("toggle MFA jsonResponse", jsonResponse);
+
+        return jsonResponse;
+    }
 }
 export default PingOneUsers;
