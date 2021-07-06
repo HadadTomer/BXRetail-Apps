@@ -241,6 +241,27 @@ class FlowHandler {
         // https://api.pingone.com/v1/environments/{{envId}}/users?filter=username eq "user.0" <-- urlEncode
     }
 
+    /**
+     * Opt a user in or out of MFA
+     * @param {*} param0 
+     * @returns 
+     */
+
+    async toggleMFA({IdT, toggleState}) {
+
+        const rawPayload = JSON.stringify({
+            "mfaEnabled": toggleState
+        });
+        console.log("toggleMFA rawPayload", rawPayload);
+
+        const lowPrivToken = await this.requestLowPrivToken();
+        const userId = this.getTokenValue({ token: IdT, key: "sub" });
+        const response = await this.ping1Users.toggleMFA({lowPrivToken: lowPrivToken, userPayload: rawPayload, userId: userId});
+        const status = await response.status;
+        return status;
+
+    }
+
     /** 
      * Set consents for a user.
      * @param {object} consentData consists of username, AnyTVPartner delivery preferences, and communication preferences.
