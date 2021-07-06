@@ -185,7 +185,8 @@
       }
     },
     "loading": {
-      "title": "Please check your trusted mobile device to approve this transaction.",
+      "title": "Please wait while we process your payment...",
+      "finalizeOrder": "Finalizing your order...",
       "help": "What is this?"
     },
     "confirmation": {

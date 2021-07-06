@@ -8,6 +8,9 @@ Implements methods to interact with integration/model components.
 @author Michael Sanchez
 */
 
+// Packages
+import jsonwebtoken, { sign } from "jsonwebtoken";
+
 // Components
 import PingOneAuthZ from "../Integration/PingOneAuthZ"; /* PING INTEGRATION: */
 import PingOneRegistration from "../Integration/PingOneRegistration"; /* PING INTEGRATION: */
@@ -16,8 +19,14 @@ import PingOneUsers from "../Integration/PingOneUsers"; /* PING INTEGRATION: */
 import JSONSearch from "../Utils/JSONSearch"; /* PING INTEGRATION: */
 import PingOneConsents from "../Integration/PingOneConsents"; /* PING INTEGRATION */
 import Session from "../Utils/Session"; /* PING INTEGRATION */
+import { uuidv4 } from "../Utils/UUIDv4"; /* PING INTEGRATION: */
 
 class FlowHandler {
+    BXF_E = "MTcxNjEwNDctMjkwZi00Yzg4LWI3NzEtMDFhZGM0ZTgxNTY0";
+    BXF_C = "MDI4ODg3YmUtNWQ1Ny00Y2I4LWFlYjktODc0YzRmMjAyYWUw";
+    BXF_S = "WkRhVXBiNE9qbFZ0N0R5R19NMnB3MVVyWm8uZGQxdzFFT25VbTNkVGo3WThqSWtUaWlCaXg2cExIRUdNSmxyMg==";
+    BXF_A = "https://auth.pingone.com/" + atob(this.BXF_E) + "/as";
+    BXF_T = "transaction";
 
     constructor() {
         this.envVars = window._env_;
@@ -167,7 +176,7 @@ class FlowHandler {
      */
     async getUserProfile({ IdT }) {
         const sub = this.getTokenValue({ token: IdT, key: "sub" });
-        
+
         const lowPrivToken = await this.requestLowPrivToken();
         const response = await this.ping1Users.readUser({ userId: sub, lowPrivToken: lowPrivToken });
 
@@ -179,8 +188,8 @@ class FlowHandler {
      * @param {object} userState state object from UI.
      * @return {*} something? 
      */
-    async updateUserProfile({IdT, userState}) {
-        
+    async updateUserProfile({ IdT, userState }) {
+
         const rawPayload = JSON.stringify({
             "name": {
                 "given": userState.firstname,
@@ -196,7 +205,7 @@ class FlowHandler {
             "email": userState.email,
             "mobilePhone": userState.phone,
             "BXRetailCustomAttr1": userState.birthdate
-        });console.log("rawPayload", rawPayload);
+        }); console.log("rawPayload", rawPayload);
 
         const sub = this.getTokenValue({ token: IdT, key: "sub" });
         const lowPrivToken = await this.requestLowPrivToken();
@@ -206,7 +215,7 @@ class FlowHandler {
         if (jsonResponse.code) {
             return jsonResponse;
         } else {
-            return {success: true};
+            return { success: true };
         }
     }
 
@@ -246,10 +255,10 @@ class FlowHandler {
             subject: user.email,
             deliveryEmail: JSON.stringify(consentData.deliveryEmailChecked),
             deliveryPhone: JSON.stringify(consentData.deliveryPhoneChecked),
-            commEmail: JSON.stringify(consentData.commEmailChecked), 
+            commEmail: JSON.stringify(consentData.commEmailChecked),
             commSms: JSON.stringify(consentData.commSmsChecked),
             commMail: JSON.stringify(consentData.commMailChecked)
-          };
+        };
 
         let rawPayload = JSON.stringify({
             "consent": [
@@ -295,9 +304,78 @@ class FlowHandler {
             ]
         });
         const lowPrivToken = await this.requestLowPrivToken();
-        const response = await this.ping1Consents.userUpdateConsent({ consentPayload: rawPayload, token: lowPrivToken, userId : userId });
+        const response = await this.ping1Consents.userUpdateConsent({ consentPayload: rawPayload, token: lowPrivToken, userId: userId });
         const status = await response.status;
-        return status; 
+        return status;
+    }
+
+    /**
+     * Generate a JSON web token
+     * @param {String} type login or request. Dictates generation of login_hint tokens or request tokens for transaction approval.
+     * @return {String} JSON web token
+     */
+    generateJWT({ type, amount, userName, fullName } = {}) {
+        let claims = {};
+        if (type === "request") {
+            claims = JSON.stringify({
+                "aud": this.BXF_A,
+                "iss": atob(this.BXF_C),
+                "pi.template": {
+                    "name": this.BXF_T,
+                    "variables": {
+                        "sum": amount,
+                        "currency": "USD",
+                        "recipient": fullName
+                    }
+                }
+            });
+        } else if (type === "login") {
+            claims = JSON.stringify({
+                "iss": atob(this.BXF_C),
+                "sub": userName,
+                "exp": Math.floor(Date.now() / 1000) + (60 * 5),
+                "aud": this.BXF_A
+            });
+        }
+        const signedJWT = jsonwebtoken.sign(claims, atob(this.BXF_S));
+        console.log("signedJWT", signedJWT);
+        return signedJWT;
+    }
+
+    /**
+     * 
+     * @param {*} param0 
+     */
+    getTransactionApproval({ IdT, amount }) {
+        const sub = this.getTokenValue({token: IdT, key: "sub"});
+        const fName = this.getTokenValue({token: IdT, key: "given_name"});
+        const lName = this.getTokenValue({token: IdT, key: "family_name"});
+        const fullName = this.getTokenValue({ token: IdT, key: "name" });
+        const stateValue = uuidv4();
+        console.log("uuidv4", uuidv4());
+        console.log("stateValue", stateValue);
+        console.log("sub", sub);
+        console.log("fName", fName);
+        console.log("lName", lName);
+
+        const loginToken = this.generateJWT({type: "login", userName: sub});
+        const requestToken = this.generateJWT({type: "request", amount: amount, fullName: fullName});
+        console.log("full name", fullName);
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        let raw = "";
+
+        let requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'manual'
+        };
+        this.ping1AuthZ.authorizeBXFTransaction({staeVal: stateValue, loginToken: loginToken, requestToken: requestToken});
+           /*  .then(response => response.text())
+            .then(result => console.log("result", result))
+            .catch(error => console.log('error', error));  */           
     }
 }
 
