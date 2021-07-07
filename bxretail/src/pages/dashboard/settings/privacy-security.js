@@ -67,6 +67,16 @@ class PrivacySecurity extends React.Component {
     this.setState(checkedState);
   }
 
+  makeCommDetails(index) {
+    if (data.steps[0].communication_types[index].name === "deliveryPhone" && this.state.userPhone !== undefined) {
+      return this.state.userPhone.length == 0 ? "" : " (" + this.state.userPhone + ")"
+    } else if (data.steps[0].communication_types[index].name === "deliveryEmail" && this.state.email !== undefined) {
+      return this.state.userEmail.length == 0 ? "" : " (" + this.state.userEmail + ")"
+    } else {
+      return ""
+    }
+  }
+
   componentDidMount() {
     this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") })
       .then(response => {
@@ -120,14 +130,13 @@ class PrivacySecurity extends React.Component {
                   <Form>
                     {
                       Object.keys(data.steps[0].communication_types).map(index => {
-                        commDetails = data.steps[0].communication_types[index].name === "deliveryPhone" ? this.state.userPhone : data.steps[0].communication_types[index].name === "deliveryEmail" ? this.state.userEmail : null;
+                        commDetails = this.makeCommDetails(index);
                         commType = data.steps[0].communication_types[index].name;
                         return (
                           <div>
                             <FormGroup>
                               {/* PING INTEGRATION: modified label to display user data and added onClicks to CustomInput */}
-                              {/* TODO need to update label? */}
-                              <Label for={data.steps[0].communication_types[index].name}>{commDetails === null ? "" : data.steps[0].communication_types[index].label + ' (' + commDetails + ')'}</Label>
+                              <Label for={data.steps[0].communication_types[index].name}>{data.steps[0].communication_types[index].label + commDetails}</Label>
                               <CustomInput onChange={(event) => this.toggleConsent(event)} type="radio" id={`${data.steps[0].communication_types[index].name}_yes`} name={data.steps[0].communication_types[index].name} label="Yes" checked={this.state[commType + "Checked"]}/>
                               <CustomInput onChange={(event) => this.toggleConsent(event)} type="radio" id={`${data.steps[0].communication_types[index].name}_no`} name={data.steps[0].communication_types[index].name} label="No" checked={!this.state[commType + "Checked"]}/>
                             </FormGroup>
@@ -150,14 +159,12 @@ class PrivacySecurity extends React.Component {
                   <Form>
                     {
                       Object.keys(data.steps[1].communication_types).map(index => {
-                        {/* TODO implement when we have session data:
-                        commDetails = data.steps[0].communication_types[index].name === "phone" ? this.Session.getAuthenticatedUserItem("mobile") : data.steps[0].communication_types[index].name === "email" ? this.Session.getAuthenticatedUserItem("email") : this.Session.getAuthenticatedUserItem("fullAddress"); */}
-                        commDetails = data.steps[0].communication_types[index].name === "deliveryPhone" ? "314.787.2278" : data.steps[0].communication_types[index].name === "deliveryEmail" ?  "janelakesmith@gmail.com" : "";
+                        commDetails = this.makeCommDetails(index);
                         commType = data.steps[0].communication_types[index].name;
                         return (
                           <>
                             <FormGroup>
-                              <Label for={data.steps[1].communication_types[index].name}>{data.steps[0].communication_types[index].label + ' (' + commDetails + ')'}</Label>
+                              <Label for={data.steps[1].communication_types[index].name}>{data.steps[0].communication_types[index].label + commDetails}</Label>
                               <CustomInput type="radio" id={`${data.steps[0].communication_types[index].name}_yes`} name={data.steps[0].communication_types[index].name} label="Yes" disabled checked={this.state[commType + "Checked"]}/>
                               <CustomInput type="radio" id={`${data.steps[0].communication_types[index].name}_no`} name={data.steps[0].communication_types[index].name} label="No" disabled checked={!this.state[commType + "Checked"]}/>
                             </FormGroup>
