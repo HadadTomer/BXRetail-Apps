@@ -6,10 +6,10 @@ import {
   Media
 } from 'reactstrap';
 
+
 // Components
 import NavbarMain from '../../components/NavbarMain';
 import FooterMain from '../../components/FooterMain';
-// import AccountsSubnav from '../../components/AccountsSubnav';
 
 // Data
 import data from '../../data/partner.json';
@@ -85,7 +85,7 @@ const SearchAutocomplete = () => {
           displaySuggestions={displaySuggestions}
           suggestions={filteredSuggestions}
         />
-        <img src={window._env_.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" alt="Search for a Client"/>
+        <img src={window._env_.PUBLIC_URL + "/images/icons/search.svg"} className="img-search" />
       </form>
     </div>
   );
@@ -94,16 +94,10 @@ const SearchAutocomplete = () => {
 // PartnerClient Page
 class PartnerClient extends React.Component {
 
-  constructor() {
-    super();
-  }
-
   componentDidMount() {
     // const username = this.props.location.state.username;
-
     console.log("passed username", this.props);
   }
-
   render() {
     return (
       <div className="accounts advisor">
@@ -161,7 +155,102 @@ class PartnerClient extends React.Component {
                   </Row>
                   <Row>
                     <Col>
-                      <img src={window._env_.PUBLIC_URL + "/images/advisor-client.png"} className="img-fluid mt-3 mb-5" alt=''/>
+                      {data.clients.orders.map((order) => (
+                        <div className="module">
+                          <Container>
+                            <Row className="pt-4 pb-3 pl-2 pr-2">
+                              <Col>
+                                <span className="client-order_title">
+                                  {order.name} {order.id} | <Button color="link" className="pl-1">{order.tracking_link}</Button>
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row className="pb-4 pl-2 pr-2">
+                              <Col sm="4">
+                                <div className="client-order_name">
+                                  {order.contact_details.full_name}
+                                </div>
+                                <div className="client-order_address">
+                                  <div>
+                                    {order.contact_details.address.title}
+                                  </div>
+                                  <div>
+                                    {order.contact_details.address.data.line_1}
+                                  </div>
+                                  <div>
+                                    {order.contact_details.address.data.city}, {order.contact_details.address.data.state} {order.contact_details.address.data.postcode}
+                                  </div>
+                                  <Button color="link">
+                                    {order.contact_details.address.edit_link}
+                                  </Button>
+                                </div>
+                                <div className="client-order_phone">
+                                  <div>
+                                    {order.contact_details.phone_numbers.title}
+                                  </div>
+                                  {order.contact_details.phone_numbers.data.map((number) => (
+                                    <div>{number.name}: {number.data}</div>
+                                  ))}
+                                  <Button color="link">
+                                    {order.contact_details.address.edit_link}
+                                  </Button>
+                                </div>
+                                <div className="client-order_email">
+                                  <div>
+                                    {order.contact_details.email.title}
+                                  </div>
+                                  <div>
+                                    {order.contact_details.email.data}
+                                  </div>
+                                  <Button color="link">
+                                    {order.contact_details.address.edit_link}
+                                  </Button>
+                                </div>
+                              </Col>
+                              <Col sm="8">
+                                {order.order_details.products.map((product) => (
+                                  <Row>
+                                    <Col>
+                                      <img
+                                        src={window._env_.PUBLIC_URL + product.image_url}
+                                        className="img-fluid"
+                                      />
+                                    </Col>
+                                    <Col>
+                                      <div>
+                                        {product.title}
+                                      </div>
+                                      <ul className="client-order_list">
+                                        {product.names.map((name) => (
+                                          <li>{name}</li>
+                                        ))}
+                                      </ul>
+                                      <Button className="mt-3" color="link">
+                                        {product.product_link}
+                                      </Button>
+                                    </Col>
+                                  </Row>
+                                ))}
+                                <Row className="mt-4">
+                                  <Col>
+                                    <div>
+                                      {order.order_details.services.title}:
+                                    </div>
+                                    <ul className="client-order_list mt-3">
+                                      {order.order_details.services.data.map((order) => (
+                                        <li>{order}</li>
+                                      ))}
+                                    </ul>
+                                    <Button className="mt-3" color="link">
+                                      {order.order_details.services.instructions_link}
+                                    </Button>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </Container>
+                        </div>
+                      ))}
                     </Col>
                   </Row>
                 </div>

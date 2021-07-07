@@ -60,7 +60,7 @@
 	"profile": {
 		"partner": {
 			"title": "Your Profile",
-			"content": "<strong>Gail Tyson</strong> <br> AnyTVPartner Advisor <br> St. Louis, MO  63101 <br> Phone: 314.489.2213 <br> <br> gail.tyson@ATVP.com <br> atvp.com/gail.tyson",
+			"content": "<strong>Gail Tyson</strong> <br> AnyTVPartner Advisor <br> Roebuck, IL  60610 <br> Phone: 847.489.2213 <br> <br> gail.tyson@ATVP.com <br> atvp.com/gail.tyson",
 			"button": "Make Changes"
 		}
 	},
@@ -77,6 +77,65 @@
 		"search_placeholder": "Enter Keywords...",
 		"suggestions": [
 			"janesmith@gmail.com"
+		],
+		"orders": [
+			{
+				"name": "Installation",
+				"id": "IL60434-PTS459",
+				"tracking_link": "Tracking Info",
+				"contact_details": {
+					"full_name": "Jane Smith",
+					"address": {
+						"title": "Installation Address",
+						"edit_link": "Edit Info",
+						"data": {
+							"line_1": "4700 Red River St",
+							"city": "Roebuck",
+							"state": "IL",
+							"postcode": "60610"
+						}
+					},
+					"phone_numbers": {
+						"title": "Phone Numbers",
+						"edit_link": "Edit Info",
+						"data": [
+							{
+								"name": "Home",
+								"data": "617.525.4435"
+							},
+							{
+								"name": "Mobile",
+								"data": "614.787.2278"
+							}
+						]
+					},
+					"email": {
+						"title": "Email Address",
+						"edit_link": "Edit Info",
+						"data": "janesmith@gmail.com"
+					}
+				},
+				"order_details": {
+					"products": [
+						{
+							"title": "Installing",
+							"names": [
+								"BXManufacturing Clera 65\" 4K UHD LED TV (C515CV-U)"
+							],
+							"image_url": "/images/products/bxmanufacturing-clera.jpg",
+							"product_link": "See Product Information"
+						}
+					],
+					"services": {
+						"title": "BXRetail services sold",
+						"instructions_link": "See Special Instructions",
+						"data": [
+							"Delivery, mounting, and setup, Premium TV 56\" and larger",
+							"Mounting hardware and installation included"
+						]
+					}
+				}
+			}
 		]
 	},
 	"news": {

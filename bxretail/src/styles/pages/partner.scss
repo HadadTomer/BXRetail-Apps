@@ -1,4 +1,4 @@
-/* Partner */
+/* Advisor */
 
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/bootstrap-grid';
@@ -116,6 +116,39 @@
           color: theme-color("primary");
           cursor: pointer;
         }
+      }
+    }
+
+    .client-order {
+      background-color: white;
+      border-radius: 11px;
+
+      .btn-link {
+        padding: 0;
+
+        &.tracking-info {
+          padding-left: 4px;
+        }
+      }
+
+      &_title {
+        display: flex;
+        align-items: center;
+      }
+
+      &_name {
+        font-size: 20px;
+      }
+
+      &_address,
+      &_phone,
+      &_email {
+        padding-top: 10px;
+      }
+
+      &_list {
+        margin: 0;
+        padding-inline-start: 20px;
       }
     }
   }
