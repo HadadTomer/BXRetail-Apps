@@ -34,7 +34,7 @@ const SuggestionsList = props => {
   if (inputValue && displaySuggestions) {
     if (suggestions.length > 0) {
       return (
-        <ul className="suggestions-list">
+        <ul className="suggestions-list" style={{overflow: 'hidden'}}>
           {suggestions.map((suggestion, index) => {
             const isSelected = selectedSuggestion === index;
             const classname = `suggestion ${isSelected ? "selected" : ""}`;
@@ -80,7 +80,8 @@ const SearchAutocomplete = () => {
     setDisplaySuggestions(false);
 
     const username = filteredSuggestions[index];
-    
+    console.log("filteredSuggestions[index]", username);
+
     // go to client
     history.push({ pathname: "/partner/client", state: { username: username } });
   };
@@ -112,19 +113,17 @@ class Partner extends React.Component {
 
   componentDidMount() {
     this.flowHandler.getUsers({limit: "1000"})
-      // .then(response => response.json())
       .then(jsonSearchResults => {
-        // if (jsonSearchResults === undefined) return;
-        // Get an array of just uid's from the results.
+        // Get an array of just usernames's from the results.
         console.log("jsonSearchResults of getUsers", jsonSearchResults);
         const people = this.JSONSearch.findValues(jsonSearchResults._embedded.users, "username");
         // Repopulate the data used in SearchAutocomplete().
         console.log("people", people);
         data.clients.suggestions = people.map(person => `${person}`);
       })
-      // .catch(e => {
-      //   console.error("getSearchableUsers Exception", e)
-      // });
+      .catch(e => {
+        console.error("getUsers Exception", e)
+      });
   }
 
   render() {

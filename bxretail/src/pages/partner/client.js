@@ -1,5 +1,6 @@
 // Packages
 import React from 'react';
+import { withRouter } from "react-router"; /* PING INTEGRATION: */
 import {
   Button, Row, Col, Card, CardBody,
   Container,
@@ -264,4 +265,4 @@ class PartnerClient extends React.Component {
   }
 }
 
-export default PartnerClient;
+export default withRouter(PartnerClient);
