@@ -79,6 +79,9 @@ class CommunicationPreferences extends React.Component {
     this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") })
       .then(userProfile => {
         console.log("userProfile", userProfile)
+        if (userProfile.name === undefined) {
+          return;
+        }
         this.setState({
           firstname: userProfile.name.given,
           lastname: userProfile.name.family,
@@ -197,7 +200,7 @@ class CommunicationPreferences extends React.Component {
                   </Col>
                 </Row>
               </div>
-{/*               <div className="module">
+               <div className="module">
                 <h3>Authentication Preferences</h3>
                 <Col>
                   <Row>
@@ -212,7 +215,7 @@ class CommunicationPreferences extends React.Component {
                     </FormGroup>
                   </Row>
                 </Col>
-              </div> */}
+              </div>
             </div>
           </div>
         </Container>
