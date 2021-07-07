@@ -10,12 +10,16 @@ import { useHistory } from 'react-router-dom';
 // Components
 import NavbarMain from '../../components/NavbarMain';
 import FooterMain from '../../components/FooterMain';
+import Session from '../../components/Utils/Session';
+import JSONSearch from '../../components/Utils/JSONSearch';
+import FlowHandler from '../../components/Controller/FlowHandler';
 
 // Data
 import data from '../../data/partner.json';
 
 // Styles
 import '../../styles/pages/partner.scss';
+
 
 // Autocomplete Suggestion List
 const SuggestionsList = props => {
@@ -74,8 +78,11 @@ const SearchAutocomplete = () => {
     setInputValue(filteredSuggestions[index]);
     setFilteredSuggestions([]);
     setDisplaySuggestions(false);
+
+    const username = filteredSuggestions[index];
+    
     // go to client
-    history.push("/partner/client");
+    history.push({ pathname: "/partner/client", state: { username: username } });
   };
   return (
     <div>
@@ -96,6 +103,30 @@ const SearchAutocomplete = () => {
 
 // Partner Page
 class Partner extends React.Component {
+  constructor () {
+    super();
+    this.session = new Session();
+    this.flowHandler = new FlowHandler();
+    this.JSONSearch = new JSONSearch();
+  }
+
+  componentDidMount() {
+    this.flowHandler.getUsers({limit: "1000"})
+      // .then(response => response.json())
+      .then(jsonSearchResults => {
+        // if (jsonSearchResults === undefined) return;
+        // Get an array of just uid's from the results.
+        console.log("jsonSearchResults of getUsers", jsonSearchResults);
+        const people = this.JSONSearch.findValues(jsonSearchResults._embedded.users, "username");
+        // Repopulate the data used in SearchAutocomplete().
+        console.log("people", people);
+        data.clients.suggestions = people.map(person => `${person}`);
+      })
+      // .catch(e => {
+      //   console.error("getSearchableUsers Exception", e)
+      // });
+  }
+
   render() {
     return (
       <div className="accounts advisor">

@@ -93,6 +93,17 @@ const SearchAutocomplete = () => {
 
 // PartnerClient Page
 class PartnerClient extends React.Component {
+
+  constructor() {
+    super();
+  }
+
+  componentDidMount() {
+    // const username = this.props.location.state.username;
+
+    console.log("passed username", this.props);
+  }
+
   render() {
     return (
       <div className="accounts advisor">

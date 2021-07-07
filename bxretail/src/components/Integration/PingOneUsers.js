@@ -27,7 +27,7 @@ class PingOneUsers {
     }
 
     /**
-     * Read user Data
+     * Read one user's data.
      * 
      * @param {string} userId - user ID GUID that you would like to read.
      * @param {string} lowPrivToken - Lower privileged token for Management API.
@@ -43,6 +43,28 @@ class PingOneUsers {
             redirect: 'manual'
         };
         const url = this.proxyApiPath + "/users/" + userId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+
+        return jsonResponse;
+    }
+
+    /**
+     * Get all user's data - use a filter to narrow results.
+     * 
+     * @param {*} param0 
+     * @returns 
+     */
+    async getUsers({ lowPrivToken, limit }) {
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + lowPrivToken);
+
+        let requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "manual"
+        };
+        const url = this.proxyApiPath + "/users" + "?limit=" + limit;
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
 
