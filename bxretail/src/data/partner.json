@@ -96,16 +96,12 @@
 						}
 					},
 					"phone_numbers": {
-						"title": "Phone Numbers",
+						"title": "Phone Number",
 						"edit_link": "Edit Info",
 						"data": [
 							{
-								"name": "Home",
-								"data": "617.525.4435"
-							},
-							{
 								"name": "Mobile",
-								"data": "614.787.2278"
+								"data": "617.525.4435"
 							}
 						]
 					},

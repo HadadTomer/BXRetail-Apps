@@ -320,7 +320,7 @@ class FlowHandler {
 
   async toggleMFA({ IdT, toggleState }) {
     const rawPayload = JSON.stringify({
-      mfaEnabled: toggleState,
+      "mfaEnabled": JSON.stringify(toggleState),
     });
     console.log("toggleMFA rawPayload", rawPayload);
 
@@ -416,11 +416,11 @@ class FlowHandler {
   async enforceConsent({userId}) {
     console.info("Flowhandler.js", "Enforcing user consents.");
 
-    // TODO waiting for Michael's federation into ATVP to grab this from session.
-    const partnerAccessToken = await this.requestPartnerAccessToken();
+    // TODO waiting for Michael's federation into ATVP to grab this from session. Until then, hardcoding from Postman.
+    // const partnerAccessToken = await this.requestPartnerAccessToken();
     const response = await this.ping1Consents.enforceConsent({
-        userId: userId, 
-        partnerAccessToken: partnerAccessToken,
+        userId: userId
+        // partnerAccessToken: partnerAccessToken,
       });
     return response;
   }

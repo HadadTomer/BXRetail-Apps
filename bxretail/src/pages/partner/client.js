@@ -93,20 +93,59 @@ const SearchAutocomplete = () => {
   );
 };
 
-// PartnerClient Page 
+// PartnerClient Page  
 class PartnerClient extends React.Component {
 
   constructor() {
     super();
     this.flowHandler = new FlowHandler();
+    this.state = {
+      formattedName: "",
+      street: "",
+      city: "",
+      zipcode: "",
+      email: "",
+      phone: ""
+    };   
+  }
+
+  hasNoData() {
+    return this.state.formattedName === "" && 
+           this.state.street === "" &&
+           this.state.city === "" &&
+           this.state.zipcode === "" &&
+           this.state.email === "" &&
+           this.state.phone === ""
   }
 
   componentDidMount() {
     const userId = this.props.location.state.userId;
+    console.log("userId", userId);
     this.flowHandler.enforceConsent({userId: userId})
       .then(response => {
-        console.log("response", response);
-      })
+        if (response.name !== undefined) {
+          this.setState({
+            formattedName: response.name.formatted
+          })
+        }
+        if (response.address !== undefined) {
+          this.setState({
+            street: response.address.streetAddress,
+            city: response.address.locality,
+            zipcode: response.address.postalCode
+          })
+        }
+        if (response.email !== undefined) {
+          this.setState({
+            email: response.email,
+          })
+        }
+        if (response.mobilePhone !== undefined) {
+          this.setState({
+            phone: response.mobilePhone,
+          })
+        }
+      });
   }
 
   render() {
@@ -178,41 +217,52 @@ class PartnerClient extends React.Component {
                             </Row>
                             <Row className="pb-4 pl-2 pr-2">
                               <Col sm="4">
+                              {this.hasNoData() && 
+                                <p style={{fontWeight: "bold", fontStyle: "italic"}}>This user has not consented to share any data.</p>
+                              }
+                              {this.state.formattedName !== "" && 
                                 <div className="client-order_name">
-                                  {order.contact_details.full_name}
+                                  {this.state.formattedName}
                                 </div>
+                              }
                                 <div className="client-order_address">
-                                  <div>
+                                  <div style={{fontWeight: "bold"}}>
                                     {order.contact_details.address.title}
                                   </div>
-                                  <div>
-                                    {order.contact_details.address.data.line_1}
-                                  </div>
-                                  <div>
-                                    {order.contact_details.address.data.city}, {order.contact_details.address.data.state} {order.contact_details.address.data.postcode}
-                                  </div>
+                                  {this.state.street !== "" &&
+                                    <div>
+                                      {this.state.street}
+                                    </div>
+                                  }
+                                  {this.state.city !== "" &&
+                                    <div>
+                                      {this.state.city} {this.state.zipcode}
+                                    </div>
+                                  }
                                   <Button color="link">
                                     {order.contact_details.address.edit_link}
                                   </Button>
                                 </div>
                                 <div className="client-order_phone">
-                                  <div>
+                                  <div style={{fontWeight: "bold"}}>
                                     {order.contact_details.phone_numbers.title}
                                   </div>
-                                  {order.contact_details.phone_numbers.data.map((number) => (
-                                    <div>{number.name}: {number.data}</div>
-                                  ))}
+                                  {this.state.phone !== "" &&
+                                    <div>Mobile: {this.state.phone}</div>
+                                  }
                                   <Button color="link">
                                     {order.contact_details.address.edit_link}
                                   </Button>
                                 </div>
                                 <div className="client-order_email">
-                                  <div>
+                                  <div style={{fontWeight: "bold"}}>
                                     {order.contact_details.email.title}
                                   </div>
-                                  <div>
-                                    {order.contact_details.email.data}
-                                  </div>
+                                  {this.state.email !== "" &&
+                                    <div>
+                                      {this.state.email}
+                                    </div>
+                                  }
                                   <Button color="link">
                                     {order.contact_details.address.edit_link}
                                   </Button>
