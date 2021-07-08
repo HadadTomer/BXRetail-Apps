@@ -246,7 +246,7 @@ class Shop extends React.Component {
     return (
       <div className="dashboard accounts accounts-overview shop">
         <NavbarMain toggleCart={this.toggleTab} />
-        <WelcomeBar />
+        <WelcomeBar fullName={this.session.getAuthenticatedUserItem("fullName", "session")} email={this.session.getAuthenticatedUserItem("email", "session")}/>
         <Container>
           <div className="inner">
             <div className="sidebar">
