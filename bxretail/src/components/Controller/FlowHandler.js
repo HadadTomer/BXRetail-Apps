@@ -194,7 +194,7 @@ class FlowHandler {
             "name": {
                 "given": userState.firstname,
                 "family": userState.lastname,
-                "formated": userState.fullname
+                "formatted": userState.fullname
             },
             "address": {
                 "streetAddress": userState.street,
@@ -227,6 +227,7 @@ class FlowHandler {
      */
     getTokenValue({ token, key }) {
         // Extracting the payload portion of the JWT.
+        console.log("token", token);
         const base64Fragment = token.split('.')[1];
         const decodedFragment = JSON.parse(atob(base64Fragment));
         const jwtValue = this.jsonSearch.findValues(decodedFragment, key); //FIXME this can be converted to Javascripts intrinsic .find() function.

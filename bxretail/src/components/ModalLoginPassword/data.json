@@ -27,11 +27,6 @@
 					"text": "Text me a one-time passcode",
 					"faceid": "With FaceID (Mobile App Required)"
 				}
-			},
-			"regVerification": {
-				"label": "Verification Code",
-				"placeholder": "",
-				"title": "Enter the registration verification code from your email"
 			}
 		},
 		"buttons": {

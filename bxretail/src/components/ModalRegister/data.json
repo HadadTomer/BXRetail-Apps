@@ -60,11 +60,17 @@
 			},
 			"rewards": {
 				"label": "Yes, email me about member rewards, offers and more."
+			},
+			"regVerification": {
+				"label": "Verification Code",
+				"placeholder": "",
+				"title": "Enter the registration verification code from your email"
 			}
 		},
 		"buttons": {
 			"submit": "Submit",
-			"cancel": "Cancel"
+			"cancel": "Cancel",
+			"reg_verification": "Submit my code"
 		}
 	}
 }

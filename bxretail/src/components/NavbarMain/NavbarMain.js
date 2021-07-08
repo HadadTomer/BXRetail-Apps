@@ -35,7 +35,8 @@ class NavbarMain extends React.Component {
       password: "",         /* PING INTEGRATION: */
       password_confirm: "", /* PING INTEGRATION: */
       /*login: "",             PING INTEGRATION: */
-      flowId: ""            /* PING INTEGRATION: */
+      flowId: "",            /* PING INTEGRATION: */
+      regCode: ""           /* PING INTEGRATION: */
     };
 
     this.session = new Session(); /* PING INTEGRATION: */
@@ -58,8 +59,10 @@ class NavbarMain extends React.Component {
   onModalRegisterSubmit() {
     this.flowHandler.registerUser({regData:this.state})
       .then(status => {
-        if (status === "VERIFICATION_CODE_REQUIRED") { //TODO need to handle status UNIQUENESS_VIOLATION
-          this.modalLoginPassword.current.toggle("7");
+        if (status === "VERIFICATION_CODE_REQUIRED") { //TODO need to handle status UNIQUENESS_VIOLATION, CONSTRAINT_VIOLATOIN, 
+          // this.modalLoginPassword.current.toggle("7");
+          this.modalRegister.current.toggle();
+          this.modalRegister.current.toggleTab("2");
         }
       });
     this.modalRegister.current.toggle();
@@ -124,6 +127,14 @@ class NavbarMain extends React.Component {
           this.session.setAuthenticatedUserItem("IdT", response.id_token, "session");
           //TODO take the access token from session and set a var based on the result of calling this.flowHandler.getTokenValue(token, key) 
           // stuff that ^ return value into a new session variable called bxRetailUserType. this.setAuthenticatedUserItem("bxRetailUserType", value-to-save, "session")
+          console.log("extract stuff", response.id_token);
+          const given_name = this.flowHandler.getTokenValue({token: response.id_token, key: "given_name"});
+          const family_name = this.flowHandler.getTokenValue({ token: response.id_token, key: "family_name"});
+          const fullName = this.flowHandler.getTokenValue({ token: response.id_token, key: "fullName"});
+          const groups = this.flowHandler.getTokenValue({ token: response.id_token, key: "bxRetailUserType"});
+          const userType = (groups) ? groups[0] : "Customer";
+          this.session.setAuthenticatedUserItem("fullName", fullName, "session");
+          this.session.setAuthenticatedUserItem("bxRetailUserType", userType, "session");
           this.props.history.push("shop");
         });
       }
@@ -240,7 +251,7 @@ class NavbarMain extends React.Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <ModalRegister ref={this.modalRegister} onSubmit={this.onModalRegisterSubmit.bind(this)} handleFormInput={this.handleFormInput.bind(this)} />
+        <ModalRegister ref={this.modalRegister} onSubmit={this.onModalRegisterSubmit.bind(this)} handleFormInput={this.handleFormInput.bind(this)} flowId={this.state.flowId} />
         <ModalRegisterConfirm ref={this.modalRegisterConfirm} />
         {/* <ModalLogin ref="modalLogin" /> */}
         <ModalLoginPassword ref={this.modalLoginPassword} flowId={this.state.flowId} />
