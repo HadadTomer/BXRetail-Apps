@@ -46,28 +46,28 @@ class PingOneConsents {
     }
 
     /**
-     * Enforce consents.
+     * Enforce consents. 
      * 
      * @param {type} param0 Description
      * @return {type} Name Description
      */
-    // enforceConsent({ ATVPToken, userId }) {
-    //     console.info("PingOneConsents.js", "Enforcing consents from PingOne.");
+    async enforceConsent({ partnerAccessToken, userId }) {
+        console.info("PingOneConsents.js", "Enforcing consents from PingOne.");
 
-    //     let myHeaders = new Headers();
-    //     myHeaders.append("Authorization", "Bearer " + ATVPToken );
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + partnerAccessToken );
 
-    //     let requestOptions = {
-    //         method: "GET",
-    //         headers: myHeaders,
-    //         redirect: "manual"
-    //     };
+        let requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "manual"
+        };
 
-    //     const url = this.proxyApiPath + "/users/" + userId;
-    //     const response = await fetch(url, requestOptions);
-    //     const jsonResponse = await response.json();
-    //     console.log("enforce consents response", jsonResponse);
-    //     return jsonResponse;
-    // }
+        const url = this.proxyApiPath + "/users/" + userId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        console.log("enforce consents response", jsonResponse);
+        return jsonResponse;
+    }
 }
 export default PingOneConsents;

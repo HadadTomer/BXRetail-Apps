@@ -138,12 +138,13 @@ class CommunicationPreferences extends React.Component {
                       <Input onChange={this.handleUserInput.bind(this)} type="text" autoComplete="new-fullname" name="fullname" id="fullname" placeholder={data.form.fields.fullname.placeholder} value={this.state.fullname} />
                     </FormGroup>
                   </Col>
-                  <Col md={4}>
+                  {/* Hiding email since we already have it and don't want them to update it to something different than their username. */}
+                  {/* <Col md={4}> 
                     <FormGroup>
                       <Label for="email">{data.form.fields.email.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="email" autoComplete="new-email" name="email" id="email" placeholder={data.form.fields.email.placeholder} value={this.state.email} />
                     </FormGroup>
-                  </Col>
+                  </Col> */}
                   <Col md={4}>
                     <FormGroup>
                       <Label for="phone">{data.form.fields.phone.label}</Label>

@@ -34,7 +34,7 @@ const SuggestionsList = props => {
   if (inputValue && displaySuggestions) {
     if (suggestions.length > 0) {
       return (
-        <ul className="suggestions-list" style={{overflow: 'hidden'}}>
+        <ul className="suggestions-list" style={{overflow: "hidden"}}>
           {suggestions.map((suggestion, index) => {
             const isSelected = selectedSuggestion === index;
             const classname = `suggestion ${isSelected ? "selected" : ""}`;
@@ -44,7 +44,7 @@ const SuggestionsList = props => {
                 className={classname}
                 onClick={() => onSelectSuggestion(index)}
               >
-                {suggestion}
+                {suggestion.name}
               </li>
             );
           })}
@@ -68,7 +68,7 @@ const SearchAutocomplete = () => {
     const value = event.target.value;
     setInputValue(value);
     const filteredSuggestions = data.clients.suggestions.filter(suggestion =>
-      suggestion.toLowerCase().includes(value.toLowerCase())
+      suggestion.name.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredSuggestions(filteredSuggestions);
     setDisplaySuggestions(true);
@@ -78,12 +78,10 @@ const SearchAutocomplete = () => {
     setInputValue(filteredSuggestions[index]);
     setFilteredSuggestions([]);
     setDisplaySuggestions(false);
-
-    const username = filteredSuggestions[index];
-    console.log("filteredSuggestions[index]", username);
-
-    // go to client
-    history.push({ pathname: "/partner/client", state: { username: username } });
+    
+    // go to client 
+    history.push({ pathname: "/partner/client", state: { userId: filteredSuggestions[index].id}});
+    
   };
   return (
     <div>
@@ -114,17 +112,14 @@ class Partner extends React.Component {
   componentDidMount() {
     this.flowHandler.getUsers({limit: "1000"})
       .then(jsonSearchResults => {
-        // Get an array of just usernames's from the results.
-        console.log("jsonSearchResults of getUsers", jsonSearchResults);
-        const people = this.JSONSearch.findValues(jsonSearchResults._embedded.users, "username");
-        // Repopulate the data used in SearchAutocomplete().
-        console.log("people", people);
-        data.clients.suggestions = people.map(person => `${person}`);
+        const suggestions = jsonSearchResults._embedded.users.map(user => ({ id: user.id, name: user.username }))
+        data.clients.suggestions = suggestions;
       })
       .catch(e => {
-        console.error("getUsers Exception", e)
+        console.error("getSearchableUsers Exception", e)
       });
   }
+
 
   render() {
     return (

@@ -11,6 +11,7 @@ import {
 // Components
 import NavbarMain from '../../components/NavbarMain';
 import FooterMain from '../../components/FooterMain';
+import FlowHandler from '../../components/Controller/FlowHandler';
 
 // Data
 import data from '../../data/partner.json';
@@ -92,13 +93,22 @@ const SearchAutocomplete = () => {
   );
 };
 
-// PartnerClient Page
+// PartnerClient Page 
 class PartnerClient extends React.Component {
 
-  componentDidMount() {
-    // const username = this.props.location.state.username;
-    console.log("passed username", this.props);
+  constructor() {
+    super();
+    this.flowHandler = new FlowHandler();
   }
+
+  componentDidMount() {
+    const userId = this.props.location.state.userId;
+    this.flowHandler.enforceConsent({userId: userId})
+      .then(response => {
+        console.log("response", response);
+      })
+  }
+
   render() {
     return (
       <div className="accounts advisor">

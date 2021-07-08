@@ -104,8 +104,10 @@ class NavbarMain extends React.Component {
   }
   componentDidMount() {
     const isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
-    //TODO this is commented out until we have federated login working.
+    //TODO this is commented out until we have federated login working. 
     // this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
+    //this.session.protectPage(isLoggedOut, window.location.pathname, "");
+
 
     if (window.location.search) {
       const queryParams = new URLSearchParams(window.location.search);

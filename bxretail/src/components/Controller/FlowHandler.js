@@ -229,7 +229,7 @@ class FlowHandler {
   }
 
   /**
-   * Get a user's profile data.
+   * Get a user's profile data. 
    * @param {String} IdT OIDC ID JWT token
    * @return {object} JSON object from response.
    */
@@ -374,27 +374,28 @@ class FlowHandler {
             mobile: consentData.deliveryPhone,
           },
           consentContext: {},
-        },
-        {
-          status: "active",
-          subject: consentData.subject,
-          actor: consentData.subject,
-          audience: "BXRApp",
-          definition: {
-            id: "communication-preferences",
-            version: "1.0",
-            locale: "en-us",
-          },
-          titleText: "Marketing Communication",
-          dataText: "Marketing Communication",
-          purposeText: "Marketing Communication",
-          data: {
-            email: consentData.commEmail,
-            sms: consentData.commSms,
-            mail: consentData.commMail,
-          },
-          consentContext: {},
-        },
+        }
+        // DG is currently only looking for one object to filter on so this needs to not be set until we're ready.
+        // {
+        //   status: "active",
+        //   subject: consentData.subject,
+        //   actor: consentData.subject,
+        //   audience: "BXRApp",
+        //   definition: {
+        //     id: "communication-preferences",
+        //     version: "1.0",
+        //     locale: "en-us",
+        //   },
+        //   titleText: "Marketing Communication",
+        //   dataText: "Marketing Communication",
+        //   purposeText: "Marketing Communication",
+        //   data: {
+        //     email: consentData.commEmail,
+        //     sms: consentData.commSms,
+        //     mail: consentData.commMail,
+        //   },
+        //   consentContext: {},
+        // },
       ],
     });
     const lowPrivToken = await this.requestLowPrivToken();
@@ -412,15 +413,17 @@ class FlowHandler {
    * @param {*} param0
    * @returns
    */
-//   async enforceConsent() {
-//     console.info("Flowhandler.js", "Enforcing user consents.");
+  async enforceConsent({userId}) {
+    console.info("Flowhandler.js", "Enforcing user consents.");
 
-//     const response = await this.ping1Consents.enforceConsent({
-//         userId: userId, //TODO how to get these from search?
-//         ATVPToken: ATVPToken,
-//       });
-//     return response;
-//   }
+    // TODO waiting for Michael's federation into ATVP to grab this from session.
+    const partnerAccessToken = await this.requestPartnerAccessToken();
+    const response = await this.ping1Consents.enforceConsent({
+        userId: userId, 
+        partnerAccessToken: partnerAccessToken,
+      });
+    return response;
+  }
 
   /**
    * Generate a JSON web token
