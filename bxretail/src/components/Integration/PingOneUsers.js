@@ -95,13 +95,14 @@ class PingOneUsers {
     }
 
     /**
-     * Update a user's MFA preferences.
+     * Update a user's MFA preferences. 
      * @param {}
      * @return
      */
 
     async toggleMFA({lowPrivToken, userPayload, userId}) {
         let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", "Bearer " + lowPrivToken);
 
         let requestOptions = {
