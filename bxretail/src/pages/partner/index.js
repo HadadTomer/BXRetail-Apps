@@ -75,7 +75,7 @@ const SearchAutocomplete = () => {
   };
   const onSelectSuggestion = index => {
     setSelectedSuggestion(index);
-    setInputValue(filteredSuggestions[index]);
+    setInputValue(filteredSuggestions[index].name);
     setFilteredSuggestions([]);
     setDisplaySuggestions(false);
     
