@@ -54,7 +54,7 @@ class ModalLoginPassword extends React.Component {
     this.setState({
       isOpen: !this.state.isOpen
     });
-    /* PING INTEGRATION: */
+    /* PING INTEGRATION: */ //TODO this needs to go away I think. Usage deprecated by moving tab 7 back to reg where it belongs. Verify that before removing.
     // toggle() is only about show/hide modal UIs. Added tab arg
     // and call to toggleTab() because 
     // some uses cases require us to show a different default tabPane.
@@ -67,7 +67,7 @@ class ModalLoginPassword extends React.Component {
       activeTab: tab
     });
     // HACK for getting focus on subsequent tab fields.... because reactstrap. :-(
-    if (tab === "5") { document.getElementById("email").focus(); } // TODO This is not working and I can't figure out why.
+    if (tab === "5") { document.getElementById("email").focus(); } // FIXME This is not working and I can't figure out why.
     if (tab === "7") { document.getElementById("regCode").focus(); }
 
     console.log("made it here with tab", tab);
@@ -143,7 +143,7 @@ class ModalLoginPassword extends React.Component {
 
         break;
       default:
-        throw new Error("Unexpected authMode for FowHandler.handleUserAction.");
+        throw new Error("Unexpected authMode for ModalLoginPassword.handleUserAction.");
     }
   }
   componentDidMount() {
@@ -243,17 +243,6 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('1'); }}>{data.form.buttons.login}</Button>
                   </div>
                 </TabPane> */}
-                {/* FIXME this should NOT be in this modal. Belongs with reg. Principle of single responsibility. KMN! */}
-                <TabPane tabId="7"> {/* Registration email verification code UI. */}
-                  <h4>{data.form.buttons.reg_verification}</h4>
-                  <FormGroup className="form-group-light">
-                    <Label for="regCode">{data.form.fields.regVerification.label}</Label>
-                    <Input onChange={this.handleFormInput.bind(this)} autoFocus={true} autoComplete="off" type="text" name="regCode" id="regCode" placeholder={data.form.fields.regVerification.placeholder} />
-                  </FormGroup>
-                  <div className="mb-3">
-                    <Button type="button" color="primary" onClick={() => { this.toggleTab('3'); }}>{data.form.buttons.reg_verification}</Button>
-                  </div>
-                </TabPane>
               </TabContent>
             </form>
           </ModalBody>
