@@ -71,6 +71,7 @@ class CommunicationPreferences extends React.Component {
 
   handleCheckbox() {
     const enabled = !this.state.mfaEnabled;
+    console.log("handleCheckbox enabled", enabled);
     this.flowHandler.toggleMFA({ IdT: this.session.getAuthenticatedUserItem("IdT", "session"), toggleState: enabled });
     this.setState({mfaEnabled: enabled});
   }
@@ -91,8 +92,10 @@ class CommunicationPreferences extends React.Component {
           birthdate: userProfile.BXRetailCustomAttr1,
           street: userProfile.address.streetAddress,
           city: userProfile.address.locality,
-          zipcode: userProfile.address.postalCode
+          zipcode: userProfile.address.postalCode,
+          mfaEnabled: userProfile.mfaEnabled
         });
+        console.log("state", this.state);
       });
   };
 
@@ -211,7 +214,7 @@ class CommunicationPreferences extends React.Component {
                 <Col md={{ span: 1, offset: 1 }}>
                   <Row form>
                     <FormGroup>
-                    <Input type="checkbox" value={this.state.mfaEnabled ? "on" : "off" } onChange={this.handleCheckbox.bind(this)}> </Input>
+                    <Input type="checkbox" checked={this.state.mfaEnabled} onChange={this.handleCheckbox.bind(this)}> </Input>
                     <Label>{this.state.mfaEnabled ? "Turn off two-factor authentication." : "Turn on two-factor authentication."}</Label>
                     </FormGroup>
                   </Row>
