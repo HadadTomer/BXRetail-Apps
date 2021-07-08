@@ -8,6 +8,7 @@ import FooterMain from '../../../components/FooterMain';
 import AccountsSubnav from '../../../components/AccountsSubnav';
 import AccountsDropdown from '../../../components/AccountsDropdown';
 import AccountsSectionNav from '../../../components/AccountsSectionNav';
+import Session from '../../../components/Utils/Session'; /* PING INTEGRATION: */
 
 // Data
 import data from '../../../data/dashboard/settings/index.json';
@@ -16,11 +17,16 @@ import data from '../../../data/dashboard/settings/index.json';
 import "../../../styles/pages/accounts.scss";
 
 class DashboardSettings extends React.Component {
+  constructor(props) {
+    super(props);
+    this.session = new Session(); /* PING INTEGRATION: */
+  }
+
   render() {
     return(
       <div className="dashboard accounts accounts-overview">
         <NavbarMain />
-        <WelcomeBar title="My Account" />
+        <WelcomeBar title="My Account: " fullName={this.session.getAuthenticatedUserItem("fullName", "session")} email={this.session.getAuthenticatedUserItem("email", "session")} />
         <Container>
           <div className="inner">
             <div className="sidebar">

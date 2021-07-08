@@ -141,7 +141,7 @@ class AnyTVPartner extends React.Component {
             </Collapse>
           </Navbar>
         </section>
-        <WelcomeBar title={data.welcome} />
+        <WelcomeBar title={data.welcome} fullName={this.session.getAuthenticatedUserItem("fullName", "session")} email={this.session.getAuthenticatedUserItem("email", "session")}/>
         <section className="section-content">
           <Container>
             <Row>
