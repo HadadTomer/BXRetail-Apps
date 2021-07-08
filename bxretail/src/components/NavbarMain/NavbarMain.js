@@ -132,9 +132,9 @@ class NavbarMain extends React.Component {
           const family_name = this.flowHandler.getTokenValue({ token: response.id_token, key: "family_name"});
           const fullName = this.flowHandler.getTokenValue({ token: response.id_token, key: "fullName"});
           const groups = this.flowHandler.getTokenValue({ token: response.id_token, key: "bxRetailUserType"});
-          const bxRetailUserType = groups[0];
+          const userType = (groups) ? groups[0] : "Customer";
           this.session.setAuthenticatedUserItem("fullName", fullName, "session");
-          this.session.setAuthenticatedUserItem("bxRetailUserType", bxRetailUserType, "session");
+          this.session.setAuthenticatedUserItem("bxRetailUserType", userType, "session");
           this.props.history.push("shop");
         });
       }
