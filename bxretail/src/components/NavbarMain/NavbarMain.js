@@ -128,12 +128,14 @@ class NavbarMain extends React.Component {
           //TODO take the access token from session and set a var based on the result of calling this.flowHandler.getTokenValue(token, key) 
           // stuff that ^ return value into a new session variable called bxRetailUserType. this.setAuthenticatedUserItem("bxRetailUserType", value-to-save, "session")
           console.log("extract stuff", response.id_token);
-          const given_name = this.flowHandler.getTokenValue({token: response.id_token, key: "given_name"});
-          const family_name = this.flowHandler.getTokenValue({ token: response.id_token, key: "family_name"});
+          // const given_name = this.flowHandler.getTokenValue({token: response.id_token, key: "given_name"});
+          // const family_name = this.flowHandler.getTokenValue({ token: response.id_token, key: "family_name"});
           const fullName = this.flowHandler.getTokenValue({ token: response.id_token, key: "fullName"});
+          const email = this.flowHandler.getTokenValue({ token: response.id_token, key: "email"});
           const groups = this.flowHandler.getTokenValue({ token: response.id_token, key: "bxRetailUserType"});
           const userType = (groups) ? groups[0] : "Customer";
           this.session.setAuthenticatedUserItem("fullName", fullName, "session");
+          this.session.setAuthenticatedUserItem("email", email, "session");
           this.session.setAuthenticatedUserItem("bxRetailUserType", userType, "session");
           this.props.history.push("shop");
         });
