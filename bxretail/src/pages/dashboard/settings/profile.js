@@ -23,7 +23,6 @@ import data from '../../../data/dashboard/settings/profile.json';
  
 // Styles
 import "../../../styles/pages/dashboard/settings/profile.scss";
-import { faSmileBeam, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
 class CommunicationPreferences extends React.Component {
   
@@ -71,7 +70,6 @@ class CommunicationPreferences extends React.Component {
 
   handleCheckbox() {
     const enabled = !this.state.mfaEnabled;
-    console.log("handleCheckbox enabled", enabled);
     this.flowHandler.toggleMFA({ IdT: this.session.getAuthenticatedUserItem("IdT", "session"), toggleState: enabled });
     this.setState({mfaEnabled: enabled});
   }
@@ -79,7 +77,6 @@ class CommunicationPreferences extends React.Component {
   componentDidMount() {
     this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") })
       .then(userProfile => {
-        console.log("userProfile", userProfile)
         if (userProfile.name === undefined) {
           return;
         }
@@ -95,7 +92,6 @@ class CommunicationPreferences extends React.Component {
           zipcode: userProfile.address.postalCode,
           mfaEnabled: userProfile.mfaEnabled
         });
-        console.log("state", this.state);
       });
   };
 
