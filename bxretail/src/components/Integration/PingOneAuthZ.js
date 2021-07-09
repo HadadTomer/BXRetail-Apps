@@ -20,10 +20,14 @@ class PingOneAuthZ {
     BXF_S = "WkRhVXBiNE9qbFZ0N0R5R19NMnB3MVVyWm8uZGQxdzFFT25VbTNkVGo3WThqSWtUaWlCaXg2cExIRUdNSmxyMg==";
     BXF_A = "https://auth.pingone.com/" + atob(this.BXF_E) + "/as";
 
-    constructor(authPath, envId, proxyApiPath) {
+    /**
+     * 
+     * @param {String} authPath PingOne auth path for your regions tenant. (For BXR, could be the DG (PAZ) proxy host.)
+     * @param {String} envId PingOne environment ID needed for authZ integrations. 
+     */
+    constructor(authPath, envId) {
         this.authPath = authPath;
         this.envId = envId;
-        this.proxyApiPath = proxyApiPath;
     }
 
     /**

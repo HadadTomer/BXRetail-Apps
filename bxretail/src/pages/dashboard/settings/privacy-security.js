@@ -105,7 +105,7 @@ class PrivacySecurity extends React.Component {
     return(
       <div className="accounts privacy-security">
         <NavbarMain />
-        <WelcomeBar title="My Account" />
+        <WelcomeBar title="My Account: " fullName={this.session.getAuthenticatedUserItem("fullName", "session")} email={this.session.getAuthenticatedUserItem("email", "session")} />
         <Container>
         <div className="inner">
             <div className="sidebar">
