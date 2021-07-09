@@ -19,6 +19,7 @@ import { faLinkedinIn, faFacebookF, faTwitter, faInstagram } from '@fortawesome/
 
 // Components
 import WelcomeBar from '../components/WelcomeBar/';
+import Session from '../components/Utils/Session'; /* PING INTEGRATION: */
 
 // Data
 import data from '../data/any-tv-partner.json';
@@ -36,7 +37,8 @@ class AnyTVPartner extends React.Component {
     };
     this.showStep2 = this.showStep2.bind(this);
     this.changeAppointment = this.changeAppointment.bind(this);
-    this.envVars = window._env_;
+    this.envVars = window._env_; /* PING INTEGRATION: */
+    this.session = new Session(); /* PING INTEGRATION: */
   }
   toggle() {
     this.setState({
