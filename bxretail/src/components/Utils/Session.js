@@ -21,15 +21,16 @@ class Session {
 
     @param {boolean} loggedOut Whether the user is logged in or not.
     @param {string} path Where the user is trying to go.
-    @param {string} userType AnyTVPartner, AnyMarketing, or customer.
+    @param {string} userType AnyTVPartner, AnyMarketing, or customer. 
     */
     protectPage(loggedOut, path, userType) {
-        const partnerAllowedPaths = ["/app/partner", "/app/partner/client", "/app/partner/updates", "/app/partner/reporting","/app/partner/other-services"];
-        const marketingAllowedPaths = ["/app/any-marketing", "/app/any-marketing/dashboard", "/app/any-marketing/client-profiles", "/app/any-marketing/tracking", "/app/any-marketing/planning-tools"];
-        const homePaths = ["/app/", "/app"];
+        const partnerAllowedPaths = ["/app/partner", "/app/partner/client"];
+        const marketingAllowedPaths = ["/app/any-marketing"];
+        const customerAllowedPaths = ["/app/any-tv-partner", "/app/dashboard/settings", "/app/dashboard/settings/profile", "/app/dashboard/settings/communication-preferences", "app/dashboard/settings/privacy-security"];
+        const homePaths = ["/app/", "/app", "/app/shop"];
         console.info("Session.js", "Checking access rules for user type " + userType + " at " + path);
 
-        //They have to be logged in to be anywhere other than home.
+        //They have to be logged in to be anywhere other than home or /shop.
         if (loggedOut && (!homePaths.includes(path))) {
             console.info("Access rule", "Attempting to access protected page as unauthenticated user. Redirecting to home.");
             window.location.assign(homePaths[0]); //TODO this needs to be done SPA style. Not an HTTP redirect.
@@ -47,10 +48,10 @@ class Session {
                         window.location.assign(marketingAllowedPaths[0]); //TODO this needs to be done SPA style. Not an HTTP redirect.
                     }
                     break;
-                case "customer":
-                    if (partnerAllowedPaths.includes(path) || marketingAllowedPaths.includes(path) || homePaths.includes(path)) {
+                case "Customer":
+                    if (!customerAllowedPaths.includes(path) && !homePaths.includes(path)) {
                         console.info("Access Rule", "Attempt to access disallowed resource for user type " + userType + ". Redirecting to default.");
-                        window.location.assign("/app/shop"); //Default for a logged in user //TODO this needs to be done SPA style. Not an HTTP redirect.
+                        window.location.assign(homePaths[2]); //Default for a logged in user //TODO this needs to be done SPA style. Not an HTTP redirect.
                     }
                     break;
                 default:

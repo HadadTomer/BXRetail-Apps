@@ -23,7 +23,6 @@ import data from '../../../data/dashboard/settings/profile.json';
  
 // Styles
 import "../../../styles/pages/dashboard/settings/profile.scss";
-import { faSmileBeam, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
 class CommunicationPreferences extends React.Component {
   
@@ -78,7 +77,9 @@ class CommunicationPreferences extends React.Component {
   componentDidMount() {
     this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") })
       .then(userProfile => {
-        console.log("userProfile", userProfile)
+        if (userProfile.name === undefined) {
+          return;
+        }
         this.setState({
           firstname: userProfile.name.given,
           lastname: userProfile.name.family,
@@ -88,7 +89,8 @@ class CommunicationPreferences extends React.Component {
           birthdate: userProfile.BXRetailCustomAttr1,
           street: userProfile.address.streetAddress,
           city: userProfile.address.locality,
-          zipcode: userProfile.address.postalCode
+          zipcode: userProfile.address.postalCode,
+          mfaEnabled: userProfile.mfaEnabled
         });
       });
   };
@@ -135,12 +137,13 @@ class CommunicationPreferences extends React.Component {
                       <Input onChange={this.handleUserInput.bind(this)} type="text" autoComplete="new-fullname" name="fullname" id="fullname" placeholder={data.form.fields.fullname.placeholder} value={this.state.fullname} />
                     </FormGroup>
                   </Col>
-                  <Col md={4}>
+                  {/* Hiding email since we already have it and don't want them to update it to something different than their username. */}
+                  {/* <Col md={4}> 
                     <FormGroup>
                       <Label for="email">{data.form.fields.email.label}</Label>
                       <Input onChange={this.handleUserInput.bind(this)} type="email" autoComplete="new-email" name="email" id="email" placeholder={data.form.fields.email.placeholder} value={this.state.email} />
                     </FormGroup>
-                  </Col>
+                  </Col> */}
                   <Col md={4}>
                     <FormGroup>
                       <Label for="phone">{data.form.fields.phone.label}</Label>
@@ -197,7 +200,7 @@ class CommunicationPreferences extends React.Component {
                   </Col>
                 </Row>
               </div>
-{/*               <div className="module">
+               <div className="module">
                 <h3>Authentication Preferences</h3>
                 <Col>
                   <Row>
@@ -207,12 +210,12 @@ class CommunicationPreferences extends React.Component {
                 <Col md={{ span: 1, offset: 1 }}>
                   <Row form>
                     <FormGroup>
-                    <Input type="checkbox" value={this.state.mfaEnabled ? "on" : "off" } onChange={this.handleCheckbox.bind(this)}> </Input>
+                    <Input type="checkbox" checked={this.state.mfaEnabled} onChange={this.handleCheckbox.bind(this)}> </Input>
                     <Label>{this.state.mfaEnabled ? "Turn off two-factor authentication." : "Turn on two-factor authentication."}</Label>
                     </FormGroup>
                   </Row>
                 </Col>
-              </div> */}
+              </div>
             </div>
           </div>
         </Container>

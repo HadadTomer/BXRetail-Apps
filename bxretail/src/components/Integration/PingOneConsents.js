@@ -38,7 +38,7 @@ class PingOneConsents {
             redirect: "manual"
         };
 
-        const url = this.proxyApiPath + "/users/" + userId
+        const url = this.proxyApiPath + "/users/" + userId;
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
         console.log("update consents response", jsonResponse);
@@ -46,25 +46,30 @@ class PingOneConsents {
     }
 
     /**
-     * Enforce consents.
+     * Enforce consents. 
      * 
      * @param {type} param0 Description
      * @return {type} Name Description
      */
-    enforceConsent({}) {
+    //TODO need to use partnerAccessToken once we have federated log-in hooked up.
+    async enforceConsent({ partnerAccessToken, userId }) {
+        console.info("PingOneConsents.js", "Enforcing consents from PingOne.");
+
         let myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImRlZmF1bHQifQ.eyJjbGllbnRfaWQiOiIwYjUwMTI3NC0zNmMwLTRjMWYtODcxZi0yNGJjYWJkMGE0NzkiLCJpc3MiOiJodHRwczovL2F1dGgucGluZ29uZS5jb20vNDBmNzQ1ZjYtM2Y5MS00Zjg4LWEzMDUtOTNjMGE0MzY5MjkzL2FzIiwiaWF0IjoxNjIyMDQ4MTI0LCJleHAiOjE2MjIwNTE3MjQsImF1ZCI6WyJodHRwczovL2FwaS5waW5nb25lLmNvbSJdLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwic3ViIjoiZGZlMDlmYmQtZjQxMy00OTA2LTk1N2YtMDcyMjhmNzU1MzA5Iiwic2lkIjoiZDlhZTIzZDYtY2U3MS00OTE0LWFlNGMtMzQxNWRkMGIwMWMzIiwiZW52IjoiNDBmNzQ1ZjYtM2Y5MS00Zjg4LWEzMDUtOTNjMGE0MzY5MjkzIiwib3JnIjoiNGVhZGE1NTAtOTZlYi00NDI1LWE1NDEtMDQ2YWI4YWU3MTBjIn0.E4D0tMzKTxyzB3jC79MSa9PcoSoMEvFT_rkQJVkyTDnLoTU2RqovpQRXtg_BvsyKVqu4M0ooT2y_AjeBVLviK8lC6poOEXhaUlUF8sedAtT4eyFlfKJ2CZkKlWK8YEXnK5ApOrB5B8hMrGJqFo2qhjixJPvduBdZsGJK2QR3XDp2MXyYsCv8jy9Dgb3FNEA7yP87l768x-Oz2BwuuH3m8DMdyaRR9bfuFztds6RLeFKTFEz7hVXzed2rqO3ebW9omnfV0c1WvFQkIahaRqwU5TInjdjpexifT3dEgypub5HitBgdcox2ZO9jNXWxVInlUtoMRx89Q75omMzJpvQCEg");
+        // myHeaders.append("Authorization", "Bearer " + partnerAccessToken );
+        myHeaders.append("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImRlZmF1bHQifQ.eyJjbGllbnRfaWQiOiIwYjUwMTI3NC0zNmMwLTRjMWYtODcxZi0yNGJjYWJkMGE0NzkiLCJpc3MiOiJodHRwczovL2F1dGgucGluZ29uZS5jb20vNDBmNzQ1ZjYtM2Y5MS00Zjg4LWEzMDUtOTNjMGE0MzY5MjkzL2FzIiwiaWF0IjoxNjI1NzY1NzY4LCJleHAiOjE2MjU3NjkzNjgsImF1ZCI6WyJodHRwczovL2FwaS5waW5nb25lLmNvbSJdLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIiwic3ViIjoiNjIyMmRkMjQtYjNjMC00M2ZkLTljYzUtMTBiMTI2M2IxNmY2Iiwic2lkIjoiNDdlZmEyZmMtMTg3Zi00ZDM4LTliM2MtMDhjMTk5YTY3ZDhiIiwiZW52IjoiNDBmNzQ1ZjYtM2Y5MS00Zjg4LWEzMDUtOTNjMGE0MzY5MjkzIiwib3JnIjoiNGVhZGE1NTAtOTZlYi00NDI1LWE1NDEtMDQ2YWI4YWU3MTBjIn0.NgnWJPK9gRzcxfecyrSWLLWKLfEsrE0OWutklDBZtfa6IV2SyhYsKWU4ybqpq-N0FJo-Gk9WL28L7AdcMcKmK2OfIICxWrhSqjXLxBBGmCX3zx8VqzxMXTFHy9iK8oK_aUOJdi4zkpc9ITcv9q24hGITg8r9smMsu0CkJ-WlPH0FRi5iQzmmo9qnyHtqHqoG_TFbkTO_PGKD0hUXmCTejMt5m7eGJoB9AELXvriBUDya0ak22FxZi-mvtQA_pNtJJzbj7CdpRPdnzrVKSOjtp9B-KtVYS20tiSlnh2U47sNG_wqtDNm8zVO65mjByiEwc5f7RhtIu3_FvuYMzc_U7g" );
 
         let requestOptions = {
-            method: 'GET',
+            method: "GET",
             headers: myHeaders,
-            redirect: 'manual'
+            redirect: "manual"
         };
 
-        fetch("https://pingdatagovernance-bxretail-temp-remz.ping-devops.com/apiPath/users/06e247e7-4b41-4507-abda-0c38aa07586b", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
+        const url = this.proxyApiPath + "/users/" + userId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        console.log("enforce consents response", jsonResponse);
+        return jsonResponse;
     }
 }
 export default PingOneConsents;

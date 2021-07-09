@@ -10,12 +10,16 @@ import { useHistory } from 'react-router-dom';
 // Components
 import NavbarMain from '../../components/NavbarMain';
 import FooterMain from '../../components/FooterMain';
+import Session from '../../components/Utils/Session';
+import JSONSearch from '../../components/Utils/JSONSearch';
+import FlowHandler from '../../components/Controller/FlowHandler';
 
 // Data
 import data from '../../data/partner.json';
 
 // Styles
 import '../../styles/pages/partner.scss';
+
 
 // Autocomplete Suggestion List
 const SuggestionsList = props => {
@@ -30,7 +34,7 @@ const SuggestionsList = props => {
   if (inputValue && displaySuggestions) {
     if (suggestions.length > 0) {
       return (
-        <ul className="suggestions-list">
+        <ul className="suggestions-list" style={{overflow: "hidden"}}>
           {suggestions.map((suggestion, index) => {
             const isSelected = selectedSuggestion === index;
             const classname = `suggestion ${isSelected ? "selected" : ""}`;
@@ -40,7 +44,7 @@ const SuggestionsList = props => {
                 className={classname}
                 onClick={() => onSelectSuggestion(index)}
               >
-                {suggestion}
+                {suggestion.name}
               </li>
             );
           })}
@@ -64,18 +68,20 @@ const SearchAutocomplete = () => {
     const value = event.target.value;
     setInputValue(value);
     const filteredSuggestions = data.clients.suggestions.filter(suggestion =>
-      suggestion.toLowerCase().includes(value.toLowerCase())
+      suggestion.name.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredSuggestions(filteredSuggestions);
     setDisplaySuggestions(true);
   };
   const onSelectSuggestion = index => {
     setSelectedSuggestion(index);
-    setInputValue(filteredSuggestions[index]);
+    setInputValue(filteredSuggestions[index].name);
     setFilteredSuggestions([]);
     setDisplaySuggestions(false);
-    // go to client
-    history.push("/partner/client");
+    
+    // go to client 
+    history.push({ pathname: "/partner/client", state: { userId: filteredSuggestions[index].id}});
+    
   };
   return (
     <div>
@@ -96,6 +102,25 @@ const SearchAutocomplete = () => {
 
 // Partner Page
 class Partner extends React.Component {
+  constructor () {
+    super();
+    this.session = new Session();
+    this.flowHandler = new FlowHandler();
+    this.JSONSearch = new JSONSearch();
+  }
+
+  componentDidMount() {
+    this.flowHandler.getUsers({limit: "1000"})
+      .then(jsonSearchResults => {
+        const suggestions = jsonSearchResults._embedded.users.map(user => ({ id: user.id, name: user.username }))
+        data.clients.suggestions = suggestions;
+      })
+      .catch(e => {
+        console.error("getSearchableUsers Exception", e)
+      });
+  }
+
+
   render() {
     return (
       <div className="accounts advisor">
