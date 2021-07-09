@@ -9,7 +9,7 @@ Implements methods to interact with integration/model components.
 */
 
 // Packages
-// import jsonwebtoken, { sign } from "jsonwebtoken";
+import jsonwebtoken, { sign } from "jsonwebtoken";
 
 // Components
 import PingOneAuthZ from "../Integration/PingOneAuthZ"; /* PING INTEGRATION: */
