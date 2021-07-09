@@ -15,8 +15,9 @@
 class PingOneAuthN {
 
     /**
-     * Get a copy of runtime vars during instantiation. Intitialize state object.
-     * No arg constructor.
+     * Class constructor
+     * @param {String} authPath PingOne auth path for your regions tenant. (For BXR, could be the DG (PAZ) proxy host.)
+     * @param {String} envId PingOne environment ID needed for authZ integrations.
      */
     constructor(authPath, envId) {
         this.envVars = window._env_;
@@ -76,6 +77,30 @@ class PingOneAuthN {
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
         return jsonResponse;
+    }
+
+    /**
+     * Read a user's sessions
+     * @param {String} lowPrivToken 
+     * @param {String} userID The PingOne user ID.
+     */
+    async readUserSessions({lowPrivToken, userID}) {
+        //https://api.pingone.com/v1/environments/40f745f6-3f91-4f88-a305-93c0a4369293/users/ad163b7d-d433-495e-973b-c5b239e27080/sessions
+
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + lowPrivToken);
+
+        const requestOptions = {
+            headers: myHeaders,
+            method: "GET",
+            redirect: "manual"
+        }
+
+        const url = this.authPath + "/users/" + userID + "/sessions";
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        console.log("readUserSessions", JSON.stringify(jsonResponse));
+        return jsonResponse._embedded.sessions[0];
     }
 }
 export default PingOneAuthN;

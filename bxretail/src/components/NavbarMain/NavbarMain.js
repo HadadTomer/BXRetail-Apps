@@ -36,7 +36,8 @@ class NavbarMain extends React.Component {
       password_confirm: "", /* PING INTEGRATION: */
       /*login: "",             PING INTEGRATION: */
       flowId: "",            /* PING INTEGRATION: */
-      regCode: ""           /* PING INTEGRATION: */
+      regCode: "",           /* PING INTEGRATION: */
+      isLoggedOut: true       /* PING INTEGRATION: */
     };
 
     this.session = new Session(); /* PING INTEGRATION: */
@@ -57,7 +58,7 @@ class NavbarMain extends React.Component {
   }
   // Sent as callback to ModalRegister.js
   onModalRegisterSubmit() {
-    this.flowHandler.registerUser({regData:this.state})
+    this.flowHandler.registerUser({ regData: this.state })
       .then(status => {
         if (status === "VERIFICATION_CODE_REQUIRED") { //TODO need to handle status UNIQUENESS_VIOLATION, CONSTRAINT_VIOLATOIN, 
           // this.modalLoginPassword.current.toggle("7");
@@ -87,6 +88,10 @@ class NavbarMain extends React.Component {
     });
   }
   /* BEGIN PING INTEGRATION: */
+  logout() {
+    this.flowHandler.getUserSessions({AT: this.session.getAuthenticatedUserItem("AT", "session")});
+    // this.session.clearUserAppSession("session");
+  }
   handleFormInput(e) {
     //Update state based on the input's Id and value.
     let formData = {};
@@ -95,7 +100,7 @@ class NavbarMain extends React.Component {
     });
   }
   showCart(myProps) {
-    if (window.location.pathname === "/app/shop" ) {
+    if (window.location.pathname === "/app/shop") {
       console.log("were already on shopping page");
       this.toggleCart("2");
     } else {
@@ -104,7 +109,10 @@ class NavbarMain extends React.Component {
   }
   componentDidMount() {
     const isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
-    //TODO this is commented out until we have federated login working. 
+    this.setState({ isLoggedOut: isLoggedOut }, () => {
+      console.log("isLoggedOut state", this.state.isLoggedOut);
+    });
+    //TODO this is commented out until we have federated login working.
     // this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
     //this.session.protectPage(isLoggedOut, window.location.pathname, "");
 
@@ -123,28 +131,29 @@ class NavbarMain extends React.Component {
         }
       } else if (authCode) {
         const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
-        this.flowHandler.swapCodeForToken({ code: authCode, redirectURI: redirectURI})
-        .then(response => {
-          this.session.setAuthenticatedUserItem("AT", response.access_token, "session");
-          this.session.setAuthenticatedUserItem("IdT", response.id_token, "session");
-          //TODO take the access token from session and set a var based on the result of calling this.flowHandler.getTokenValue(token, key) 
-          // stuff that ^ return value into a new session variable called bxRetailUserType. this.setAuthenticatedUserItem("bxRetailUserType", value-to-save, "session")
-          console.log("extract stuff", response.id_token);
-          // const given_name = this.flowHandler.getTokenValue({token: response.id_token, key: "given_name"});
-          // const family_name = this.flowHandler.getTokenValue({ token: response.id_token, key: "family_name"});
-          const fullName = this.flowHandler.getTokenValue({ token: response.id_token, key: "fullName"});
-          const email = this.flowHandler.getTokenValue({ token: response.id_token, key: "email"});
-          const groups = this.flowHandler.getTokenValue({ token: response.id_token, key: "bxRetailUserType"});
-          const userType = (groups) ? groups[0] : "Customer";
-          this.session.setAuthenticatedUserItem("fullName", fullName, "session");
-          this.session.setAuthenticatedUserItem("email", email, "session");
-          this.session.setAuthenticatedUserItem("bxRetailUserType", userType, "session");
-          this.props.history.push("shop");
-        });
+        this.flowHandler.swapCodeForToken({ code: authCode, redirectURI: redirectURI })
+          .then(response => {
+            this.session.setAuthenticatedUserItem("AT", response.access_token, "session");
+            this.session.setAuthenticatedUserItem("IdT", response.id_token, "session");
+            //TODO take the access token from session and set a var based on the result of calling this.flowHandler.getTokenValue(token, key) 
+            // stuff that ^ return value into a new session variable called bxRetailUserType. this.setAuthenticatedUserItem("bxRetailUserType", value-to-save, "session")
+            // const given_name = this.flowHandler.getTokenValue({token: response.id_token, key: "given_name"});
+            // const family_name = this.flowHandler.getTokenValue({ token: response.id_token, key: "family_name"});
+            const fullName = this.flowHandler.getTokenValue({ token: response.id_token, key: "fullName" });
+            if (fullName) {
+              this.session.setAuthenticatedUserItem("fullName", fullName, "session");
+            }
+            const email = this.flowHandler.getTokenValue({ token: response.id_token, key: "email" });
+            const groups = this.flowHandler.getTokenValue({ token: response.id_token, key: "bxRetailUserType" });
+            const userType = (groups) ? groups[0] : "Customer";
+            
+            this.session.setAuthenticatedUserItem("email", email, "session");
+            this.session.setAuthenticatedUserItem("bxRetailUserType", userType, "session");
+            this.props.history.push("shop");
+          });
       }
     }
   }
-
   /* END PING INTEGRATION: */
   render() {
     return (
@@ -163,14 +172,19 @@ class NavbarMain extends React.Component {
                   <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/map-marker.svg"} alt={data.menus.utility.locations} /></NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={()=>{this.showCart(this.props)}}><img src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} /></NavLink>
+                  <NavLink onClick={() => { this.showCart(this.props) }}><img src={window._env_.PUBLIC_URL + "/images/icons/cart.svg"} alt={data.menus.utility.cart} /></NavLink>
                 </NavItem>
-                <NavItem className="login">
-                  <NavLink href="#" onClick={this.triggerModalLoginPassword.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
-                </NavItem>
-                <NavItem className="logout d-none">
+                {this.state.isLoggedOut &&
+                  <NavItem className="">
+                    <NavLink href="#" onClick={this.triggerModalLoginPassword.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
+                  </NavItem>}
+                {!this.state.isLoggedOut &&
+                  <NavItem className="">
+                    <NavLink href="#" onClick={this.logout.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
+                  </NavItem>}
+                {/* <NavItem className="logout">
                   <Link to="/" className="nav-link"><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</Link>
-                </NavItem>
+                </NavItem> */}
                 <NavItem className="register">
                   <NavLink href="#" onClick={this.triggerModalRegister.bind(this)}>{data.menus.utility.register_intro} <strong>{data.menus.utility.register}</strong></NavLink>
                 </NavItem>
