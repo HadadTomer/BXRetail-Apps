@@ -553,24 +553,42 @@ class FlowHandler {
      * @return {*} something? 
      */
     async updateUserProfile({ IdT, userState }) {
-
-        const rawPayload = JSON.stringify({
-            "name": {
-                "given": userState.firstname,
-                "family": userState.lastname,
-                "formatted": userState.fullname
-            },
-            "address": {
-                "streetAddress": userState.street,
-                "locality": userState.city,
-                "region": userState.city,
-                "postalCode": userState.zipcode
-            },
-            "email": userState.email,
-            "mobilePhone": userState.phone,
-            "BXRetailCustomAttr1": userState.birthdate
-        }); console.log("rawPayload", rawPayload);
-
+        var payload = {};
+        var name = {};
+        var address = {};
+        if (userState.firstname !== "") {
+            name.given = userState.firstname
+        }
+        if (userState.lastname !== "") {
+            name.family = userState.lastname
+        }
+        if (userState.fullname !== "") {
+            name.formatted = userState.fullname
+        }
+        if (userState.street !== "") {
+            address.streetAddress = userState.street
+        }
+        if (userState.city !== "") {
+            address.locality = userState.city;
+            address.region = userState.city
+        }
+        if (userState.zipcode !== "") {
+            address.postalCode = userState.zipcode
+        }
+        /* Removing email for now until we figure out how to resolve email/username conflicts.
+        if (userState.email !== "") {
+            payload.email = userState.email
+        }
+        */
+        if (userState.phone !== "") {
+            payload.mobilePhone = userState.phone
+        }
+        if (userState.birthdate !== "") {
+            payload.BXRetailCustomAttr1 = userState.birthdate
+        }
+        payload.address = address;
+        payload.name = name;
+        const rawPayload = JSON.stringify( payload ); 
         const sub = this.getTokenValue({ token: IdT, key: "sub" });
         const lowPrivToken = await this.requestLowPrivToken();
         const jsonResponse = await this.ping1Users.updateUser({ userId: sub, lowPrivToken: lowPrivToken, userPayload: rawPayload });

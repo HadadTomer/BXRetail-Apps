@@ -77,19 +77,16 @@ class CommunicationPreferences extends React.Component {
   componentDidMount() {
     this.flowHandler.getUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session") })
       .then(userProfile => {
-        if (userProfile.name === undefined) {
-          return;
-        }
         this.setState({
-          firstname: userProfile.name.given,
-          lastname: userProfile.name.family,
-          fullname: userProfile.name.given + " " + userProfile.name.family,
+          firstname: userProfile.name?.given ?? "",
+          lastname: userProfile.name?.family ?? "",
+          fullname: userProfile.name?.formatted ?? "",
           email: userProfile.email,
           phone: userProfile.mobilePhone,
           birthdate: userProfile.BXRetailCustomAttr1,
-          street: userProfile.address.streetAddress,
-          city: userProfile.address.locality,
-          zipcode: userProfile.address.postalCode,
+          street: userProfile.address?.streetAddress ?? "",
+          city: userProfile.address?.locality ?? "",
+          zipcode: userProfile.address?.postalCode ?? "",
           mfaEnabled: userProfile.mfaEnabled
         });
       });
