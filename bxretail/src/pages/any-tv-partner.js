@@ -63,7 +63,13 @@ class AnyTVPartner extends React.Component {
     });
     element.value = null;
   }
-
+componentDidMount() {
+  const isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
+  this.setState({ isLoggedOut: isLoggedOut }, () => {
+    console.log("isLoggedOut state", this.state.isLoggedOut);
+  });
+  this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
+}
   render() {
     return (
       <div className="any-tv-partner">

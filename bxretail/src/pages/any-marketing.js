@@ -19,6 +19,7 @@ import { faLinkedinIn, faFacebookF, faTwitter, faInstagram } from '@fortawesome/
 
 // Components
 import AccountsSubnav from '../components/AccountsSubnav';
+import Session from '../components/Utils/Session'; /* PING INTEGRATION: */
 
 // Data
 import data from '../data/any-marketing.json';
@@ -132,11 +133,19 @@ class AnyMarketing extends React.Component {
     this.state = {
       isOpen: false
     };
+    this.session = new Session(); /* PING INTEGRATION: */
   }
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+  componentDidMount() {
+    const isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
+    this.setState({ isLoggedOut: isLoggedOut }, () => {
+      console.log("isLoggedOut state", this.state.isLoggedOut);
+    });
+    this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
   }
   render() {
     return (
