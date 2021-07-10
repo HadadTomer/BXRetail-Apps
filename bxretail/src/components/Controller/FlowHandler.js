@@ -142,6 +142,13 @@ class FlowHandler {
       username: loginData.username,
       password: loginData.password,
     });
+
+    //adding ST integration
+    _securedTouch.login(loginData.username);
+    _securedTouch.addTag('Your tag', 'Your tag value').addTag('Another tag');
+    _securedTouch.setSessionId('Your session ID');
+    //end ST integration
+
     const response = await this.ping1AuthN.usernamePasswordCheck({
       loginPayload: rawPayload,
       flowId: flowId,
