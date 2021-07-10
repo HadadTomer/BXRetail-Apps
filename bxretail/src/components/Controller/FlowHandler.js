@@ -129,12 +129,21 @@ class FlowHandler {
       //end ST integration
 
       return { status: status, resumeUrl: response.resumeUrl };
+
+      //adding ST integration
+      _securedTouch.REGISTRATION.registrationSuccess();
+      //end ST integration
     } else {
       //adding ST integration
       window._securedTouch.REGISTRATION.registrationFailed();
       //end ST integration
 
       return response;
+      
+      //adding ST integration
+      _securedTouch.REGISTRATION.registrationFailed();
+      //end ST integration
+
     }
   }
 
