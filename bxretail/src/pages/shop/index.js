@@ -816,7 +816,7 @@ class Shop extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTabConfirmation('2'); }}>{data.modal.confirmation.consentButtons.changeSettings}</Button>
                   </div>
                 </div>
-                <a alt='Confirmation Footer' href="/any-tv-partner"><img src={window._env_.PUBLIC_URL + "/images/shop-confirmation-footer-2.png"} className="confirmation-footer" /></a>
+                <a alt='Confirmation Footer' href="/app/any-tv-partner"><img src={window._env_.PUBLIC_URL + "/images/shop-confirmation-footer-2.png"} className="confirmation-footer" /></a>
               </TabPane>
             </TabContent>
           </ModalBody>
