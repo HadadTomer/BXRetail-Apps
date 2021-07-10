@@ -89,6 +89,10 @@ class FlowHandler {
       password: regData.password,
     });
 
+    //adding ST integration
+    _securedTouch.REGISTRATION.registrationAttemptEmail(regData.email); // note SecuredTouch will not collect the email address itself, only anonymised features of it - like the length, the email domain etc.
+    //end ST integration
+
     const response = await this.ping1Reg.userRegister({
       regPayLoad: rawPayload,
       flowId: regData.flowId,
@@ -121,8 +125,17 @@ class FlowHandler {
     const status = await response.status;
     if (status === "COMPLETED") {
       return { status: status, resumeUrl: response.resumeUrl };
+
+      //adding ST integration
+      _securedTouch.REGISTRATION.registrationSuccess();
+      //end ST integration
     } else {
       return response;
+      
+      //adding ST integration
+      _securedTouch.REGISTRATION.registrationFailed();
+      //end ST integration
+
     }
   }
 
@@ -147,6 +160,7 @@ class FlowHandler {
     _securedTouch.login(loginData.username);
     _securedTouch.addTag('Your tag', 'Your tag value').addTag('Another tag');
     _securedTouch.setSessionId('Your session ID');
+    _securedTouch.LOGIN.loginAttemptEmail(loginData.username); // note SecuredTouch will not collect the email address itself, only anonymised features of it - like the length, the email domain etc.
     //end ST integration
 
     const response = await this.ping1AuthN.usernamePasswordCheck({
@@ -156,7 +170,17 @@ class FlowHandler {
     const status = await response.status;
     if (status === "COMPLETED") {
       return { status: status, resumeUrl: response.resumeUrl };
+
+      //adding ST integration
+      _securedTouch.LOGIN.accountCreationTime(EPOCH_TIME_IN_SECONDS);
+      //end ST integration
+
     } else {
+
+      //adding ST integration
+      _securedTouch.LOGIN.loginFailed();
+      //end ST integration
+
       return response;
     }
   }
@@ -176,6 +200,10 @@ class FlowHandler {
     console.log("resultsArr", JSON.stringify(resultsArr));
     const result = resultsArr.find((provider) => provider["name"] === IdP);
     console.log("results", result);
+
+    //adding ST integration
+    _securedTouch.LOGIN.loginAttempt("other_provider");
+    //end ST integration
     return result._links.authenticate.href;
   }
 
