@@ -27,6 +27,14 @@
     <meta name="author" content="Technical Enablement - Ping Identity" />
     <!-- Script for runtime environment variables injected by Docker builds -->
     <script src="%PUBLIC_URL%/env-config.js"></script>
+
+    <!--adding for ST integration-->
+    <!--MUST MODIFY APPID-->
+    <script id="cc091bb3a3e3bef61d49e360dcfdbc84" src="https://static.securedtouch.com/sdk/st-ping- x.y.zp.js?appId=[appId]&sessionId=[sessionId]" defer></script> 
+    <script src="https://static.securedtouch.com/sdk/securedtouch-sdk-x.y.zw.js" defer></script>
+    <!--end add for ST integration-->
+
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300&display=swap" rel="stylesheet">
     <!-- END PING INTEGRATIONS -->
