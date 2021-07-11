@@ -58,25 +58,6 @@ class ModalRegister extends React.Component {
   }
 
   /* BEGIN PING INTEGRATION: */
-
-
-  // adding ST integration
-  onSecuredTouchReady(callback) { if (window['_securedTouchReady']) {
-    callback(); } else {
-    document.addEventListener('SecuredTouchReadyEvent', callback); }
-    }
-  
-  onSecuredTouchReady() {
-    _securedTouch.init({
-    url: "https://given-host-name.securedtouch.com", appId: "given-app-id",
-    appSecret: "given-app-secret",
-    userId: "current-user-id",
-    sessionId: "application-session", }).then(function () {
-    console.log("SecuredTouch Started !!"); });
-    };
-   
-  // end of ST integration
-   
    
   handleFormInput(e) {
     //Update state based on the input's Id and value.

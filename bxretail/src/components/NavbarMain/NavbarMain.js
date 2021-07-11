@@ -12,6 +12,7 @@ import {
 import { Link, NavLink as RRNavLink, withRouter } from 'react-router-dom';
 
 // Components
+import { asyncInitSecuredTouch } from "./STInitialization";
 import ModalRegister from '../ModalRegister';
 import ModalRegisterConfirm from '../ModalRegisterConfirm';
 // import ModalLogin from '../ModalLogin';
@@ -116,6 +117,7 @@ class NavbarMain extends React.Component {
     // this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
     //this.session.protectPage(isLoggedOut, window.location.pathname, "");
 
+    asyncInitSecuredTouch();
 
     if (window.location.search) {
       const queryParams = new URLSearchParams(window.location.search);
