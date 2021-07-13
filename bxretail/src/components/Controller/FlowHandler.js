@@ -802,7 +802,21 @@ class FlowHandler {
     const sub = this.getTokenValue({ token: AT, key: "sub" });
     const lowPrivToken = await this.requestLowPrivToken();
     const currentSession = await this.ping1AuthNProxy.readUserSessions({ lowPrivToken: lowPrivToken, userID: sub });
-    console.log("currentSession", currentSession);
+    console.log("currentSession", JSON.stringify(currentSession));
+    const currentSessionId = await currentSession.id;
+    return currentSessionId;
+  }
+
+  /**
+   * Delete a user's session.
+   * @param {*} sessionId 
+   */
+  async deleteUserSession({AT, sessionId}) {
+    const sub = this.getTokenValue({ token: AT, key: "sub" });
+    const lowPrivToken = await this.requestLowPrivToken();
+    const deleteStatus = await this.ping1AuthNProxy.userDeleteSession({lowPrivToken: lowPrivToken, userId: sub, sessionId: sessionId});
+    console.log("deleteUserSession got back:", deleteStatus);
+    return deleteStatus;
   }
 
   /**
