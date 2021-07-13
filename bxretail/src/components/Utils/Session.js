@@ -26,7 +26,7 @@ class Session {
     protectPage(loggedOut, path, userType) {
         const partnerAllowedPaths = ["/app/partner", "/app/partner/client"];
         const marketingAllowedPaths = ["/app/any-marketing"];
-        const customerAllowedPaths = ["/app/any-tv-partner", "/app/dashboard/settings", "/app/dashboard/settings/profile", "/app/dashboard/settings/communication-preferences", "app/dashboard/settings/privacy-security"];
+        const customerAllowedPaths = ["/app/any-tv-partner", "/app/dashboard/settings", "/app/dashboard/settings/profile", "/app/dashboard/settings/communication-preferences", "/app/dashboard/settings/privacy-security"];
         const homePaths = ["/app/", "/app", "/app/shop"];
         console.info("Session.js", "Checking access rules for user type " + userType + " at " + path);
 
