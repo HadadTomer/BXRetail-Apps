@@ -102,5 +102,30 @@ class PingOneAuthN {
         console.log("readUserSessions", JSON.stringify(jsonResponse));
         return jsonResponse._embedded.sessions[0];
     }
+
+    /**
+     * Delete a user's sessions
+     * @param {String} lowPrivToken
+     * @param {String} sessionId The user's session ID of the session to be deleted.
+     * @return something
+     */
+    async userDeleteSession({lowPrivToken, userId, sessionId}) {
+        console.log("userDeleteSession called.")
+
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + lowPrivToken);
+
+        const requestOptions = {
+            headers: myHeaders,
+            method: "DELETE",
+            redirect: "manual"
+        }
+
+        const url = this.authPath + "/users/" + userId + "/sessions/" + sessionId;
+        const response = await fetch(url, requestOptions);
+        const deleteResponse = await response.status;
+        console.log("Delete Session status", deleteResponse);
+        return deleteResponse;
+    }
 }
 export default PingOneAuthN;

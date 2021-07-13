@@ -89,8 +89,18 @@ class NavbarMain extends React.Component {
   }
   /* BEGIN PING INTEGRATION: */
   logout() {
-    this.flowHandler.getUserSessions({AT: this.session.getAuthenticatedUserItem("AT", "session")});
-    // this.session.clearUserAppSession("session");
+    this.flowHandler.getUserSessions({AT: this.session.getAuthenticatedUserItem("AT", "session")})
+    .then(sessionId => {
+      this.flowHandler.deleteUserSession({ AT: this.session.getAuthenticatedUserItem("AT", "session"), sessionId: sessionId})
+      .then(deleteStatus => {
+        console.log("final delete status", typeof deleteStatus);
+        if (deleteStatus === 204) {
+          this.session.clearUserAppSession("session");
+          this.session.deleteCookie({ name: "ST", domain: ".demo-bxretail-auth-qa.ping-devops.com"}); //TODO this needs to be dynamically set.
+          this.props.history.push("/");
+        }
+      });
+    });
   }
   handleFormInput(e) {
     //Update state based on the input's Id and value.

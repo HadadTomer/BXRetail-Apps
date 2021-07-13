@@ -74,8 +74,8 @@ class Session {
         if (type === "session") {
             return sessionStorage.getItem(key);
         } else {
-             return localStorage.getItem(key);
-       }
+            return localStorage.getItem(key);
+        }
     }
 
     /** 
@@ -145,7 +145,7 @@ class Session {
             default:
                 console.error("Storage Error:", "The 'type' param to clearUserAppSession was not recognized or excluded. No storage has been cleared.");
         }
-        
+
     }
 
     /** 
@@ -173,6 +173,15 @@ class Session {
             }
         }
         return "";
+    }
+
+    deleteCookie({name, path, domain}) {
+        if (this.getCookie(name)) {
+            document.cookie = name + "=" +
+                ((path) ? ";path=" + path : "") +
+                ((domain) ? ";domain=" + domain : "") +
+                ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+        }
     }
 };
 
