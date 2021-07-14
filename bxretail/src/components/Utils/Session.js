@@ -26,7 +26,7 @@ class Session {
     protectPage(loggedOut, path, userType) {
         const partnerAllowedPaths = ["/app/partner", "/app/partner/client"];
         const marketingAllowedPaths = ["/app/any-marketing"];
-        const customerAllowedPaths = ["/app/any-tv-partner", "/app/dashboard/settings", "/app/dashboard/settings/profile", "/app/dashboard/settings/communication-preferences", "app/dashboard/settings/privacy-security"];
+        const customerAllowedPaths = ["/app/any-tv-partner", "/app/dashboard/settings", "/app/dashboard/settings/profile", "/app/dashboard/settings/communication-preferences", "/app/dashboard/settings/privacy-security"];
         const homePaths = ["/app/", "/app", "/app/shop"];
         console.info("Session.js", "Checking access rules for user type " + userType + " at " + path);
 
@@ -74,8 +74,8 @@ class Session {
         if (type === "session") {
             return sessionStorage.getItem(key);
         } else {
-             return localStorage.getItem(key);
-       }
+            return localStorage.getItem(key);
+        }
     }
 
     /** 
@@ -145,7 +145,7 @@ class Session {
             default:
                 console.error("Storage Error:", "The 'type' param to clearUserAppSession was not recognized or excluded. No storage has been cleared.");
         }
-        
+
     }
 
     /** 
@@ -173,6 +173,15 @@ class Session {
             }
         }
         return "";
+    }
+
+    deleteCookie({name, path, domain}) {
+        if (this.getCookie(name)) {
+            document.cookie = name + "=" +
+                ((path) ? ";path=" + path : "") +
+                ((domain) ? ";domain=" + domain : "") +
+                ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+        }
     }
 };
 

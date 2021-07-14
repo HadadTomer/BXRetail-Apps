@@ -13,13 +13,14 @@ import {
   Label,
   Input
 } from 'reactstrap';
-import { Link, NavLink as RRNavLink } from 'react-router-dom';
+import { Link, NavLink as RRNavLink, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLinkedinIn, faFacebookF, faTwitter, faInstagram } from '@fortawesome/free-brands-svg-icons';
 
 // Components
 import WelcomeBar from '../components/WelcomeBar/';
 import Session from '../components/Utils/Session'; /* PING INTEGRATION: */
+import FlowHandler from '../components/Controller/FlowHandler'; /* PING INTEGRATION: */
 
 // Data
 import data from '../data/any-tv-partner.json';
@@ -39,6 +40,7 @@ class AnyTVPartner extends React.Component {
     this.changeAppointment = this.changeAppointment.bind(this);
     this.envVars = window._env_; /* PING INTEGRATION: */
     this.session = new Session(); /* PING INTEGRATION: */
+    this.flowHandler = new FlowHandler(); /* PING INTEGRATION: */
   }
   toggle() {
     this.setState({
@@ -63,7 +65,29 @@ class AnyTVPartner extends React.Component {
     });
     element.value = null;
   }
-
+  /* BEGIN PING INTEGRATION: */
+  logout() {
+    this.flowHandler.getUserSessions({ AT: this.session.getAuthenticatedUserItem("AT", "session") })
+      .then(sessionId => {
+        this.flowHandler.deleteUserSession({ AT: this.session.getAuthenticatedUserItem("AT", "session"), sessionId: sessionId })
+          .then(deleteStatus => {
+            console.log("final delete status", typeof deleteStatus);
+            if (deleteStatus === 204) {
+              this.session.clearUserAppSession("session");
+              this.session.deleteCookie({ name: "ST", domain: ".demo-bxretail-auth-qa.ping-devops.com" }); //TODO this needs to be dynamically set.
+              this.props.history.push("/");
+            }
+          });
+      });
+  }
+componentDidMount() {
+  const isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
+  this.setState({ isLoggedOut: isLoggedOut }, () => {
+    console.log("isLoggedOut state", this.state.isLoggedOut);
+  });
+  this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
+}
+/* END PING INTEGRATION: */
   render() {
     return (
       <div className="any-tv-partner">
@@ -85,7 +109,7 @@ class AnyTVPartner extends React.Component {
                     <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/support.svg"} alt={data.menus.utility.support} /></NavLink>
                   </NavItem>
                   <NavItem className="logout">
-                    <NavLink><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
+                    <NavLink onClick={this.logout.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.logout} className="mr-1" /> {data.menus.utility.logout}</NavLink>
                   </NavItem>
                 </Nav>
               </Collapse>
@@ -283,4 +307,4 @@ class AnyTVPartner extends React.Component {
   }
 }
 
-export default AnyTVPartner;
+export default withRouter(AnyTVPartner);

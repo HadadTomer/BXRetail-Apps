@@ -85,8 +85,8 @@ class ModalLoginPassword extends React.Component {
   }
   /* BEGIN PING INTEGRATION: */
 
+
   handleFormInput(e) {
-    console.log("checked", e.target.checked);
     //Update state based on the input's Id and value.
     let formData = {};
     //If rememberme checkbox, just flip its value.

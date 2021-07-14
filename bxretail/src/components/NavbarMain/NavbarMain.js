@@ -90,8 +90,18 @@ class NavbarMain extends React.Component {
   }
   /* BEGIN PING INTEGRATION: */
   logout() {
-    this.flowHandler.getUserSessions({AT: this.session.getAuthenticatedUserItem("AT", "session")});
-    // this.session.clearUserAppSession("session");
+    this.flowHandler.getUserSessions({AT: this.session.getAuthenticatedUserItem("AT", "session")})
+    .then(sessionId => {
+      this.flowHandler.deleteUserSession({ AT: this.session.getAuthenticatedUserItem("AT", "session"), sessionId: sessionId})
+      .then(deleteStatus => {
+        console.log("final delete status", typeof deleteStatus);
+        if (deleteStatus === 204) {
+          this.session.clearUserAppSession("session");
+          this.session.deleteCookie({ name: "ST", domain: ".demo-bxretail-auth-qa.ping-devops.com"}); //TODO this needs to be dynamically set.
+          this.props.history.push("/");
+        }
+      });
+    });
   }
   handleFormInput(e) {
     //Update state based on the input's Id and value.
@@ -113,46 +123,63 @@ class NavbarMain extends React.Component {
     this.setState({ isLoggedOut: isLoggedOut }, () => {
       console.log("isLoggedOut state", this.state.isLoggedOut);
     });
-    //TODO this is commented out until we have federated login working.
-    // this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
-    //this.session.protectPage(isLoggedOut, window.location.pathname, "");
+    this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
 
     asyncInitSecuredTouch();
 
     if (window.location.search) {
+      const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
       const queryParams = new URLSearchParams(window.location.search);
       const flowId = queryParams.get("flowId");
       const authCode = queryParams.get("code");
+      const issuer = queryParams.get("iss");
       this.setState({ flowId: flowId }, () => {
       });
-      if (flowId) {
-        if (this.session.getAuthenticatedUserItem("authMode", "session") === "login") {
-          this.modalLoginPassword.current.toggle();
-        } else {
-          this.modalRegister.current.toggle();
-        }
-      } else if (authCode) {
-        const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
-        this.flowHandler.swapCodeForToken({ code: authCode, redirectURI: redirectURI })
-          .then(response => {
-            this.session.setAuthenticatedUserItem("AT", response.access_token, "session");
-            this.session.setAuthenticatedUserItem("IdT", response.id_token, "session");
-            //TODO take the access token from session and set a var based on the result of calling this.flowHandler.getTokenValue(token, key) 
-            // stuff that ^ return value into a new session variable called bxRetailUserType. this.setAuthenticatedUserItem("bxRetailUserType", value-to-save, "session")
-            // const given_name = this.flowHandler.getTokenValue({token: response.id_token, key: "given_name"});
-            // const family_name = this.flowHandler.getTokenValue({ token: response.id_token, key: "family_name"});
-            const fullName = this.flowHandler.getTokenValue({ token: response.id_token, key: "fullName" });
-            if (fullName) {
-              this.session.setAuthenticatedUserItem("fullName", fullName, "session");
-            }
-            const email = this.flowHandler.getTokenValue({ token: response.id_token, key: "email" });
-            const groups = this.flowHandler.getTokenValue({ token: response.id_token, key: "bxRetailUserType" });
-            const userType = (groups) ? groups[0] : "Customer";
-            
-            this.session.setAuthenticatedUserItem("email", email, "session");
-            this.session.setAuthenticatedUserItem("bxRetailUserType", userType, "session");
-            this.props.history.push("shop");
-          });
+
+      const authNParam = (flowId) ? "flowId" : (authCode) ? "authCode" : "issuer";
+      switch (authNParam) {
+        case "flowId":
+          if (this.session.getAuthenticatedUserItem("authMode", "session") === "login") {
+            this.modalLoginPassword.current.toggle();
+          } else {
+            this.modalRegister.current.toggle();
+          }
+        break;
+        case "authCode":
+          let authPath;
+          if (this.session.getAuthenticatedUserItem("authMode", "session") === "ATVP") { authPath = this.envVars.REACT_APP_ATVPAUTHPATH}
+          this.flowHandler.swapCodeForToken({ code: authCode, redirectURI: redirectURI, authPath: authPath })
+            .then(response => {
+              console.log("ATVP response", response);
+              this.session.setAuthenticatedUserItem("AT", response.access_token, "session");
+              this.session.setAuthenticatedUserItem("IdT", response.id_token, "session");
+              const fullName = this.flowHandler.getTokenValue({ token: response.id_token, key: "fullName" });
+              if (fullName) {
+                this.session.setAuthenticatedUserItem("fullName", fullName, "session");
+              }
+              const email = this.flowHandler.getTokenValue({ token: response.id_token, key: "email" });
+              const groups = this.flowHandler.getTokenValue({ token: response.id_token, key: "bxRetailUserType" });
+              const userType = (groups) ? groups[0] : "Customer";
+
+              this.session.setAuthenticatedUserItem("email", email, "session");
+              this.session.setAuthenticatedUserItem("bxRetailUserType", userType, "session");
+              if (userType === "AnyTVPartner") {
+                this.props.history.push("partner");
+              } else if (userType === "AnyMarketing") {
+                this.props.history.push("any-marketing");
+              } else {
+                // Then it's a customer.
+                this.props.history.push("shop");
+              }
+            });
+        break;
+        case "issuer":
+          //TODO this needs to be refactored (remove authPath arg) when flowHandler constructor is refactored. See FIX ME tag in flowhandler.
+          this.session.setAuthenticatedUserItem("authMode", "ATVP", "session");
+          this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_ATVP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email", authPath: this.envVars.REACT_APP_ATVPAUTHPATH });
+        break;
+        default:
+          throw new Error("Unexpected authNParam in componentDidMount()");
       }
     }
   }
