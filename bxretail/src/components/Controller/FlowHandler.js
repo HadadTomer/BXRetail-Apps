@@ -90,7 +90,8 @@ class FlowHandler {
     });
 
     //adding ST integration
-    _securedTouch.REGISTRATION.registrationAttemptEmail(regData.email); // note SecuredTouch will not collect the email address itself, only anonymised features of it - like the length, the email domain etc.
+    window._securedTouch.REGISTRATION.registrationAttemptEmail(regData.email); // note SecuredTouch will not collect the email address itself, only anonymised features of it - like the length, the email domain etc.
+
     //end ST integration
 
     const response = await this.ping1Reg.userRegister({
@@ -124,12 +125,20 @@ class FlowHandler {
     //TODO do we want to keep this pattern? return status and resumeUrl if "completed", otherwise entire response? Or just error data?
     const status = await response.status;
     if (status === "COMPLETED") {
+      //adding ST integration
+      window._securedTouch.REGISTRATION.registrationSuccess();
+      //end ST integration
+
       return { status: status, resumeUrl: response.resumeUrl };
 
       //adding ST integration
       _securedTouch.REGISTRATION.registrationSuccess();
       //end ST integration
     } else {
+      //adding ST integration
+      window._securedTouch.REGISTRATION.registrationFailed();
+      //end ST integration
+
       return response;
       
       //adding ST integration
@@ -157,10 +166,8 @@ class FlowHandler {
     });
 
     //adding ST integration
-    _securedTouch.login(loginData.username);
-    _securedTouch.addTag('Your tag', 'Your tag value').addTag('Another tag');
-    _securedTouch.setSessionId('Your session ID');
-    _securedTouch.LOGIN.loginAttemptEmail(loginData.username); // note SecuredTouch will not collect the email address itself, only anonymised features of it - like the length, the email domain etc.
+    window._securedTouch.LOGIN.loginAttemptEmail(loginData.username); // note SecuredTouch will not collect the email address itself, only anonymised features of it - like the length, the email domain etc.
+
     //end ST integration
 
     const response = await this.ping1AuthN.usernamePasswordCheck({
@@ -169,16 +176,18 @@ class FlowHandler {
     });
     const status = await response.status;
     if (status === "COMPLETED") {
-      return { status: status, resumeUrl: response.resumeUrl };
 
       //adding ST integration
-      _securedTouch.LOGIN.accountCreationTime(EPOCH_TIME_IN_SECONDS);
+      window._securedTouch.login(flowId);
       //end ST integration
+
+      return { status: status, resumeUrl: response.resumeUrl };
 
     } else {
 
       //adding ST integration
-      _securedTouch.LOGIN.loginFailed();
+      window._securedTouch.LOGIN.loginFailed();
+     
       //end ST integration
 
       return response;
@@ -202,7 +211,8 @@ class FlowHandler {
     console.log("results", result);
 
     //adding ST integration
-    _securedTouch.LOGIN.loginAttempt("other_provider");
+    window._securedTouch.LOGIN.loginAttempt(IdP);
+
     //end ST integration
     return result._links.authenticate.href;
   }
