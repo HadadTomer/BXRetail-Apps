@@ -24,8 +24,8 @@ import "./ModalError.scss";
 import data from './data.json';
 
 class ModalError extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isOpen: false
     };
@@ -42,8 +42,8 @@ class ModalError extends React.Component {
         <Modal isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} className="modal-error">
           <ModalHeader toggle={this.toggle.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
-            <h4>{data.title}</h4>
-            <div dangerouslySetInnerHTML={{__html: data.content}}></div>
+            <h4>{this.props.errorTitle}</h4>
+            <div>{this.props.errorMsg}</div>
             <Button color="primary" onClick={this.toggle.bind(this)}>{data.button}</Button>
           </ModalBody>
         </Modal>
