@@ -58,6 +58,7 @@ class ModalRegister extends React.Component {
   }
 
   /* BEGIN PING INTEGRATION: */
+   
   handleFormInput(e) {
     //Update state based on the input's Id and value.
     let formData = {};

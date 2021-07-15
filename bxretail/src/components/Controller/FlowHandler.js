@@ -89,6 +89,10 @@ class FlowHandler {
       password: regData.password,
     });
 
+    //adding ST integration
+    window._securedTouch.REGISTRATION.registrationAttemptEmail(regData.email); // note SecuredTouch will not collect the email address itself, only anonymised features of it - like the length, the email domain etc.
+    //end ST integration
+
     const response = await this.ping1Reg.userRegister({
       regPayLoad: rawPayload,
       flowId: regData.flowId,
@@ -120,9 +124,19 @@ class FlowHandler {
     //TODO do we want to keep this pattern? return status and resumeUrl if "completed", otherwise entire response? Or just error data?
     const status = await response.status;
     if (status === "COMPLETED") {
+      //adding ST integration
+      window._securedTouch.REGISTRATION.registrationSuccess();
+      //end ST integration
+
       return { status: status, resumeUrl: response.resumeUrl };
+
     } else {
+      //adding ST integration
+      window._securedTouch.REGISTRATION.registrationFailed();
+      //end ST integration
+
       return response;
+      
     }
   }
 
@@ -142,14 +156,30 @@ class FlowHandler {
       username: loginData.username,
       password: loginData.password,
     });
+
+    //adding ST integration
+    window._securedTouch.LOGIN.loginAttemptEmail(loginData.username); // note SecuredTouch will not collect the email address itself, only anonymised features of it - like the length, the email domain etc.
+    //end ST integration
+
     const response = await this.ping1AuthN.usernamePasswordCheck({
       loginPayload: rawPayload,
       flowId: flowId,
     });
     const status = await response.status;
     if (status === "COMPLETED") {
+
+      //adding ST integration
+      window._securedTouch.login(flowId);
+      //end ST integration
+
       return { status: status, resumeUrl: response.resumeUrl };
+
     } else {
+
+      //adding ST integration
+      window._securedTouch.LOGIN.loginFailed();
+      //end ST integration
+
       return response;
     }
   }
@@ -169,6 +199,10 @@ class FlowHandler {
     console.log("resultsArr", JSON.stringify(resultsArr));
     const result = resultsArr.find((provider) => provider["name"] === IdP);
     console.log("results", result);
+
+    //adding ST integration
+    window._securedTouch.LOGIN.loginAttempt(IdP);
+    //end ST integration
     return result._links.authenticate.href;
   }
 

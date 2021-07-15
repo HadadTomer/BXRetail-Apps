@@ -21,12 +21,20 @@
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; style-src 'self' 'unsafe-inline' fonts.googleapis.com use.typekit.net p.typekit.net; font-src 'self' use.typekit.net fonts.gstatic.com data:; 
-      script-src 'self' 'unsafe-inline' www.google-analytics.com; img-src 'self' data:; frame-src 'self'; form-action 'self'; 
-      connect-src 'self' auth.pingone.com apps.pingone.com demo-bxretail-auth-qa.ping-devops.com https://*.ping-devops.com;"
+      script-src 'self' 'unsafe-inline' www.google-analytics.com static.securedtouch.com; img-src 'self' data:; frame-src 'self'; form-action 'self';
+      connect-src 'self' auth.pingone.com apps.pingone.com demo-bxretail-auth-qa.ping-devops.com https://*.ping-devops.com *.securedtouch.com;"
     />
     <meta name="author" content="Technical Enablement - Ping Identity" />
     <!-- Script for runtime environment variables injected by Docker builds -->
     <script src="%PUBLIC_URL%/env-config.js"></script>
+
+    <!--adding for ST integration-->
+    <!--MUST MODIFY APPID-->
+    <script id="stPingId" src="https://static.securedtouch.com/sdk/st-ping-1.4.2p.js?appId=ping-retail" defer></script>
+    <script src="https://static.securedtouch.com/sdk/securedtouch-sdk-3.12.0w.js" defer></script>
+    <!--end add for ST integration-->
+
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@200;300&display=swap" rel="stylesheet">
     <!-- END PING INTEGRATIONS -->
