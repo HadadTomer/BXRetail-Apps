@@ -800,7 +800,7 @@ class FlowHandler {
   }
 
   /**
-   * Generate a JSON web token
+   * Generate a JSON web token for transactions or browserless MFA.
    * @param {String} type login or request. Dictates generation of login_hint tokens or request tokens for transaction approval.
    * @return {String} JSON web token
    */
