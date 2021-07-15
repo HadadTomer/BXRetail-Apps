@@ -18,12 +18,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 // Styles
-import "./ModalError.scss";
+import "./ModalMessage.scss";
 
 // Data
 import data from './data.json';
 
-class ModalError extends React.Component {
+class ModalMessage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,4 +52,4 @@ class ModalError extends React.Component {
   }
 }
 
-export default ModalError;
+export default ModalMessage;

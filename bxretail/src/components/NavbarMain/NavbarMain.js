@@ -19,6 +19,7 @@ import ModalRegisterConfirm from '../ModalRegisterConfirm';
 import ModalLoginPassword from '../ModalLoginPassword';
 import Session from '../Utils/Session'; /* PING INTEGRATION: */
 import FlowHandler from '../Controller/FlowHandler'; /* PING INTEGRATION: */
+import ModalMessage from "../ModalMessage";
 
 // Styles
 import './NavbarMain.scss';
@@ -65,7 +66,7 @@ class NavbarMain extends React.Component {
           // this.modalLoginPassword.current.toggle("7");
           this.modalRegister.current.toggle();
           this.modalRegister.current.toggleTab("2");
-        }
+        } //TODO also need error modal here.
       });
     this.modalRegister.current.toggle();
     // this.modalRegisterConfirm.current.toggle();
@@ -90,16 +91,17 @@ class NavbarMain extends React.Component {
   }
   /* BEGIN PING INTEGRATION: */
   logout() {
+    //TODO add ModalError here to display "logging you out" message.
+
     this.flowHandler.getUserSessions({AT: this.session.getAuthenticatedUserItem("AT", "session")})
     .then(sessionId => {
       this.flowHandler.deleteUserSession({ AT: this.session.getAuthenticatedUserItem("AT", "session"), sessionId: sessionId})
       .then(deleteStatus => {
-        console.log("final delete status", typeof deleteStatus);
         if (deleteStatus === 204) {
           this.session.clearUserAppSession("session");
           this.session.deleteCookie({ name: "ST", domain: ".demo-bxretail-auth-qa.ping-devops.com"}); //TODO this needs to be dynamically set.
           this.props.history.push("/");
-        }
+        } //TODO need error modal here. but also need to get back error data from controller and integration.
       });
     });
   }
@@ -150,7 +152,6 @@ class NavbarMain extends React.Component {
           if (this.session.getAuthenticatedUserItem("authMode", "session") === "ATVP") { authPath = this.envVars.REACT_APP_ATVPAUTHPATH}
           this.flowHandler.swapCodeForToken({ code: authCode, redirectURI: redirectURI, authPath: authPath })
             .then(response => {
-              console.log("ATVP response", response);
               this.session.setAuthenticatedUserItem("AT", response.access_token, "session");
               this.session.setAuthenticatedUserItem("IdT", response.id_token, "session");
               const fullName = this.flowHandler.getTokenValue({ token: response.id_token, key: "fullName" });
