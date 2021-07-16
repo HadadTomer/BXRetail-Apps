@@ -73,13 +73,38 @@ class PingOneRegistration {
     }
 
     /**
+     * Enroll email as a device at registration for all users so that MFA works later if they opt-in. 
+     * @param {*} param0 
+     */
+    async enrollDevice({ devicePayload, token, userId }){
+        console.log("PingOneRegistration.js", "Enrolling email as a device.")
+
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer " + token );
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: devicePayload,
+            redirect: "manual"
+        };
+
+        const url = this.authPath + "/users/" + userId + "/devices";
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        console.log("Enroll Email Device Response:", jsonResponse);
+        return jsonResponse;
+    }
+
+    /**
      * Resend user verification if they didn't receive the orignal verification code in email.
      * @param {type} Name Description
      * @return {type} Name Description
      */
     //TODO not implemented yet.
     userSendVerification({ regVerifyPayLoad, flowId }) {
-        console.log("PingOneRegistration.js", "REsending registration email verification code.")
+        console.log("PingOneRegistration.js", "Resending registration email verification code.")
 
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/vnd.pingidentity.user.sendVerificationCode+json");

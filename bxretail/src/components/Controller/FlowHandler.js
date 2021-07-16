@@ -37,6 +37,7 @@ class FlowHandler {
     this.ping1AuthZATVP = new PingOneAuthZ(this.atvpPath, this.envVars.REACT_APP_ENVID);
 
     this.ping1Reg = new PingOneRegistration(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
+    this.ping1RegProxy = new PingOneRegistration(this.envVars.REACT_APP_PROXYAPIPATH, this.envVars.REACT_APP_ENVID);
     this.ping1AuthN = new PingOneAuthN(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
     this.ping1AuthNProxy = new PingOneAuthN(this.envVars.REACT_APP_PROXYAPIPATH, this.envVars.REACT_APP_ENVID);
     this.ping1Users = new PingOneUsers(this.envVars.REACT_APP_PROXYAPIPATH, this.envVars.REACT_APP_ENVID);
@@ -128,7 +129,8 @@ class FlowHandler {
       window._securedTouch.REGISTRATION.registrationSuccess();
       //end ST integration
 
-      return { status: status, resumeUrl: response.resumeUrl };
+      console.log("User Verify Response", response._embedded.user);
+      return { status: status, resumeUrl: response.resumeUrl, user: response._embedded.user };
 
     } else {
       //adding ST integration
@@ -138,6 +140,22 @@ class FlowHandler {
       return response;
       
     }
+  }
+
+  async enrollDevice({ userId, email}) {
+    const raw = JSON.stringify({
+      "type": "EMAIL",
+      "email": email
+    });
+
+    const lowPrivToken = await this.requestLowPrivToken();
+    const response = await this.ping1RegProxy.enrollDevice({
+      userId: userId,
+      devicePayload: raw,
+      token: lowPrivToken
+    });
+
+    return response;
   }
 
   /**

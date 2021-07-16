@@ -70,13 +70,14 @@ class ModalRegister extends React.Component {
     switch (authMode) {
       case "registration":
         this.setState({ codeConfirmPending: true});
-        console.log("made it to reg");
         // FIXME just like the fix me comment on tabId 7. This soooo doesn't belong in this component. KMN.
         this.flowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
           .then(response => {
-            console.log("UI response", response);
             if (response.status === "COMPLETED") {
-              window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the reg process.
+              const url = response.resumeUrl;
+              this.flowHandler.enrollDevice({ userId: response.user.id, email: response.user.username }).then(response => {
+                window.location.replace(url); //Using replace() because we don't want the user to go "back" to the middle of the reg process.
+              });
             } else {
               console.log("UNEXPECTED STATUS", response);
             }
