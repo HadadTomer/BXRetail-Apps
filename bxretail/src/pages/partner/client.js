@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom';
 import NavbarMain from '../../components/NavbarMain';
 import FooterMain from '../../components/FooterMain';
 import FlowHandler from '../../components/Controller/FlowHandler';
+import Session from '../../components/Utils/Session';
 
 // Data
 import data from '../../data/partner.json';
@@ -81,8 +82,6 @@ const SearchAutocomplete = () => {
 
   };
 
-
-
   return (
     <div>
       <form className="form-search form-inline float-right">
@@ -106,6 +105,7 @@ class PartnerClient extends React.Component {
   constructor() {
     super();
     this.flowHandler = new FlowHandler();
+    this.session = new Session();
     this.state = {
       userId: "",
       formattedName: "",
@@ -118,7 +118,7 @@ class PartnerClient extends React.Component {
   }
 
   fetchEnforceConsents({userId}) {
-    this.flowHandler.enforceConsent({userId: userId})
+    this.flowHandler.enforceConsent({userId: userId, AT: this.session.getAuthenticatedUserItem("AT", "session")})
     .then(response => {
       var firstName = "";
       var lastName = "";
