@@ -106,9 +106,8 @@ class ModalLoginPassword extends React.Component {
   }
   handleUserAction(authMode) {
     switch (authMode) {
-      case "registration":
+      case "registration": //TODO we should be able to remove this registration case. It should now be in ModalRegister.
         console.log("made it to reg");
-        // FIXME just like the fix me comment on tabId 7. This soooo doesn't belong in this component. KMN.
         this.flowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
           .then(response => {
             console.log("UI response", response);

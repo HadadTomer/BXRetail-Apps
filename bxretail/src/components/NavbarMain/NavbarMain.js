@@ -66,7 +66,9 @@ class NavbarMain extends React.Component {
           // this.modalLoginPassword.current.toggle("7");
           this.modalRegister.current.toggle();
           this.modalRegister.current.toggleTab("2");
-        } //TODO also need error modal here.
+        } else {
+          console.log("Reg status", status);
+        }
       });
     this.modalRegister.current.toggle();
     // this.modalRegisterConfirm.current.toggle();
