@@ -26,6 +26,7 @@ import "./ModalLoginPassword.scss";
 
 // Data
 import data from './data.json';
+import PingOneUsers from '../Integration/PingOneUsers';
 
 class ModalLoginPassword extends React.Component {
   constructor(props) {
@@ -38,7 +39,11 @@ class ModalLoginPassword extends React.Component {
       regCode: 0,
       username: "",
       password: "",
-      rememberme: false
+      rememberme: false,
+      errorTitle: "Oh snap!",
+      errorMsg: "There was a problem. Sorry.",
+      haveError: false
+
     };
     this.flowHandler = new FlowHandler(); /* PING INTEGRATION: */
     this.session = new Session(); /* PING INTEGRATION: */
@@ -63,19 +68,19 @@ class ModalLoginPassword extends React.Component {
     }
   }
   toggleTab(tab) {
-    this.setState({
-      activeTab: tab
-    });
+    this.setState({haveError: false});
+    // Tab 3 is the progress spinner.
+    if (tab === "3") {
+      this.handleUserAction(this.session.getAuthenticatedUserItem("authMode", "session"));
+    } else {
+      this.setState({
+        activeTab: tab
+      });
+    }
     // HACK for getting focus on subsequent tab fields.... because reactstrap. :-(
     if (tab === "5") { document.getElementById("email").focus(); } // FIXME This is not working and I can't figure out why.
     if (tab === "7") { document.getElementById("regCode").focus(); }
-
-    console.log("made it here with tab", tab);
-    // Tab 3 is the progress spinner. so we either in process of logging in or registering.
-    if (tab === "3") {
-      this.handleUserAction(this.session.getAuthenticatedUserItem("authMode", "session"));
-    }
-
+    
   }
   setLoginMethod() {
     this.setState({
@@ -83,8 +88,8 @@ class ModalLoginPassword extends React.Component {
       loginMethodFormGroupClass: 'form-group-light'
     });
   }
-  /* BEGIN PING INTEGRATION: */
 
+  /* BEGIN PING INTEGRATION: */
   handleFormInput(e) {
     //Update state based on the input's Id and value.
     let formData = {};
@@ -106,9 +111,8 @@ class ModalLoginPassword extends React.Component {
   }
   handleUserAction(authMode) {
     switch (authMode) {
-      case "registration":
+      case "registration": //TODO we should be able to remove this registration case. It should now be in ModalRegister. Remove and regression test before committing.
         console.log("made it to reg");
-        // FIXME just like the fix me comment on tabId 7. This soooo doesn't belong in this component. KMN.
         this.flowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
           .then(response => {
             console.log("UI response", response);
@@ -120,13 +124,22 @@ class ModalLoginPassword extends React.Component {
           });
         break;
       case "login":
-        console.log("made it to login");
         this.flowHandler.loginUser({ loginData: this.state, flowId: this.props.flowId })
           .then(response => {
             if (response.status === "COMPLETED") {
               window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the login process.
-            } else {
-              console.log("UNEXPECTED STATUS", response);
+              //TODO add statement/logic for MFA required status.
+            } else if (response.code) { //Error case.
+              console.log("UNEXPECTED STATUS", JSON.stringify(response));
+              let errorCode, errorDetails;
+              if (response.details[0].code === "INVALID_CREDENTIALS") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.details[0].message;}
+              if (response.details[0].code === "INVALID_VALUE") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.message;}
+
+              this.setState({
+                haveError: true,
+                errorTitle: errorCode,
+                errorMsg: errorDetails
+              })
               // TODO Check for "code" in this case to get data for error modal. Typically bad username/password combo.
               // TODO had a status of VERIFICATION_CODE_REQUIRED here to handle. incomplete registration???
             }
@@ -166,6 +179,7 @@ class ModalLoginPassword extends React.Component {
               <TabContent activeTab={this.state.activeTab}>
                 <TabPane tabId="1"> {/* Username/password UI. */}
                   <h4>{data.titles.welcome}</h4>
+                  {this.state.haveError && <div style={{ color: 'red' }}>{this.state.errorTitle}<br />{this.state.errorMsg}</div>} {/* PING INTEGRATION */}
                   <FormGroup className="form-group-light">
                     <Label for="username">{data.form.fields.username.label}</Label>
                     <Input autoFocus={true} autoComplete="off" onChange={this.handleFormInput.bind(this)} type="text" name="username" id="username" value={this.state.username} />

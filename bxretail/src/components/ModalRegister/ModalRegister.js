@@ -70,7 +70,7 @@ class ModalRegister extends React.Component {
     switch (authMode) {
       case "registration":
         this.setState({ codeConfirmPending: true});
-        // FIXME just like the fix me comment on tabId 7. This soooo doesn't belong in this component. KMN.
+        console.log("made it to reg");
         this.flowHandler.verifyRegEmailCode({ regEmailCode: this.state.regCode, flowId: this.props.flowId })
           .then(response => {
             if (response.status === "COMPLETED") {
