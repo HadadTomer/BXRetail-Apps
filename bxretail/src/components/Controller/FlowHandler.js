@@ -192,6 +192,9 @@ class FlowHandler {
 
       return { status: status, resumeUrl: response.resumeUrl };
 
+    } else if (status === "OTP_REQUIRED") {
+      return { status: status, deviceId: response._embedded.devices[0].id};
+      
     } else {
 
       //adding ST integration
@@ -200,6 +203,47 @@ class FlowHandler {
 
       return response;
     }
+  }
+
+  /**
+   * Select our only enrolled device (email) for the user. Not based on user input.
+   * //TODO this is not needed as login will send an OTP to the one and only enrolled device (only email for right now) without having to select a device.
+   * Leaving in here in case we decide to enroll more devices in the future.
+   * @param {} param0 
+   */
+  async selectDevice({ deviceId, flowId }) {
+    console.info(
+      "FlowHandler.js",
+      "Selecting email as our MFA device."
+      );
+
+      let payload = JSON.stringify({
+        "device": {
+          "id": deviceId
+        }
+      });
+
+      const response = await this.ping1AuthN.selectDevice({ devicePayload: payload, flowId: flowId });
+      return response;
+  }
+
+  /**
+   * OTP Request for users who have opted into MFA.
+   * @param {\} param0 
+   * @returns 
+   */
+  async OTPRequest({ OTP, flowId }) {
+    console.info(
+      "FlowHandler.js",
+      "Submitting OTP."
+    );
+
+    let payload = JSON.stringify({
+      "otp": OTP
+    });
+
+    const response = await this.ping1AuthN.OTPRequest({ otpPayload: payload, flowId: flowId });
+    return response;
   }
 
   /**

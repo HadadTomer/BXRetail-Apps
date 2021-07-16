@@ -42,5 +42,17 @@
 	},
 	"mobile": {
 		"loading": "Please check your smartphone to sign in..."
+	},
+	"mfa": {
+		"buttons": {
+			"submit": "Submit",
+			"cancel": "Cancel",
+			"login_verification": "Submit my code"
+		},
+		"login_verification": {
+			"label": "Verification Code",
+			"placeholder": "",
+			"title": "Enter the one time passcode from your email"
+		}
 	}
 }

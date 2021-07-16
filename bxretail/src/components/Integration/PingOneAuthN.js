@@ -44,10 +44,59 @@ class PingOneAuthN {
             redirect: "manual",
             credentials: "include"
         };
+
         const url = this.authPath + "/flows/" + flowId;
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
         return jsonResponse;
+    }
+
+    /**
+     * Select our only enrolled device (email) for the user. Not based on user input.
+     * //TODO this is not needed as login will send an OTP to the one and only enrolled device (only email for right now) without having to select a device.
+     * Leaving in here in case we decide to enroll more devices in the future.
+     * @param {*} param0 
+     * @returns 
+     */
+    async selectDevice({ devicePayload, flowId }) {
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/vnd.pingidentity.device.select+json");
+    
+        let requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: devicePayload,
+            redirect: "manual",
+            credentials: "include"
+        };
+
+        const url = this.authPath + "/flows/" + flowId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        return jsonResponse;
+    }
+
+    /**
+     * OTP Request for users who have opted into MFA.
+     * @param {*} param0 
+     * @returns 
+     */
+    async OTPRequest({ otpPayload, flowId }) {
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/vnd.pingidentity.otp.check+json");
+
+        let requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: otpPayload,
+            redirect: 'manual',
+            credentials: "include"
+          };
+
+          const url = this.authPath + "/flows/" + flowId;
+          const response = await fetch(url, requestOptions);
+          const jsonResponse = await response.json();
+          return jsonResponse;
     }
 
     /**

@@ -42,8 +42,8 @@ class ModalLoginPassword extends React.Component {
       rememberme: false,
       errorTitle: "Oh snap!",
       errorMsg: "There was a problem. Sorry.",
-      haveError: false
-
+      haveError: false,
+      OTP: ""
     };
     this.flowHandler = new FlowHandler(); /* PING INTEGRATION: */
     this.session = new Session(); /* PING INTEGRATION: */
@@ -100,10 +100,13 @@ class ModalLoginPassword extends React.Component {
       } else {
         this.session.removeAuthenticatedUserItem("rememberMe", "local");
       }
-      
       this.setState({
         rememberme: e.target.checked
       });
+    } else if (e.target.id === "OTP") {
+      this.setState({
+        OTP: e.target.value
+      })
     } else {
       formData[e.target.id] = e.target.value;
       this.setState(formData);
@@ -127,21 +130,30 @@ class ModalLoginPassword extends React.Component {
         this.flowHandler.loginUser({ loginData: this.state, flowId: this.props.flowId })
           .then(response => {
             if (response.status === "COMPLETED") {
-              window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the login process.
-              //TODO add statement/logic for MFA required status.
+                window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the login process.
+            } else if (response.status === "OTP_REQUIRED") {
+                console.log("OTP Required");
+                this.toggleTab("2");
             } else if (response.code) { //Error case.
-              console.log("UNEXPECTED STATUS", JSON.stringify(response));
-              let errorCode, errorDetails;
-              if (response.details[0].code === "INVALID_CREDENTIALS") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.details[0].message;}
-              if (response.details[0].code === "INVALID_VALUE") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.message;}
-
-              this.setState({
-                haveError: true,
-                errorTitle: errorCode,
-                errorMsg: errorDetails
-              })
-              // TODO Check for "code" in this case to get data for error modal. Typically bad username/password combo.
-              // TODO had a status of VERIFICATION_CODE_REQUIRED here to handle. incomplete registration???
+                console.log("UNEXPECTED STATUS", JSON.stringify(response));
+                let errorCode, errorDetails;
+                  if (response.details[0].code === "INVALID_CREDENTIALS") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.details[0].message;}
+                  if (response.details[0].code === "INVALID_VALUE") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.message;}
+                this.setState({
+                  haveError: true,
+                  errorTitle: errorCode,
+                  errorMsg: errorDetails
+                })
+            };
+          });
+        break;
+      case "OTP":
+        this.flowHandler.OTPRequest({ OTP: this.state.OTP, flowId: this.props.flowId })
+          .then(response => {
+            if (response.status === "COMPLETED") {
+              window.location.replace(response.resumeUrl);
+            } else {
+              console.log("UNEXPECTED STATUS", response);
             }
           });
         break;
@@ -202,6 +214,20 @@ class ModalLoginPassword extends React.Component {
                   </div>
                   <div className="text-center">
                     <img onClick={() => { this.handleUserAction("Google") }} src={window._env_.PUBLIC_URL + "/images/social-signin-google.png"} alt="Google" className="social-signup" />
+                  </div>
+                </TabPane>
+                <TabPane tabId="2"> {/* MFA OTP IF ON */}
+                  <h4>{data.mfa.buttons.login_verification}</h4>
+                  {this.state.codeConfirmPending &&
+                    <div className="spinner" style={{ textAlign: "center" }}>
+                      <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
+                    </div>}
+                  <FormGroup className="form-group-light">
+                    <Label for="OTP">{data.mfa.login_verification.label}</Label>
+                    <Input onChange={this.handleFormInput.bind(this)} autoFocus={true} autoComplete="off" type="text" name="OTP" id="OTP" value={this.state.OTP} />
+                  </FormGroup>
+                  <div className="mb-3">
+                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("OTP") } }>{data.mfa.buttons.login_verification}</Button>
                   </div>
                 </TabPane>
                 {/* <TabPane tabId="2"> PASSWORDLESS UI. NOT SUPPORTED IN BXR USE CASES.
