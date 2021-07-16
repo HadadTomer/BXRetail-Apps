@@ -436,14 +436,12 @@ class FlowHandler {
    * @param {*} param0
    * @returns
    */
-  async enforceConsent({ userId }) {
+  async enforceConsent({ userId, AT }) {
     console.info("Flowhandler.js", "Enforcing user consents.");
 
-    // TODO waiting for Michael's federation into ATVP to grab this from session. Until then, hardcoding from Postman.
-    // const partnerAccessToken = await this.requestPartnerAccessToken();
     const response = await this.ping1Consents.enforceConsent({
-      userId: userId
-      // partnerAccessToken: partnerAccessToken,
+      userId: userId,
+      partnerAccessToken: AT,
     });
     return response;
   }
@@ -451,7 +449,7 @@ class FlowHandler {
   /**
    * Generate a JSON web token
    * @param {String} type login or request. Dictates generation of login_hint tokens or request tokens for transaction approval.
-   * @return {String} JSON web token
+   * @return {String} JSON web token.
    */
   generateJWT({ type, amount, userName, fullName } = {}) {
     let claims = {};
