@@ -42,8 +42,8 @@ class ModalMessage extends React.Component {
         <Modal isOpen={this.state.isOpen} toggle={this.toggle.bind(this)} className="modal-error">
           <ModalHeader toggle={this.toggle.bind(this)} close={closeBtn}><img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" /></ModalHeader>
           <ModalBody>
-            <h4>{this.props.errorTitle}</h4>
-            <div>{this.props.errorMsg}</div>
+            <h4>{this.props.msgTitle || data.title}</h4>
+            <div>{this.props.msgDetail || data.content}</div>
             <Button color="primary" onClick={this.toggle.bind(this)}>{data.button}</Button>
           </ModalBody>
         </Modal>

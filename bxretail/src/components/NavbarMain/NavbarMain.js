@@ -49,6 +49,7 @@ class NavbarMain extends React.Component {
     this.modalRegisterConfirm = React.createRef();
     this.modalLoginPassword = React.createRef();
     this.toggleCart = this.props.toggleCart;
+    this.modalMessage = React.createRef(); /* PING INTEGRATION: */
   }
 
   triggerModalRegister() {
@@ -93,8 +94,11 @@ class NavbarMain extends React.Component {
   }
   /* BEGIN PING INTEGRATION: */
   logout() {
-    //TODO add ModalError here to display "logging you out" message.
-
+    this.setState({
+      msgTitle: "Just a minute please...",
+      msgDetail: "We are in the process of logging you out of BXRetail."
+    });
+    this.modalMessage.current.toggle();
     this.flowHandler.getUserSessions({AT: this.session.getAuthenticatedUserItem("AT", "session")})
     .then(sessionId => {
       this.flowHandler.deleteUserSession({ AT: this.session.getAuthenticatedUserItem("AT", "session"), sessionId: sessionId})
@@ -103,7 +107,12 @@ class NavbarMain extends React.Component {
           this.session.clearUserAppSession("session");
           this.session.deleteCookie({ name: "ST", domain: ".demo-bxretail-auth-qa.ping-devops.com"}); //TODO this needs to be dynamically set.
           this.props.history.push("/");
-        } //TODO need error modal here. but also need to get back error data from controller and integration.
+        } else {
+          this.setState({
+            msgTitle: "Oh snap!",
+            msgDetail: "There was a problem logging you out."
+          });
+        } 
       });
     });
   }
@@ -305,6 +314,7 @@ class NavbarMain extends React.Component {
         <ModalRegisterConfirm ref={this.modalRegisterConfirm} />
         {/* <ModalLogin ref="modalLogin" /> */}
         <ModalLoginPassword ref={this.modalLoginPassword} flowId={this.state.flowId} />
+        <ModalMessage ref={this.modalMessage} msgTitle={this.state.msgTitle} msgDetail={this.state.msgDetail} />
       </section>
     );
   }
