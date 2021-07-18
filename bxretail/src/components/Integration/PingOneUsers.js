@@ -31,6 +31,7 @@ class PingOneUsers {
      * 
      * @param {string} userId - user ID GUID that you would like to read.
      * @param {string} lowPrivToken - Lower privileged token for Management API.
+     * @param {string} currentSessionId - Current ST Session ID
      * @return {object} jsonResponse - json object of user data.
     */
     async readUser({ userId, lowPrivToken }) {
@@ -131,5 +132,23 @@ class PingOneUsers {
 
         return jsonResponse;
     }
+
+    // ST integration
+    async getSTRiskScore({ currentSessionId, lowPrivToken }) {
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + lowPrivToken);
+
+        let requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'manual'
+        };
+        const url = this.proxyApiPath + "/sessionRisk/" + currentSessionId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+
+        return jsonResponse;
+    }
+
 }
 export default PingOneUsers;
