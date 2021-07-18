@@ -186,10 +186,6 @@ class FlowHandler {
     const status = await response.status;
     if (status === "COMPLETED") {
 
-      //adding ST integration
-      window._securedTouch.login(flowId);
-      //end ST integration
-
       return { status: status, resumeUrl: response.resumeUrl };
 
     } else if (status === "OTP_REQUIRED") {

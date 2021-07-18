@@ -107,6 +107,10 @@ class NavbarMain extends React.Component {
           this.session.clearUserAppSession("session");
           this.session.deleteCookie({ name: "ST", domain: ".demo-bxretail-auth-qa.ping-devops.com"}); //TODO this needs to be dynamically set.
           this.props.history.push("/");
+
+          //adding ST integration
+          window._securedTouch.logout();
+          //end ST integration
         } else {
           this.setState({
             msgTitle: "Oh snap!",
@@ -132,13 +136,17 @@ class NavbarMain extends React.Component {
     }
   }
   componentDidMount() {
-    const isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
+    const IdT = this.session.getAuthenticatedUserItem("IdT", "session");
+    const isLoggedOut = (IdT === null || IdT === 'undefined') ? true : false;
     this.setState({ isLoggedOut: isLoggedOut }, () => {
       console.log("isLoggedOut state", this.state.isLoggedOut);
     });
     this.session.protectPage(isLoggedOut, window.location.pathname, this.session.getAuthenticatedUserItem("bxRetailUserType", "session"));
 
-    asyncInitSecuredTouch();
+    //adding ST integration
+    const userId = isLoggedOut ? null : this.flowHandler.getTokenValue({ token: IdT, key: "sub" });
+    asyncInitSecuredTouch(userId);
+    //end ST integration
 
     if (window.location.search) {
       const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
