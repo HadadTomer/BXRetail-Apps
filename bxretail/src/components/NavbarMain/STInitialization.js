@@ -1,6 +1,6 @@
 import { uuidv4 } from "../Utils/UUIDv4";
 
-export const securedTouchSessionId = () => {
+export const stAppSessionId = () => {
     const key = 'stSessionId';
     let sessionId = localStorage.getItem(key);
     if (!sessionId) {
@@ -25,7 +25,7 @@ export const asyncInitSecuredTouch = (userId) => {
             url: 'https://ping-retail.securedtouch.com',
             appId: 'ping-retail',
             appSecret: 'EJBgAz1mFeQFveSDqD6eYf6Dgs5T',
-            sessionId: securedTouchSessionId(),
+            sessionId: stAppSessionId(),
             isSingleDomain: true,
         }).then(function () {
             console.log("SecuredTouchSDK initialized successfully");
