@@ -394,6 +394,21 @@ class FlowHandler {
   }
 
   /**
+   * ST Integration
+   */
+   async parseSTRiskScore() {
+    const lowPrivToken = await this.requestLowPrivToken();
+    let appSessionId = stAppSessionId();
+    const response = await this.ping1Users.getSTRiskScore({
+      currentSessionId: appSessionId,
+      lowPrivToken: lowPrivToken,
+    });
+    const stRiskScore = response.policy.MIN_FRAUD_MODULE.score;
+    console.log("flow handler response", response);
+    return stRiskScore;
+  }
+
+  /**
    * Opt a user in or out of MFA
    * @param {*} param0
    * @returns

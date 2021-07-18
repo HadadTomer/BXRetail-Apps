@@ -137,7 +137,13 @@ class ModalLoginPassword extends React.Component {
             } else if (response.code) { //Error case.
                 console.log("UNEXPECTED STATUS", JSON.stringify(response));
                 let errorCode, errorDetails;
-                  if (response.details[0].code === "INVALID_CREDENTIALS") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.details[0].message;}
+                  if (response.details[0].code === "INVALID_CREDENTIALS") 
+                    { errorCode = response.details[0].code.replace("_", " "); 
+                      errorDetails = response.details[0].message;
+                      if (this.flowHandler.parseSTRiskScore < 200) {
+                        console.log("SECUREDTOUCH SAYS BLOCK USER LOGIN!!! BLOCK! BLOCK!")
+                      }
+                    }
                   if (response.details[0].code === "INVALID_VALUE") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.message;}
                 this.setState({
                   haveError: true,
