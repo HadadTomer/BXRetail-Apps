@@ -143,7 +143,7 @@ class PingOneUsers {
             headers: myHeaders,
             redirect: 'manual'
         };
-        const url = this.proxyApiPath + "/sessionRisk/" + currentSessionId;
+        const url = this.proxyApiPath.split("/apiPath")[0] + "/sessionRisk/" + currentSessionId; // parsing out the URL path for now
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
 
