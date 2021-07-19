@@ -232,7 +232,7 @@ class ModalLoginPassword extends React.Component {
                     <CustomInput onChange={this.handleFormInput.bind(this)} type="checkbox" id="rememberme" label={data.form.fields.rememberme.label} checked={this.state.rememberme} />
                   </FormGroup>
                   <div className="mb-3">
-                    <Button type="button" color="primary" onClick={() => { this.toggleTab('3'); }}>{data.form.buttons.next}</Button>
+                    <Button data-selenium="login_modal_next" type="button" color="primary" onClick={() => { this.toggleTab('3'); }}>{data.form.buttons.next}</Button>
                   </div>
                   {/* <div>
                     <Button type="button" color="link" size="sm" className="text-info pl-0" onClick={() => { this.toggleTab('4'); }}>{data.form.buttons.reset}</Button>
