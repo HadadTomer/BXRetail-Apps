@@ -389,7 +389,6 @@ class FlowHandler {
     } else {
         return { success: true };
     }
-   
   }
 
   /**
@@ -619,6 +618,44 @@ class FlowHandler {
     const userResponse = await this.ping1Users.readUsers({ lowPrivToken: lowPrivToken, filter: queryFilter });
     console.log("userResponse", JSON.stringify(userResponse));
   }
+
+  /**
+   * Accepts username to fire off a recovery code for self-service password reset.
+   * @param {string} flowId
+   * @param {string} username 
+   * @returns response
+   */
+  async forgotPassword({ flowId, username }) {
+    const payload = JSON.stringify({
+      "username": username
+    });
+
+    const response = await this.ping1AuthN.forgotPassword({
+      flowId: flowId,
+      forgotPasswordPayload: payload
+    });
+    return response;
+  }
+
+  /**
+   * Accepts the recovery code and new password for self-service password reset.
+   * @param {string} flowId
+   * @param {string} recoveryCode
+   * @param {string} newPassword
+   * @returns response
+   */
+     async recoverPasscode({ flowId, recoveryCode, newPassword }) {
+      const payload = JSON.stringify({
+        "recoveryCode": recoveryCode,
+        "newPassword": newPassword
+      });
+  
+      const response = await this.ping1AuthN.recoverPasscode({
+        flowId: flowId,
+        recoverPasscodePayload: payload
+      });
+      return response;
+    }
 
   /**
    * Delete a user's session.

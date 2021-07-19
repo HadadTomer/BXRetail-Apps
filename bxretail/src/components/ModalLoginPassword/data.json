@@ -36,7 +36,7 @@
 			"login": "Sign In",
 			"help": "Need help signing in?",
 			"recover_username": "Recover Username",
-			"recover_password": "Recover Password",
+			"recover_password": "Send email",
 			"reg_verification": "Submit my code"
 		}
 	},
@@ -53,6 +53,17 @@
 			"label": "Verification Code",
 			"placeholder": "",
 			"title": "Enter the one time passcode from your email"
+		}
+	},
+	"forgotPassword": {
+		"buttons": {
+			"submit": "Submit",
+			"cancel": "Cancel"
+		},
+		"labels": {
+			"usernameWarning": "If the email is associated with an account, we’ll send you instructions to reset your password.",
+			"recoveryCode": "Recovery Code",
+			"newPassword": "New Password"
 		}
 	}
 }

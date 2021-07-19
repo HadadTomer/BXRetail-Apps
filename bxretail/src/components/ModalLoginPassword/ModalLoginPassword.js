@@ -79,7 +79,6 @@ class ModalLoginPassword extends React.Component {
     }
     // HACK for getting focus on subsequent tab fields.... because reactstrap. :-(
     if (tab === "5") { document.getElementById("email").focus(); } // FIXME This is not working and I can't figure out why.
-    if (tab === "7") { document.getElementById("regCode").focus(); }
     
   }
   setLoginMethod() {
@@ -110,6 +109,7 @@ class ModalLoginPassword extends React.Component {
     } else {
       formData[e.target.id] = e.target.value;
       this.setState(formData);
+      console.log("formData", formData);
     }
   }
   handleUserAction(authMode) {
@@ -157,6 +157,28 @@ class ModalLoginPassword extends React.Component {
             }
           });
         break;
+      case "Forgot Password":
+        this.flowHandler.forgotPassword({ flowId: this.props.flowId, username: this.state.email })
+        .then(response => {
+          this.toggleTab('7');
+        });
+        break;
+      case "Set New Password":
+        this.flowHandler.recoverPasscode({ flowId: this.props.flowId, recoveryCode: this.state.recoveryCode, newPassword: this.state.newPassword })
+        .then(response => {
+          if (response.status === "OTP_REQUIRED") {
+            this.flowHandler.OTPRequest({ flowId: this.props.flowId, OTP: this.state.otp })
+            .then(response => {
+              this.toggleTab('8')
+            })
+          }
+          if (response.status === "COMPLETED") {
+            this.restartLogin()
+          } else {
+            console.log("Reset Password Attempt Failed", response)
+          }
+        });
+        break;
       case "Extraordinary Club":
       case "Google":
         console.log("authMode", authMode);
@@ -170,6 +192,12 @@ class ModalLoginPassword extends React.Component {
       default:
         throw new Error("Unexpected authMode for ModalLoginPassword.handleUserAction.");
     }
+  }
+  restartLogin() {
+    this.session.setAuthenticatedUserItem("authMode", "login", "session");
+    const redirectURI = this.envVars.REACT_APP_HOST + this.envVars.PUBLIC_URL + "/";
+    this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
+    // this.modalLoginPassword.current.toggle();
   }
   componentDidMount() {
     if (this.session.getAuthenticatedUserItem("rememberMe", "local")) {
@@ -267,14 +295,15 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('6'); }}>{data.form.buttons.recover_username}</Button>
                   </div>
                 </TabPane> */}
-                <TabPane tabId="5"> {/* Password reset UI. This is toggling a tab that doesn't exist. */}
-                  <h4>{data.form.buttons.recover_password}</h4>
+                <TabPane tabId="5"> {/* Password reset UI - enter username. */}
+                  <h4>{data.form.buttons.recover_passreset_password}</h4>
+                  <p>{data.forgotPassword.labels.usernameWarning}</p>
                   <FormGroup className="form-group-light">
                     <Label for="email">{data.form.fields.email.label}</Label>
                     <Input onChange={this.handleFormInput.bind(this)} autoFocus={true} autoComplete="off" type="text" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
                   </FormGroup>
                   <div className="mb-3">
-                    <Button type="button" color="primary" onClick={() => { this.toggleTab('6'); }}>{data.form.buttons.recover_password}</Button>
+                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("Forgot Password"); }}>{data.form.buttons.recover_password}</Button>
                   </div>
                 </TabPane>
                 {/* <TabPane tabId="6"> USERNAME RECOVERY SUCCESS UI. SAME ISSUE AS TABID 4.
@@ -283,6 +312,32 @@ class ModalLoginPassword extends React.Component {
                     <Button type="button" color="primary" onClick={() => { this.toggleTab('1'); }}>{data.form.buttons.login}</Button>
                   </div>
                 </TabPane> */}
+                <TabPane tabId="7"> {/* Password reset UI - enter code and new password. */}
+                  <h4>{data.form.buttons.reset_password}</h4>
+                  <FormGroup className="form-group-light">
+                    <Label for="recoveryCode">{data.forgotPassword.labels.recoveryCode}</Label>
+                    <Input onChange={this.handleFormInput.bind(this)} autoFocus={true} autoComplete="off" type="text" name="recoveryCode" id="recoveryCode" />
+                    <Label for="newPassword">{data.forgotPassword.labels.newPassword}</Label>
+                    <Input onChange={this.handleFormInput.bind(this)} autoComplete="off" type="text" name="newPassword" id="newPassword" />
+                  </FormGroup>
+                  <div className="mb-3">
+                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("Set New Password"); }}>{data.form.buttons.recover_password}</Button>
+                  </div>
+                </TabPane>
+                <TabPane tabId="8"> {/* Password reset UI - if MFA enabled, enter in OTP. */}
+                <h4>{data.mfa.buttons.login_verification}</h4>
+                  {this.state.codeConfirmPending &&
+                    <div className="spinner" style={{ textAlign: "center" }}>
+                      <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
+                    </div>}
+                  <FormGroup className="form-group-light">
+                    <Label for="OTP">{data.mfa.login_verification.label}</Label>
+                    <Input onChange={this.handleFormInput.bind(this)} autoFocus={true} autoComplete="off" type="text" name="OTP" id="OTP" value={this.state.OTP} />
+                  </FormGroup>
+                  <div className="mb-3">
+                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("OTP") } }>{data.mfa.buttons.login_verification}</Button>
+                  </div>
+                </TabPane>
               </TabContent>
             </form>
           </ModalBody>

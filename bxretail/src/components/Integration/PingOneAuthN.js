@@ -100,6 +100,55 @@ class PingOneAuthN {
     }
 
     /**
+     * Receives username to start the self-service forgot password flow.
+     * @param {string} flowId
+     * @param {object} forgotPasswordPayload 
+     * @returns 
+     */
+    async forgotPassword ({ flowId, forgotPasswordPayload }) {
+        let myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/vnd.pingidentity.password.forgot+json");
+
+        let requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: forgotPasswordPayload,
+            redirect: "manual",
+            credentials: "include"
+        };
+
+        const url = this.authPath + "/flows/" + flowId;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+        return jsonResponse;        
+    }
+
+    /**
+     * Accepts the recovery code and new password for self-service password reset.
+     * @param {string} flowId
+     * @param {string} recoveryCode
+     * @param {string} newPassword
+     * @returns response
+     */
+    async recoverPasscode ({ flowId, recoverPasscodePayload }) {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/vnd.pingidentity.password.recover+json");
+
+    let requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: recoverPasscodePayload,
+        redirect: "manual",
+        credentials: "include"
+    };
+
+    const url = this.authPath + "/flows/" + flowId;
+    const response = await fetch(url, requestOptions);
+    const jsonResponse = await response.json();
+    return jsonResponse;        
+    }
+
+    /**
      * Read a user's password state.
      * @see // https://apidocs.pingidentity.com/pingone/platform/v1/api/#get-read-password-state
      * @param {*} param0 
