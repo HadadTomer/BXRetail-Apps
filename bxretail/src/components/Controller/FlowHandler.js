@@ -20,6 +20,7 @@ import JSONSearch from "../Utils/JSONSearch"; /* PING INTEGRATION: */
 import PingOneConsents from "../Integration/PingOneConsents"; /* PING INTEGRATION */
 import Session from "../Utils/Session"; /* PING INTEGRATION */
 import { uuidv4 } from "../Utils/UUIDv4"; /* PING INTEGRATION: */
+import { stAppSessionId } from "../NavbarMain/STInitialization"; /* ST INTEGRATION: */
 
 class FlowHandler {
   BXF_E = "MTcxNjEwNDctMjkwZi00Yzg4LWI3NzEtMDFhZGM0ZTgxNTY0";
@@ -179,10 +180,17 @@ class FlowHandler {
     window._securedTouch.LOGIN.loginAttemptEmail(loginData.username); // note SecuredTouch will not collect the email address itself, only anonymised features of it - like the length, the email domain etc.
     //end ST integration
 
-    const response = await this.ping1AuthN.usernamePasswordCheck({
+    const usernamePasswordCheckPromise = this.ping1AuthN.usernamePasswordCheck({
       loginPayload: rawPayload,
       flowId: flowId,
     });
+    const stScorePromise = this.parseSTRiskScore();
+    const [ response, score ] = await Promise.all([usernamePasswordCheckPromise, stScorePromise]);
+
+    if (score < 200) {
+      return { status: "BLOCKED" };
+    }
+
     const status = await response.status;
     if (status === "COMPLETED") {
 

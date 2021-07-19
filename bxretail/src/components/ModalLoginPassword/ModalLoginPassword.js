@@ -131,19 +131,15 @@ class ModalLoginPassword extends React.Component {
           .then(response => {
             if (response.status === "COMPLETED") {
                 window.location.replace(response.resumeUrl); //Using replace() because we don't want the user to go "back" to the middle of the login process.
+            } else if (response.status === "BLOCKED") {
+              console.log("SECUREDTOUCH SAYS BLOCK USER LOGIN!!! BLOCK! BLOCK!")
             } else if (response.status === "OTP_REQUIRED") {
                 console.log("OTP Required");
                 this.toggleTab("2");
             } else if (response.code) { //Error case.
                 console.log("UNEXPECTED STATUS", JSON.stringify(response));
                 let errorCode, errorDetails;
-                  if (response.details[0].code === "INVALID_CREDENTIALS") 
-                    { errorCode = response.details[0].code.replace("_", " "); 
-                      errorDetails = response.details[0].message;
-                      if (this.flowHandler.parseSTRiskScore < 200) {
-                        console.log("SECUREDTOUCH SAYS BLOCK USER LOGIN!!! BLOCK! BLOCK!")
-                      }
-                    }
+                  if (response.details[0].code === "INVALID_CREDENTIALS") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.details[0].message;}
                   if (response.details[0].code === "INVALID_VALUE") { errorCode = response.details[0].code.replace("_", " "); errorDetails = response.message;}
                 this.setState({
                   haveError: true,
