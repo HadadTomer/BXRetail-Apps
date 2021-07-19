@@ -155,11 +155,14 @@ class Shop extends React.Component {
     this.flowHandler.initAuthNFlow({ grantType: "authCode", clientId: this.envVars.REACT_APP_CLIENT, redirectURI: redirectURI, scopes: "openid profile email" });
   }
 
+  /**
+   * 
+   * @param {String} email Email address of guest user to lookup.
+   */
   guestLookup(email) {
-    //TODO need to lookup user record for email and password
     console.log("email", email);
     const queryFilter = 'email eq "' + email + '"';
-    this.flowHandler.searchUsers({email: email, filter: queryFilter});
+    this.flowHandler.userLookup({email: email, filter: queryFilter});
     // this.toggleTabCheckout("3");
   }
 
