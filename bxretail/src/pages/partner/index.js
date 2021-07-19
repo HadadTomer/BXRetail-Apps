@@ -110,7 +110,7 @@ class Partner extends React.Component {
   }
 
   componentDidMount() {
-    this.flowHandler.getUsers({limit: "1000"})
+    this.flowHandler.getAllUsers({limit: "1000"})
       .then(jsonSearchResults => {
         const suggestions = jsonSearchResults._embedded.users.map(user => ({ id: user.id, name: user.username }))
         data.clients.suggestions = suggestions;
