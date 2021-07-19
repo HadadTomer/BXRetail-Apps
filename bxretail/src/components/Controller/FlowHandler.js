@@ -30,6 +30,7 @@ class FlowHandler {
 
   constructor() {
     //FIXME this is stupid. Too many potentially unused objects. We need to refactor the UIs to instantiate this class with their respective object state.
+    // TODO break up this controller into matching components to their integration components.
     this.envVars = window._env_;
     this.ping1AuthZ = new PingOneAuthZ(this.envVars.REACT_APP_AUTHPATH, this.envVars.REACT_APP_ENVID);
     //TODO part of the FIX ME. Because ATVP doesnt use a custom domain. :sad pony:
@@ -407,7 +408,7 @@ class FlowHandler {
   }
 
   /**
-   *
+   * @deprecated
    */
   async getUsers({ limit }) {
     const lowPrivToken = await this.requestLowPrivToken();
@@ -607,11 +608,15 @@ class FlowHandler {
   }
 
   /**
-   * 
+   * Lookup user by email
+   * @param {String} email Email address of user to search.
    */
-  lookupUser({ userName }) {
-    //TODO implement
-    // https://api.pingone.com/v1/environments/{{envId}}/users?filter=username eq "user.0" <-- urlEncode
+  async searchUsers({ email, limit="", filter="" }) {
+    const lowPrivToken = await this.requestLowPrivToken();
+    console.log("controller lowPrivToken", lowPrivToken);
+    const queryFilter = 'email eq "' + email + '"';
+    const userResponse = await this.ping1Users.readUsers({ lowPrivToken: lowPrivToken, filter: queryFilter });
+    console.log("userResponse", JSON.stringify(userResponse));
   }
 
   /**

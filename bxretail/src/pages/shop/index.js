@@ -158,8 +158,9 @@ class Shop extends React.Component {
   guestLookup(email) {
     //TODO need to lookup user record for email and password
     console.log("email", email);
-    //this.flowHandler({});
-    this.toggleTabCheckout("3");
+    const queryFilter = 'email eq "' + email + '"';
+    this.flowHandler.searchUsers({email: email, filter: queryFilter});
+    // this.toggleTabCheckout("3");
   }
 
   getProfile() {

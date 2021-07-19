@@ -49,9 +49,10 @@ class PingOneUsers {
         return jsonResponse;
     }
 
+    //TODO Change calling methods to call readUsers(), below this, and then delete this method.
     /**
      * Get all user's data - use a filter to narrow results.
-     * 
+     * @deprecated
      * @param {*} param0 
      * @returns 
      */
@@ -65,6 +66,37 @@ class PingOneUsers {
             redirect: "manual"
         };
         const url = this.proxyApiPath + "/users" + "?limit=" + limit;
+        const response = await fetch(url, requestOptions);
+        const jsonResponse = await response.json();
+
+        return jsonResponse;
+    }
+
+    /**
+     * Read all users.
+     * 
+     * @param {String} lowPrivToken A lower privilged token used by DG/PAZ to make mgmt. API calls. 
+     * @param {String} limit  Number of records to be returned in search. (Optional)
+     * @param {String} filter The query param/value string to search filter results. (Optional)
+     * @returns 
+     */
+    async readUsers({ lowPrivToken, limit="", filter="" }) {
+        let myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + lowPrivToken);
+
+        let requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "manual"
+        };
+        let url = this.proxyApiPath + "/users";
+        if (limit.length) {url += "?limit=" + limit}
+        if (filter.length && limit.length) {
+            url += "&filter=" + filter
+        } else if (filter.length) {
+            url += "?filter=" + filter
+        }
+        console.log("filter", filter);
         const response = await fetch(url, requestOptions);
         const jsonResponse = await response.json();
 
