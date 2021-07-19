@@ -113,6 +113,12 @@ class NavbarMain extends React.Component {
             msgDetail: "There was a problem logging you out."
           });
         } 
+      })
+      .catch(error => {//TODO try to recreate a failure at this level so we can display a proper error message.
+        this.setState({
+          msgTitle: "Oh snap!",
+          msgDetail: "There was a problem logging you out."
+        });
       });
     });
   }

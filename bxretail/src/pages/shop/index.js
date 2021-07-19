@@ -9,6 +9,8 @@ import {
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { withRouter } from 'react-router-dom'; /* PING INTEGRATION: */
+
 
 // Components
 import NavbarMain from '../../components/NavbarMain';
@@ -29,8 +31,8 @@ import "../../styles/pages/shop.scss";
 // import { tsImportEqualsDeclaration } from '@babel/types';
 
 class Shop extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isOpen: false,
       activeTab: '1',
@@ -189,8 +191,7 @@ class Shop extends React.Component {
       // const result = this.flowHandler.updateUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session"), userState: stateData });
       this.flowHandler.updateUserProfile({ IdT: this.session.getAuthenticatedUserItem("IdT", "session"), userState: stateData })
         .then(response => {
-          console.log("result", response);
-          if (response.code) { console.log("PROFILE UPDATE ERROR", response.message); }
+          if (response.code) { console.log("PROFILE UPDATE ERROR", response.message); } //TODO need handle this in the UI/UX.
           if (response.success) { console.log("AWESOME", response.success); }
 
           this.toggleCheckout();
@@ -230,6 +231,10 @@ class Shop extends React.Component {
     }
   }
 
+  goToScheduling() {
+    this.props.history.push("any-tv-partner");
+  }
+
   componentDidMount() {
     this.isLoggedOut = (this.session.getAuthenticatedUserItem("IdT", "session") === null || this.session.getAuthenticatedUserItem("IdT", "session") === 'undefined') ? true : false;
     const hasCartInStorage = (this.session.getAuthenticatedUserItem("cart", "local") === null || this.session.getAuthenticatedUserItem("cart", "local") === 'undefined') ? false : true;
@@ -246,7 +251,7 @@ class Shop extends React.Component {
     return (
       <div className="dashboard accounts accounts-overview shop">
         <NavbarMain toggleCart={this.toggleTab} />
-        <WelcomeBar fullName={this.session.getAuthenticatedUserItem("fullName", "session")} email={this.session.getAuthenticatedUserItem("email", "session")}/>
+        <WelcomeBar fullName={this.session.getAuthenticatedUserItem("fullName", "session")} email={this.session.getAuthenticatedUserItem("email", "session")} />
         <Container>
           <div className="inner">
             <div className="sidebar">
@@ -742,13 +747,14 @@ class Shop extends React.Component {
                     <Col md={5}>
                       <div className="text-right mt-4" style={{ paddingTop: "70px" }}>
                         <Button type="button" color="link">{data.modal.confirmation.scheduleButtons.call}</Button>
-                        <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTabConfirmation('2'); }}>{data.modal.confirmation.scheduleButtons.online}</Button>
+                        {/* <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTabConfirmation('2'); }}>{data.modal.confirmation.scheduleButtons.online}</Button> */}
+                        <Button type="button" color="primary" className="ml-3" onClick={() => { this.goToScheduling(); }}>{data.modal.confirmation.scheduleButtons.online}</Button>
                       </div>
                     </Col>
                   </Row>
                 )}
               </TabPane>
-              <TabPane tabId="2"> {/* Consent mgmt. */}
+              <TabPane tabId="2"> {/* Consent mgmt. - NOT USED. CONSENT MGMT DEMO'D IN PROFILE UPDATES */}
                 <p className="text-center mt-4">
                   <img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" />
                 </p>
@@ -787,7 +793,7 @@ class Shop extends React.Component {
                   <Button type="button" color="primary" className="ml-3" onClick={() => { this.toggleTabConfirmation('3'); }}>{data.modal.confirmation.consentButtons.save}</Button>
                 </div>
               </TabPane>
-              <TabPane tabId="3"> {/* Consent mgmt. confirmation */}
+              <TabPane tabId="3"> {/* Consent mgmt. confirmation - NOT USED. CONSENT MGMT DEMO'D IN PROFILE UPDATES */}
                 <p className="text-center mt-4">
                   <img src={window._env_.PUBLIC_URL + "/images/logo.svg"} alt="logo" />
                 </p>
@@ -826,4 +832,4 @@ class Shop extends React.Component {
   }
 }
 
-export default Shop
+export default withRouter(Shop);
