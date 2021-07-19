@@ -612,10 +612,10 @@ class FlowHandler {
    * Lookup user by email
    * @param {String} email Email address of user to search.
    */
-  async searchUsers({ email, limit="", filter="" }) {
+  async userLookup({ email, filter="" }) {
     const lowPrivToken = await this.requestLowPrivToken();
     console.log("controller lowPrivToken", lowPrivToken);
-    const queryFilter = 'email eq "' + email + '"';
+    const queryFilter = filter;
     const userResponse = await this.ping1Users.readUsers({ lowPrivToken: lowPrivToken, filter: queryFilter });
     console.log("userResponse", JSON.stringify(userResponse));
   }
