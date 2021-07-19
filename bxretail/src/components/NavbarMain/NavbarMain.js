@@ -225,7 +225,7 @@ class NavbarMain extends React.Component {
                 </NavItem>
                 {this.state.isLoggedOut &&
                   <NavItem className="">
-                    <NavLink href="#" onClick={this.triggerModalLoginPassword.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
+                    <NavLink data-selenium="nav_signin" href="#" onClick={this.triggerModalLoginPassword.bind(this)}><img src={window._env_.PUBLIC_URL + "/images/icons/user.svg"} alt={data.menus.utility.login} className="mr-1" /> {data.menus.utility.login}</NavLink>
                   </NavItem>}
                 {!this.state.isLoggedOut &&
                   <NavItem className="">
