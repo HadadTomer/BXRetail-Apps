@@ -47,6 +47,7 @@ class ModalLoginPassword extends React.Component {
     };
     this.flowHandler = new FlowHandler(); /* PING INTEGRATION: */
     this.session = new Session(); /* PING INTEGRATION: */
+    this.envVars = window._env_;
   }
   onClosed() {
     this.setState({
@@ -167,12 +168,8 @@ class ModalLoginPassword extends React.Component {
         this.flowHandler.recoverPasscode({ flowId: this.props.flowId, recoveryCode: this.state.recoveryCode, newPassword: this.state.newPassword })
         .then(response => {
           if (response.status === "OTP_REQUIRED") {
-            this.flowHandler.OTPRequest({ flowId: this.props.flowId, OTP: this.state.otp })
-            .then(response => {
-              this.toggleTab('8')
-            })
-          }
-          if (response.status === "COMPLETED") {
+            this.toggleTab('2');
+          } else if (response.status === "COMPLETED") {
             this.restartLogin()
           } else {
             console.log("Reset Password Attempt Failed", response)
@@ -296,7 +293,7 @@ class ModalLoginPassword extends React.Component {
                   </div>
                 </TabPane> */}
                 <TabPane tabId="5"> {/* Password reset UI - enter username. */}
-                  <h4>{data.form.buttons.recover_passreset_password}</h4>
+                  <h4>{data.form.buttons.reset_password}</h4>
                   <p>{data.forgotPassword.labels.usernameWarning}</p>
                   <FormGroup className="form-group-light">
                     <Label for="email">{data.form.fields.email.label}</Label>
@@ -321,21 +318,7 @@ class ModalLoginPassword extends React.Component {
                     <Input onChange={this.handleFormInput.bind(this)} autoComplete="off" type="text" name="newPassword" id="newPassword" />
                   </FormGroup>
                   <div className="mb-3">
-                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("Set New Password"); }}>{data.form.buttons.recover_password}</Button>
-                  </div>
-                </TabPane>
-                <TabPane tabId="8"> {/* Password reset UI - if MFA enabled, enter in OTP. */}
-                <h4>{data.mfa.buttons.login_verification}</h4>
-                  {this.state.codeConfirmPending &&
-                    <div className="spinner" style={{ textAlign: "center" }}>
-                      <FontAwesomeIcon icon={faCircleNotch} size="3x" className="fa-spin" />
-                    </div>}
-                  <FormGroup className="form-group-light">
-                    <Label for="OTP">{data.mfa.login_verification.label}</Label>
-                    <Input onChange={this.handleFormInput.bind(this)} autoFocus={true} autoComplete="off" type="text" name="OTP" id="OTP" value={this.state.OTP} />
-                  </FormGroup>
-                  <div className="mb-3">
-                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("OTP") } }>{data.mfa.buttons.login_verification}</Button>
+                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("Set New Password"); }}>{data.forgotPassword.buttons.submit}</Button>
                   </div>
                 </TabPane>
               </TabContent>
