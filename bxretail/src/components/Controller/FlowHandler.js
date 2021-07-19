@@ -408,11 +408,12 @@ class FlowHandler {
   }
 
   /**
-   * @deprecated
+   * Get all users with some limit.
+   * @param {} limit Limit the number of results that come back.
    */
-  async getUsers({ limit }) {
+  async getAllUsers({ limit }) {
     const lowPrivToken = await this.requestLowPrivToken();
-    const response = await this.ping1Users.getUsers({
+    const response = await this.ping1Users.readUsers({
       lowPrivToken: lowPrivToken,
       limit: limit
     });
