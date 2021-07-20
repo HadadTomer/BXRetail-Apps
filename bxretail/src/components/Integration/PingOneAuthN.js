@@ -78,10 +78,12 @@ class PingOneAuthN {
 
     /**
      * OTP Request for users who have opted into MFA.
-     * @param {*} param0 
+     * @see // https://apidocs.pingidentity.com/pingone/platform/v1/api/#post-check-one-time-password-otp 
+     * @param {object} otpPayload
+     * @param {string} flowId
      * @returns 
      */
-    async OTPRequest({ otpPayload, flowId }) {
+    async otpCheck({ otpPayload, flowId }) {
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/vnd.pingidentity.otp.check+json");
 
@@ -101,11 +103,12 @@ class PingOneAuthN {
 
     /**
      * Receives username to start the self-service forgot password flow.
+     * @see // https://apidocs.pingidentity.com/pingone/platform/v1/api/#post-forgot-password
      * @param {string} flowId
      * @param {object} forgotPasswordPayload 
      * @returns 
      */
-    async forgotPassword ({ flowId, forgotPasswordPayload }) {
+    async passwordForgot ({ flowId, forgotPasswordPayload }) {
         let myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/vnd.pingidentity.password.forgot+json");
 
@@ -125,12 +128,13 @@ class PingOneAuthN {
 
     /**
      * Accepts the recovery code and new password for self-service password reset.
+     * @see // https://apidocs.pingidentity.com/pingone/platform/v1/api/#post-recover-password
      * @param {string} flowId
      * @param {string} recoveryCode
      * @param {string} newPassword
      * @returns response
      */
-    async recoverPasscode ({ flowId, recoverPasscodePayload }) {
+    async passwordRecover ({ flowId, recoverPasscodePayload }) {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/vnd.pingidentity.password.recover+json");
 

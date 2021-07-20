@@ -47,7 +47,7 @@ class ModalLoginPassword extends React.Component {
     };
     this.flowHandler = new FlowHandler(); /* PING INTEGRATION: */
     this.session = new Session(); /* PING INTEGRATION: */
-    this.envVars = window._env_;
+    this.envVars = window._env_; 
   }
   onClosed() {
     this.setState({
@@ -158,13 +158,13 @@ class ModalLoginPassword extends React.Component {
             }
           });
         break;
-      case "Forgot Password":
+      case "forgotPassword":
         this.flowHandler.forgotPassword({ flowId: this.props.flowId, username: this.state.email })
         .then(response => {
           this.toggleTab('7');
         });
         break;
-      case "Set New Password":
+      case "setNewPassword":
         this.flowHandler.recoverPasscode({ flowId: this.props.flowId, recoveryCode: this.state.recoveryCode, newPassword: this.state.newPassword })
         .then(response => {
           if (response.status === "OTP_REQUIRED") {
@@ -300,7 +300,7 @@ class ModalLoginPassword extends React.Component {
                     <Input onChange={this.handleFormInput.bind(this)} autoFocus={true} autoComplete="off" type="text" name="email" id="email" placeholder={data.form.fields.email.placeholder} />
                   </FormGroup>
                   <div className="mb-3">
-                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("Forgot Password"); }}>{data.form.buttons.recover_password}</Button>
+                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("forgotPassword"); }}>{data.form.buttons.recover_password}</Button>
                   </div>
                 </TabPane>
                 {/* <TabPane tabId="6"> USERNAME RECOVERY SUCCESS UI. SAME ISSUE AS TABID 4.
@@ -318,7 +318,7 @@ class ModalLoginPassword extends React.Component {
                     <Input onChange={this.handleFormInput.bind(this)} autoComplete="off" type="text" name="newPassword" id="newPassword" />
                   </FormGroup>
                   <div className="mb-3">
-                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("Set New Password"); }}>{data.forgotPassword.buttons.submit}</Button>
+                    <Button type="button" color="primary" onClick={() => { this.handleUserAction("setNewPassword"); }}>{data.forgotPassword.buttons.submit}</Button>
                   </div>
                 </TabPane>
               </TabContent>

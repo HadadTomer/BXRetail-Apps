@@ -210,7 +210,9 @@ class FlowHandler {
    * Select our only enrolled device (email) for the user. Not based on user input.
    * //TODO this is not needed as login will send an OTP to the one and only enrolled device (only email for right now) without having to select a device.
    * Leaving in here in case we decide to enroll more devices in the future.
-   * @param {} param0 
+   * @param {string} deviceId
+   * @param {string} flowId
+   * @returns something 
    */
   async selectDevice({ deviceId, flowId }) {
     console.info(
@@ -243,7 +245,7 @@ class FlowHandler {
       "otp": OTP
     });
 
-    const response = await this.ping1AuthN.OTPRequest({ otpPayload: payload, flowId: flowId });
+    const response = await this.ping1AuthN.otpCheck({ otpPayload: payload, flowId: flowId });
     return response;
   }
 
@@ -630,7 +632,7 @@ class FlowHandler {
       "username": username
     });
 
-    const response = await this.ping1AuthN.forgotPassword({
+    const response = await this.ping1AuthN.passwordForgot({
       flowId: flowId,
       forgotPasswordPayload: payload
     });
@@ -650,7 +652,7 @@ class FlowHandler {
         "newPassword": newPassword
       });
   
-      const response = await this.ping1AuthN.recoverPasscode({
+      const response = await this.ping1AuthN.passwordRecover({
         flowId: flowId,
         recoverPasscodePayload: payload
       });
