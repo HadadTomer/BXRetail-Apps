@@ -10,22 +10,19 @@ import {
   FormGroup,
   Label,
   Input,
-  CustomInput,
   TabContent, TabPane
 } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 // Components
 // import FormPassword from '../../components/FormPassword';
 
 // Styles
-import "./ModalPasswordReset.scss";
+import "./ModalPasswordUpdate.scss";
 
 // Data
 import data from './data.json';
 
-class ModalPasswordReset extends React.Component {
+class ModalPasswordUpdate extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -86,4 +83,4 @@ class ModalPasswordReset extends React.Component {
   }
 }
 
-export default ModalPasswordReset;
+export default ModalPasswordUpdate;

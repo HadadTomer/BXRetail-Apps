@@ -210,7 +210,9 @@ class FlowHandler {
    * Select our only enrolled device (email) for the user. Not based on user input.
    * //TODO this is not needed as login will send an OTP to the one and only enrolled device (only email for right now) without having to select a device.
    * Leaving in here in case we decide to enroll more devices in the future.
-   * @param {} param0 
+   * @param {string} deviceId
+   * @param {string} flowId
+   * @returns something 
    */
   async selectDevice({ deviceId, flowId }) {
     console.info(
@@ -243,7 +245,7 @@ class FlowHandler {
       "otp": OTP
     });
 
-    const response = await this.ping1AuthN.OTPRequest({ otpPayload: payload, flowId: flowId });
+    const response = await this.ping1AuthN.otpCheck({ otpPayload: payload, flowId: flowId });
     return response;
   }
 
@@ -389,7 +391,6 @@ class FlowHandler {
     } else {
         return { success: true };
     }
-   
   }
 
   /**
@@ -619,6 +620,44 @@ class FlowHandler {
     const userResponse = await this.ping1Users.readUsers({ lowPrivToken: lowPrivToken, filter: queryFilter });
     console.log("userResponse", JSON.stringify(userResponse));
   }
+
+  /**
+   * Accepts username to fire off a recovery code for self-service password reset.
+   * @param {string} flowId
+   * @param {string} username 
+   * @returns response
+   */
+  async forgotPassword({ flowId, username }) {
+    const payload = JSON.stringify({
+      "username": username
+    });
+
+    const response = await this.ping1AuthN.passwordForgot({
+      flowId: flowId,
+      forgotPasswordPayload: payload
+    });
+    return response;
+  }
+
+  /**
+   * Accepts the recovery code and new password for self-service password reset.
+   * @param {string} flowId
+   * @param {string} recoveryCode
+   * @param {string} newPassword
+   * @returns response
+   */
+     async recoverPasscode({ flowId, recoveryCode, newPassword }) {
+      const payload = JSON.stringify({
+        "recoveryCode": recoveryCode,
+        "newPassword": newPassword
+      });
+  
+      const response = await this.ping1AuthN.passwordRecover({
+        flowId: flowId,
+        recoverPasscodePayload: payload
+      });
+      return response;
+    }
 
   /**
    * Delete a user's session.
