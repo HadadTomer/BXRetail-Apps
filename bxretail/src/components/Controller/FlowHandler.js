@@ -185,7 +185,7 @@ class FlowHandler {
       loginPayload: rawPayload,
       flowId: flowId,
     });
-    const stScorePromise = this.parseSTRiskScore();
+    const stScorePromise = this.parseSTRiskScore().catch(e => console.log('failed to get STRisk Score', e));
     const [ response, score ] = await Promise.all([usernamePasswordCheckPromise, stScorePromise]);
 
     if (score < 200) {
@@ -193,13 +193,30 @@ class FlowHandler {
     }
 
     const status = await response.status;
-    if (status === "COMPLETED") {
+    if (status === "OTP_REQUIRED") {
+
+      return { status: status, deviceId: response._embedded.devices[0].id };
+
+    } else if (status === "COMPLETED" && score >= 200) {
 
       return { status: status, resumeUrl: response.resumeUrl };
 
-    } else if (status === "OTP_REQUIRED") {
-      return { status: status, deviceId: response._embedded.devices[0].id};
-      
+    } else if (status === "COMPLETED" && score < 200) {
+
+      //adding ST integration
+      window._securedTouch.LOGIN.loginFailed();
+      //end ST integration
+
+      return {
+        code: "FRAUD_ALERT",
+        message: "The request could not be completed. One or more validation errors were in the request.",
+        details: [
+          {
+            code: "FRAUD_ALERT",
+            message: "Fraudulent activity detected"
+          }
+        ]
+      }
     } else {
 
       //adding ST integration
