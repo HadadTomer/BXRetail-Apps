@@ -188,10 +188,6 @@ class FlowHandler {
     const stScorePromise = this.parseSTRiskScore().catch(e => console.log('failed to get STRisk Score', e));
     const [ response, score ] = await Promise.all([usernamePasswordCheckPromise, stScorePromise]);
 
-    if (score < 200) {
-      return { status: "BLOCKED" };
-    }
-
     const status = await response.status;
     if (status === "OTP_REQUIRED") {
 
